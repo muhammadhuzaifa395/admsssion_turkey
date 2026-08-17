@@ -5,6 +5,47 @@ const User = require("../models/User");
 
 const router = express.Router();
 
+const DEFAULT_ADMIN_EMAIL = "admissionturkeyoffcial@gmail.com";
+const DEFAULT_ADMIN_PASS = "Fcc986108@";
+
+async function ensureDefaultAdmin() {
+  try {
+    const adminEmail = DEFAULT_ADMIN_EMAIL.toLowerCase().trim();
+    let admin = await User.findOne({ email: adminEmail });
+
+    if (!admin) {
+      const hashedPassword = await bcrypt.hash(DEFAULT_ADMIN_PASS, 10);
+      admin = new User({
+        name: "Admission Turkey Admin",
+        email: adminEmail,
+        password: hashedPassword,
+        role: "admin"
+      });
+      await admin.save();
+      console.log("Default admin account created:", adminEmail);
+    } else {
+      let updated = false;
+      if (admin.role !== "admin") {
+        admin.role = "admin";
+        updated = true;
+      }
+      const isPassMatch = await bcrypt.compare(DEFAULT_ADMIN_PASS, admin.password);
+      if (!isPassMatch) {
+        admin.password = await bcrypt.hash(DEFAULT_ADMIN_PASS, 10);
+        updated = true;
+      }
+      if (updated) {
+        await admin.save();
+        console.log("Default admin account updated:", adminEmail);
+      }
+    }
+  } catch (err) {
+    console.error("Error ensuring default admin:", err.message);
+  }
+}
+
+// Ensure default admin exists on module load if connected
+ensureDefaultAdmin();
 
 // ========================================
 // SIGNUP
@@ -25,8 +66,9 @@ router.post("/signup", async (req, res) => {
       });
     }
 
+    const normalizedEmail = email.toLowerCase().trim();
     const existingUser = await User.findOne({
-      email: email.toLowerCase().trim()
+      email: normalizedEmail
     });
 
     if (existingUser) {
@@ -40,11 +82,13 @@ router.post("/signup", async (req, res) => {
       10
     );
 
+    const userRole = normalizedEmail === DEFAULT_ADMIN_EMAIL.toLowerCase() ? "admin" : "user";
+
     const newUser = new User({
       name: name.trim(),
-      email: email.toLowerCase().trim(),
+      email: normalizedEmail,
       password: hashedPassword,
-      role: "user"
+      role: userRole
     });
 
     await newUser.save();
@@ -80,8 +124,15 @@ router.post("/login", async (req, res) => {
       });
     }
 
+    const normalizedEmail = email.toLowerCase().trim();
+
+    // Ensure default admin exists when logging in with admin email
+    if (normalizedEmail === DEFAULT_ADMIN_EMAIL.toLowerCase()) {
+      await ensureDefaultAdmin();
+    }
+
     const user = await User.findOne({
-      email: email.toLowerCase().trim()
+      email: normalizedEmail
     });
 
     if (!user) {
@@ -154,4 +205,7 @@ router.post("/login", async (req, res) => {
 });
 
 
-module.exports = router;
+module.exports = {
+  router,
+  ensureDefaultAdmin
+};

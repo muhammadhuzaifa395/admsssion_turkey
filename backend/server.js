@@ -5,7 +5,7 @@ const path = require("path");
 const fs = require("fs");
 require("dotenv").config();
 
-const authRoutes = require("./routes/authRoutes");
+const { router: authRoutes, ensureDefaultAdmin } = require("./routes/authRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const universityRoutes = require("./routes/universityRoutes");
 const contactRoutes = require("./routes/contactRoutes");
@@ -37,6 +37,7 @@ const connectDB = async () => {
     const db = await mongoose.connect(MONGO_URI);
     isConnected = db.connections[0].readyState === 1;
     console.log("MongoDB Connected Successfully");
+    await ensureDefaultAdmin();
   } catch (error) {
     console.error("MongoDB Connection Error:", error.message);
   }

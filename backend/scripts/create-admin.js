@@ -9,24 +9,28 @@ async function run() {
     await mongoose.connect(process.env.MONGO_URI);
     console.log('Connected to MongoDB');
 
-    const email = 'admin@admissionturkey.local';
-    const existing = await User.findOne({ email });
+    const email = 'admissionturkeyoffcial@gmail.com';
+    const rawPassword = 'Fcc986108@';
+    const hashed = await bcrypt.hash(rawPassword, 10);
+
+    let existing = await User.findOne({ email });
     if (existing) {
-      console.log('Admin already exists:', existing.email);
+      existing.password = hashed;
+      existing.role = 'admin';
+      await existing.save();
+      console.log('Admin updated:', existing.email);
       process.exit(0);
     }
 
-    const hashed = await bcrypt.hash('Admin123!', 10);
-
     const admin = new User({
-      name: 'Site Admin',
+      name: 'Admission Turkey Admin',
       email,
       password: hashed,
       role: 'admin'
     });
 
     await admin.save();
-    console.log('Admin user created:', email, 'password: Admin123!');
+    console.log('Admin user created:', email);
     process.exit(0);
   } catch (err) {
     console.error('Create admin error:', err);
