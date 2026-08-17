@@ -1,3 +1,10 @@
+// =========================================================
+// API BASE URL CONFIGURATION
+// =========================================================
+const API_BASE_URL = window.location.origin.includes(":5000")
+  ? window.location.origin
+  : (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" ? "http://localhost:5000" : window.location.origin);
+
 // ===============================
 // ADMIN PAGE PROTECTION
 // ===============================
@@ -60,7 +67,7 @@ if (loginForm) {
     console.log("Login submit:", { email, passwordPresent: !!password });
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email, password: password })
@@ -147,7 +154,7 @@ if (signupForm) {
 
         const response =
           await fetch(
-            "http://localhost:5000/api/auth/signup",
+            `${API_BASE_URL}/api/auth/signup`,
             {
 
               method: "POST",
@@ -626,7 +633,7 @@ async function loadSelectedProgram() {
   }
 
   try {
-    const response = await fetch(`http://localhost:5000/api/universities/${universityId}`);
+    const response = await fetch(`${API_BASE_URL}/api/universities/${universityId}`);
     const data = await response.json();
     const university = data.university;
 
@@ -772,7 +779,7 @@ if (applicationForm) {
     if (applicationDiscountFee) formData.set("discountFee", applicationDiscountFee.value);
 
     try {
-      const response = await fetch("http://localhost:5000/api/applications", {
+      const response = await fetch(`${API_BASE_URL}/api/applications`, {
         method: "POST",
         body: formData
       });
@@ -1240,7 +1247,7 @@ if (universityForm) {
 
     try {
 
-      const response = await fetch("http://localhost:5000/api/universities", {
+      const response = await fetch(`${API_BASE_URL}/api/universities`, {
 
         method: "POST",
 
@@ -1332,7 +1339,7 @@ async function loadUniversities() {
   try {
 
     const response = await fetch(
-      "http://localhost:5000/api/universities"
+      `${API_BASE_URL}/api/universities`
     );
 
     const data = await response.json();
@@ -1435,7 +1442,7 @@ async function loadUniversityDetails() {
   }
 
   try {
-    const response = await fetch(`http://localhost:5000/api/universities/${universityId}`);
+    const response = await fetch(`${API_BASE_URL}/api/universities/${universityId}`);
     const data = await response.json();
     const university = data.university;
 
@@ -1808,7 +1815,7 @@ async function loadProgramDetails() {
   }
 
   try {
-    const response = await fetch(`http://localhost:5000/api/universities/${universityId}`);
+    const response = await fetch(`${API_BASE_URL}/api/universities/${universityId}`);
     const data = await response.json();
     const university = data.university;
 
@@ -1954,7 +1961,7 @@ async function loadAdminDashboard() {
 
     const response =
       await fetch(
-        "http://localhost:5000/api/universities"
+        `${API_BASE_URL}/api/universities`
       );
 
 
@@ -1994,7 +2001,7 @@ async function loadAdminDashboard() {
       const user = JSON.parse(localStorage.getItem("user"));
 
       if (user && user.token) {
-        const appResponse = await fetch("http://localhost:5000/api/applications", {
+        const appResponse = await fetch(`${API_BASE_URL}/api/applications`, {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
@@ -2065,7 +2072,7 @@ async function loadManageUniversities() {
 
 
     const response = await fetch(
-      "http://localhost:5000/api/universities",
+      `${API_BASE_URL}/api/universities`,
       {
         headers: {
           Authorization: `Bearer ${user.token}`
@@ -2262,7 +2269,7 @@ async function deleteUniversity(id) {
     const response =
       await fetch(
 
-        `http://localhost:5000/api/universities/${id}`,
+        `${API_BASE_URL}/api/universities/${id}`,
 
         {
 
@@ -2642,11 +2649,8 @@ document.addEventListener("mousemove", (e) => {
 });
 
 // =========================================================
-// API BASE URL CONFIGURATION
+// API BASE URL CONFIGURATION (already declared at top of file)
 // =========================================================
-const API_BASE_URL = window.location.origin.includes("5000")
-  ? window.location.origin
-  : "http://localhost:5000";
 
 // =========================================================
 // MANAGE APPLICATIONS & DOCUMENT PREVIEW SYSTEM (ADMIN)
