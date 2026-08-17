@@ -1,15 +1,15 @@
 // =========================================================
 // API BASE URL CONFIGURATION
 // =========================================================
-const API_BASE_URL = window.location.origin.includes(":5000")
+const API_BASE_URL = (window.location.port === "5000")
   ? window.location.origin
-  : (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" ? "http://localhost:5000" : window.location.origin);
+  : (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" ? "http://localhost:5000" : "");
 
 // ===============================
 // ADMIN PAGE PROTECTION
 // ===============================
 
-if (window.location.pathname.includes("/admin/")) {
+if (window.location.pathname.toLowerCase().includes("admin")) {
   const adminUserRaw = localStorage.getItem("user");
 
   if (!adminUserRaw) {

@@ -34,7 +34,9 @@ const connectDB = async () => {
     return;
   }
   try {
-    const db = await mongoose.connect(MONGO_URI);
+    const db = await mongoose.connect(MONGO_URI, {
+      serverSelectionTimeoutMS: 5000
+    });
     isConnected = db.connections[0].readyState === 1;
     console.log("MongoDB Connected Successfully");
     await ensureDefaultAdmin();
@@ -44,8 +46,11 @@ const connectDB = async () => {
 };
 
 app.use(async (req, res, next) => {
-  if (req.path.startsWith("/api")) {
-    await connectDB();
+  await connectDB();
+  if (req.path.startsWith("/api") && mongoose.connection.readyState !== 1) {
+    return res.status(503).json({
+      message: "Database connection failed. Please ensure MONGO_URI environment variable is configured in Vercel settings."
+    });
   }
   next();
 });

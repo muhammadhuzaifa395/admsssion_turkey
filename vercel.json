@@ -1,27 +1,33 @@
 {
   "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "backend/server.js",
-      "use": "@vercel/node"
+      "source": "/api/(.*)",
+      "destination": "/api"
     },
     {
-      "src": "frontend/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "backend/server.js"
+      "source": "/api",
+      "destination": "/api"
     },
     {
-      "src": "/uploads/(.*)",
-      "dest": "backend/server.js"
+      "source": "/uploads/(.*)",
+      "destination": "/api"
     },
     {
-      "src": "/(.*)",
-      "dest": "frontend/$1"
+      "source": "/frontend/(.*)",
+      "destination": "/frontend/$1"
+    },
+    {
+      "source": "/admin",
+      "destination": "/frontend/admin/admin.html"
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": "/frontend/admin/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/frontend/$1"
     }
   ]
 }
