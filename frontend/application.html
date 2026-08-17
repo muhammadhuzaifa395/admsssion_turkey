@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Apply | Admission Turkey</title>
+
+<link rel="stylesheet"
+href="/frontend/css/style.css">
+
+</head>
+
+<body class="auth-body">
+
+<div class="auth-box">
+
+<img
+src="/frontend/images/logo.png"
+class="auth-logo"
+>
+
+<h2>
+University Application
+</h2>
+
+<p>
+Fill in your details and our team will contact you.
+</p>
+
+<form id="applicationForm" enctype="multipart/form-data">
+  <input type="hidden" id="applicationUniversityId" name="universityId">
+  <input type="hidden" id="applicationProgramLevel" name="level">
+  <input type="hidden" id="applicationOriginalFee" name="originalFee">
+  <input type="hidden" id="applicationDiscountFee" name="discountFee">
+
+  <div class="application-summary" id="applicationSummary">
+    <h3>Selected Program</h3>
+    <p id="summaryUniversity">University: Not selected</p>
+    <p id="summaryProgram">Program: Not selected</p>
+    <p id="summaryLevel">Level: Not selected</p>
+    <p id="summaryFees">Fees: N/A</p>
+  </div>
+
+  <div class="application-progress" id="applicationProgress">
+    <span class="progress-step active" data-step="1">1. Personal Info</span>
+    <span class="progress-step" data-step="2">2. Documents</span>
+    <span class="progress-step" data-step="3">3. Review & Submit</span>
+  </div>
+
+  <div class="application-step" data-step="1">
+    <h3>Personal Information</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="applicationName">Full Name</label>
+        <input type="text" id="applicationName" name="name" placeholder="Full Name" required>
+      </div>
+      <div class="form-group">
+        <label for="applicationEmail">Email Address</label>
+        <input type="email" id="applicationEmail" name="email" placeholder="Email Address" required>
+      </div>
+      <div class="form-group">
+        <label for="applicationPhone">Phone Number</label>
+        <input type="tel" id="applicationPhone" name="phone" placeholder="Phone Number" required>
+      </div>
+      <div class="form-group">
+        <label for="applicationCountry">Country of Residence</label>
+        <input type="text" id="applicationCountry" name="country" placeholder="Your Country" required>
+      </div>
+      <div class="form-group">
+        <label for="applicationNationality">Nationality</label>
+        <input type="text" id="applicationNationality" name="nationality" placeholder="Nationality" required>
+      </div>
+      <div class="form-group">
+        <label for="applicationDob">Date of Birth</label>
+        <input type="date" id="applicationDob" name="dob" required>
+      </div>
+      <div class="form-group">
+        <label for="applicationGender">Gender</label>
+        <select id="applicationGender" name="gender" required>
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="applicationProgram">Preferred Program</label>
+        <input type="text" id="applicationProgram" name="program" placeholder="Preferred Program" readonly required>
+      </div>
+      <div class="form-group full-width">
+        <label for="applicationUniversity">Preferred University</label>
+        <input type="text" id="applicationUniversity" name="university" placeholder="Preferred University" readonly required>
+      </div>
+      <div class="form-group full-width">
+        <label for="applicationLevel">Education Level</label>
+        <select id="applicationLevel" name="level" required>
+          <option value="">Select Education Level</option>
+          <option value="Bachelor">Bachelor</option>
+          <option value="Master">Master</option>
+          <option value="PhD">PhD</option>
+          <option value="Associate">Associate</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="application-step" data-step="2" style="display:none;">
+    <h3>Document Requirements</h3>
+    <p id="documentHint" class="document-hint">Documents are updated automatically based on the selected program level.</p>
+
+    <div class="form-group">
+      <label for="passportDocument">Passport Copy (PDF)</label>
+      <input type="file" id="passportDocument" name="passportDocument" accept=".pdf" required>
+    </div>
+
+    <div class="form-group" id="schoolCertificateField">
+      <label for="certificateDocument">Higher School Certificate (PDF)</label>
+      <input type="file" id="certificateDocument" name="certificateDocument" accept=".pdf" required>
+    </div>
+
+    <div class="form-group" id="diplomaField" style="display:none;">
+      <label for="diplomaDocument">University Diploma (PDF)</label>
+      <input type="file" id="diplomaDocument" name="diplomaDocument" accept=".pdf">
+    </div>
+
+    <div class="form-group" id="transcriptField" style="display:none;">
+      <label for="transcriptDocument">University Transcript (PDF)</label>
+      <input type="file" id="transcriptDocument" name="transcriptDocument" accept=".pdf">
+    </div>
+
+    <div class="form-group" id="masterDocumentField" style="display:none;">
+      <label for="masterDocument">Master Degree Document (PDF)</label>
+      <input type="file" id="masterDocument" name="masterDocument" accept=".pdf">
+    </div>
+
+    <div class="form-group">
+      <label for="additionalDocuments">Other Supporting Documents (optional)</label>
+      <input type="file" id="additionalDocuments" name="additionalDocuments" accept=".pdf,.doc,.docx,.jpg,.png" multiple>
+    </div>
+  </div>
+
+  <div class="application-step" data-step="3" style="display:none;">
+    <h3>Review Your Application</h3>
+    <p class="document-hint">Please check that all information and documents are complete and original before submitting.</p>
+    <div id="reviewDetails" class="review-details"></div>
+    <div id="reviewDocuments" class="review-details"></div>
+    <div class="form-group">
+      <label for="applicationMessage">Additional Message</label>
+      <textarea id="applicationMessage" name="message" placeholder="Additional Message" rows="5"></textarea>
+    </div>
+  </div>
+
+  <div class="application-navigation">
+    <button type="button" id="prevStepBtn" class="secondary-btn" style="display:none;">← Back</button>
+    <button type="button" id="nextStepBtn" class="primary-btn">Next</button>
+    <button type="submit" id="submitApplicationBtn" class="primary-btn" style="display:none;">Submit Application</button>
+  </div>
+</form>
+
+<a href="universities.html">
+← Back to Universities
+</a>
+
+</div>
+
+<script src="js/script.js?v=3"></script>
+
+</body>
+
+</html>

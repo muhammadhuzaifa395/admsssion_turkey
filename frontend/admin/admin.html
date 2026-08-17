@@ -1,0 +1,284 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard | Admission Turkey</title>
+
+<link rel="stylesheet"
+href="../css/style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body class="admin-body"> 
+
+
+<!-- ADMIN HEADER -->
+
+<header class="admin-header">
+
+<div class="admin-logo">
+
+<img src="../images/logo.png" alt="Admission Turkey">
+
+<div class="admin-title">
+<h2><i class="fas fa-shield-halved"></i> Admin Panel</h2>
+</div>
+
+</div>
+
+<a href="../index.html" class="admin-home-btn">
+<i class="fas fa-globe"></i>
+View Website
+</a>
+
+</header>
+
+
+
+<!-- ADMIN CONTAINER -->
+
+<div class="admin-container">
+
+
+<!-- SIDEBAR -->
+
+<aside class="admin-sidebar">
+
+<h3>Navigation</h3>
+
+
+<a href="admin.html" class="active">
+
+<i class="fas fa-chart-line"></i>
+
+Dashboard
+
+</a>
+
+
+<a href="add-university.html">
+
+<i class="fas fa-plus-circle"></i>
+
+Add University
+
+</a>
+
+
+<a href="manage-universities.html">
+
+<i class="fas fa-building-columns"></i>
+
+Manage Universities
+
+</a>
+
+
+<a href="manage-applications.html">
+
+<i class="fas fa-id-card"></i>
+
+Manage Applications
+
+</a>
+
+
+<a href="../index.html">
+
+<i class="fas fa-arrow-left"></i>
+
+Back to Website
+
+</a>
+
+</aside>
+
+
+
+<!-- MAIN CONTENT -->
+
+<main class="admin-main">
+
+
+<div class="admin-welcome reveal-init reveal-up">
+
+<canvas id="adminParticleCanvas" class="particle-canvas-bg"></canvas>
+
+<h1>
+<i class="fas fa-rocket"></i>
+Welcome to Admin Dashboard
+</h1>
+
+<p>
+Monitor stats, manage universities, update degree programs, and process student applications.
+</p>
+
+</div>
+
+
+
+<!-- DASHBOARD CARDS -->
+
+<div class="admin-stats">
+
+
+<div class="admin-stat-card">
+
+<div class="admin-stat-icon">
+
+<i class="fas fa-university"></i>
+
+</div>
+
+<div>
+
+<h3 id="universityCount">
+0
+</h3>
+
+<p>
+Universities
+</p>
+
+</div>
+
+</div>
+
+
+
+<div class="admin-stat-card">
+
+<div class="admin-stat-icon">
+
+<i class="fas fa-graduation-cap"></i>
+
+</div>
+
+<div>
+
+<h3 id="programCount">
+0
+</h3>
+
+<p>
+Programs
+</p>
+
+</div>
+
+</div>
+
+
+
+<div class="admin-stat-card">
+
+<div class="admin-stat-icon">
+
+<i class="fas fa-file-alt"></i>
+
+</div>
+
+<div>
+
+<h3 id="applicationCount">
+0
+</h3>
+
+<p>
+Applications
+</p>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<!-- QUICK ACTIONS -->
+
+<div class="admin-section">
+
+<h2>
+Quick Actions
+</h2>
+
+
+<div class="admin-actions">
+
+
+<a href="add-university.html"
+class="admin-action-card">
+
+<i class="fas fa-plus-circle"></i>
+
+<h3>
+Add University
+</h3>
+
+<p>
+Add a new Turkish university and programs.
+</p>
+
+</a>
+
+
+
+<a href="manage-universities.html"
+class="admin-action-card">
+
+<i class="fas fa-university"></i>
+
+<h3>
+Manage Universities
+</h3>
+
+<p>
+View and manage all universities.
+</p>
+
+</a>
+
+
+
+<a href="manage-applications.html"
+class="admin-action-card">
+
+<i class="fas fa-users"></i>
+
+<h3>
+Student Applications
+</h3>
+
+<p>
+View student applications.
+</p>
+
+</a>
+
+
+</div>
+
+</div>
+
+
+</main>
+
+</div>
+
+<script src="../js/script.js"></script>
+</body>
+
+</html>  

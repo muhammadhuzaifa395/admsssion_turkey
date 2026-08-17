@@ -1,0 +1,13 @@
+{
+  "status": 200,
+  "body": {
+    "message": "Login successful.",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzk3ZmI3Njk2ZTU2Njk2NTA3YWMyMyIsIm5hbWUiOiJTaXRlIEFkbWluIiwiZW1haWwiOiJhZG1pbkBhZG1pc3Npb250dXJrZXkubG9jYWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODYzNDc5NTAsImV4cCI6MTc4Njk1Mjc1MH0.HNLzdJdc7Zo1Knznbxgy0Drc_0X27Mh20vwna9T_e6o",
+    "user": {
+      "id": "6a797fb7696e56696507ac23",
+      "name": "Site Admin",
+      "email": "admin@admissionturkey.local",
+      "role": "admin"
+    }
+  }
+}

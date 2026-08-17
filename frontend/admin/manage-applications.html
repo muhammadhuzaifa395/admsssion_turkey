@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Applications | Admin Panel</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body class="admin-body">
+  <header class="admin-header">
+    <div class="admin-logo">
+      <img src="../images/logo.png" alt="Admission Turkey">
+      <div class="admin-title">
+        <h2><i class="fas fa-shield-halved"></i> Admin Panel</h2>
+      </div>
+    </div>
+    <a href="../index.html" class="admin-home-btn">
+      <i class="fas fa-globe"></i>
+      View Website
+    </a>
+  </header>
+
+  <div class="admin-container">
+    <aside class="admin-sidebar">
+      <h3>Navigation</h3>
+      <a href="admin.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+      <a href="add-university.html"><i class="fas fa-plus-circle"></i> Add University</a>
+      <a href="manage-universities.html"><i class="fas fa-building-columns"></i> Manage Universities</a>
+      <a href="manage-applications.html" class="active"><i class="fas fa-id-card"></i> Manage Applications</a>
+      <a href="../index.html"><i class="fas fa-arrow-left"></i> Back to Website</a>
+    </aside>
+
+    <main class="admin-main">
+      <div class="admin-welcome reveal-init reveal-up">
+        <canvas id="adminParticleCanvas" class="particle-canvas-bg"></canvas>
+        <h1><i class="fas fa-file-alt"></i> Manage Applications</h1>
+        <p>View submitted student applications, preview documents, and download documents easily.</p>
+      </div>
+
+      <!-- SEARCH & FILTER TOOLBAR -->
+      <div class="admin-toolbar">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="appSearchInput" placeholder="Search applicant, university, email, country..." oninput="filterApplications()">
+        </div>
+        <div class="filter-box">
+          <label for="appStatusFilter"><i class="fas fa-filter"></i> Filter Status:</label>
+          <select id="appStatusFilter" onchange="filterApplications()">
+            <option value="ALL">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Under Review">Under Review</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
+        <div class="app-count-badge">
+          Total: <span id="totalAppsCount">0</span>
+        </div>
+      </div>
+
+      <div class="admin-form-box">
+        <div id="manageApplicationList">
+          <p class="empty-program"><i class="fas fa-spinner fa-spin"></i> Loading applications...</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- DOCUMENT PREVIEW MODAL -->
+  <div id="docPreviewModal" class="doc-modal-backdrop" onclick="closeDocModal(event)">
+    <div class="doc-modal-content" onclick="event.stopPropagation()">
+      <div class="doc-modal-header">
+        <div class="doc-modal-title">
+          <i class="fas fa-file-pdf" id="docModalIcon"></i>
+          <h3 id="docModalTitle">Document Preview</h3>
+        </div>
+        <button class="doc-modal-close" onclick="closeDocModal()">&times;</button>
+      </div>
+      <div class="doc-modal-body" id="docModalBody">
+        <!-- Dynamic Preview Content (Image / Iframe / PDF) -->
+      </div>
+      <div class="doc-modal-footer">
+        <a id="docModalDownloadBtn" href="#" target="_blank" download class="primary-btn doc-download-btn">
+          <i class="fas fa-download"></i> Download Original File
+        </a>
+        <button class="secondary-btn" onclick="closeDocModal()">Close Preview</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/script.js?v=4"></script>
+</body>
+
+</html>
+

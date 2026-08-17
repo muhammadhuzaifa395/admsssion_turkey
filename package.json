@@ -1,0 +1,14 @@
+{
+  "name": "admission-turkey",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node backend/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "multer": "^2.2.0",
+    "stripe": "^22.3.2"
+  }
+}
+

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Add University | Admin Panel</title>
+
+<link rel="stylesheet"
+href="../css/style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body class="admin-body">
+
+
+<!-- ADMIN HEADER -->
+
+<!-- ADMIN HEADER -->
+
+<header class="admin-header">
+
+<div class="admin-logo">
+
+<img src="../images/logo.png" alt="Admission Turkey">
+
+<div class="admin-title">
+<h2><i class="fas fa-shield-halved"></i> Admin Panel</h2>
+</div>
+
+</div>
+
+<a href="../index.html" class="admin-home-btn">
+<i class="fas fa-globe"></i>
+View Website
+</a>
+
+</header>
+
+
+
+<!-- ADMIN CONTAINER -->
+
+<div class="admin-container">
+
+
+<!-- SIDEBAR -->
+
+<aside class="admin-sidebar">
+
+<h3>Navigation</h3>
+
+
+<a href="admin.html">
+
+<i class="fas fa-chart-line"></i>
+
+Dashboard
+
+</a>
+
+
+<a href="add-university.html" class="active">
+
+<i class="fas fa-plus-circle"></i>
+
+Add University
+
+</a>
+
+
+<a href="manage-universities.html">
+
+<i class="fas fa-building-columns"></i>
+
+Manage Universities
+
+</a>
+
+
+<a href="manage-applications.html">
+
+<i class="fas fa-id-card"></i>
+
+Manage Applications
+
+</a>
+
+
+<a href="../index.html">
+
+<i class="fas fa-arrow-left"></i>
+
+Back to Website
+
+</a>
+
+</aside>
+
+
+
+<!-- MAIN -->
+
+<main class="admin-main">
+
+
+<div class="admin-welcome">
+
+<h1>
+
+<i class="fas fa-university"></i>
+
+Add New University
+
+</h1>
+
+<p>
+
+First add university information, then add available degree programs.
+
+</p>
+
+</div>
+
+
+
+<!-- UNIVERSITY FORM -->
+
+<div class="admin-form-box">
+
+
+<h2>
+
+University Information
+
+</h2>
+
+
+<form id="universityForm">
+
+
+<div class="form-grid">
+
+
+<div class="form-group">
+
+<label>
+University Name
+</label>
+
+<input
+type="text"
+id="universityName"
+placeholder="Example: Istanbul Medipol University"
+required
+>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+Location
+</label>
+
+<input
+type="text"
+id="universityLocation"
+placeholder="Example: Istanbul, Turkey"
+required
+>
+
+</div>
+
+
+
+<div class="form-group full-width">
+
+<label>
+University Description
+</label>
+
+<textarea
+id="universityDescription"
+placeholder="Write university description..."
+rows="5"
+required
+></textarea>
+
+</div>
+
+
+
+<div class="form-group full-width">
+
+<label>
+University Image URL
+</label>
+
+<input
+type="url"
+id="universityImage"
+name="image"
+inputmode="url"
+placeholder="https://example.com/university-image.jpg"
+>
+
+</div>
+
+
+</div>
+
+
+<hr>
+
+
+
+<!-- PROGRAM SECTION -->
+
+<h2>
+
+<i class="fas fa-graduation-cap"></i>
+
+Add Degree Programs
+
+</h2>
+
+
+<p class="form-help">
+
+Select a degree level and enter program details.
+
+</p>
+
+
+
+<!-- PROGRAM TYPE -->
+
+<div class="form-group">
+
+<label>
+Degree Level
+</label>
+
+<select id="programLevel">
+
+<option value="Bachelor">
+Bachelor
+</option>
+
+<option value="Associate">
+Associate
+</option>
+
+<option value="Master">
+Master
+</option>
+
+<option value="PhD">
+PhD
+</option>
+
+</select>
+
+</div>
+
+
+
+<!-- PROGRAM DETAILS -->
+
+<div class="form-grid">
+
+
+<div class="form-group">
+
+<label>
+Program Name
+</label>
+
+<input
+type="text"
+id="programName"
+placeholder="Example: Computer Engineering"
+>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+Program Language
+</label>
+
+<select id="programLanguage">
+  <option value="English">English</option>
+  <option value="Turkish">Turkish</option>
+</select>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+Duration / Years
+</label>
+
+<input
+type="text"
+id="programYears"
+placeholder="Example: 4 Years"
+>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+Original Fee
+</label>
+
+<input
+type="text"
+id="programOriginalFee"
+placeholder="Example: €8,000"
+>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+Discount Fee
+</label>
+
+<input
+type="text"
+id="programDiscountFee"
+placeholder="Example: €4,000"
+>
+
+</div>
+
+
+</div>
+
+
+
+<button
+type="button"
+id="addProgramBtn"
+class="secondary-btn">
+
+<i class="fas fa-plus"></i>
+
+Add Program
+
+</button>
+
+
+
+<!-- ADDED PROGRAMS -->
+
+<div class="added-programs">
+
+
+<h3>
+
+Added Programs
+
+</h3>
+
+
+<div id="programList">
+
+<p class="empty-program">
+
+No programs added yet.
+
+</p>
+
+</div>
+
+
+</div>
+
+
+
+<!-- SAVE UNIVERSITY -->
+
+<button
+type="submit"
+class="primary-btn full-btn">
+
+<i class="fas fa-save"></i>
+
+Save University
+
+</button>
+
+</form>
+
+
+</div>
+
+
+</main>
+
+</div>
+
+
+
+<script src="../js/script.js"></script>
+
+
+</body>
+
+</html>
