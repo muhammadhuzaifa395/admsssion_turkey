@@ -28,6 +28,8 @@ const MONGO_URI =
   "mongodb+srv://huzaifarasheed2006:Fcc986108@huzaifaauth.ylrg6rk.mongodb.net/admission_turkey?appName=HuzaifaAuth";
 
 let isConnected = false;
+let dbErrorMsg = "";
+
 const connectDB = async () => {
   if (isConnected || mongoose.connection.readyState >= 1) {
     isConnected = true;
@@ -38,9 +40,11 @@ const connectDB = async () => {
       serverSelectionTimeoutMS: 5000
     });
     isConnected = db.connections[0].readyState === 1;
+    dbErrorMsg = "";
     console.log("MongoDB Connected Successfully");
     await ensureDefaultAdmin();
   } catch (error) {
+    dbErrorMsg = error.message;
     console.error("MongoDB Connection Error:", error.message);
   }
 };
@@ -49,7 +53,7 @@ app.use(async (req, res, next) => {
   await connectDB();
   if (req.path.startsWith("/api") && mongoose.connection.readyState !== 1) {
     return res.status(503).json({
-      message: "Database connection failed. Please ensure MONGO_URI environment variable is configured in Vercel settings."
+      message: `Database connection failed (${dbErrorMsg || 'IP Whitelist / Network Error'}). Please allow 0.0.0.0/0 in MongoDB Atlas Network Access.`
     });
   }
   next();
