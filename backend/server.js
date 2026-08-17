@@ -27,34 +27,42 @@ const MONGO_URI =
   process.env.MONGO_URI ||
   "mongodb+srv://huzaifarasheed2006:Fcc986108@huzaifaauth.ylrg6rk.mongodb.net/admission_turkey?appName=HuzaifaAuth";
 
-let isConnected = false;
-let dbErrorMsg = "";
+let cachedPromise = null;
 
 const connectDB = async () => {
-  if (isConnected || mongoose.connection.readyState >= 1) {
-    isConnected = true;
-    return;
+  if (mongoose.connection.readyState === 1) {
+    return mongoose.connection;
   }
-  try {
-    const db = await mongoose.connect(MONGO_URI, {
-      serverSelectionTimeoutMS: 5000
+
+  if (!cachedPromise) {
+    cachedPromise = mongoose.connect(MONGO_URI, {
+      serverSelectionTimeoutMS: 30000,
+      connectTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+    }).then((db) => {
+      console.log("MongoDB Connected Successfully");
+      ensureDefaultAdmin().catch((err) => console.error("Admin seed error:", err.message));
+      return db;
+    }).catch((err) => {
+      cachedPromise = null;
+      console.error("MongoDB Connection Error:", err.message);
+      throw err;
     });
-    isConnected = db.connections[0].readyState === 1;
-    dbErrorMsg = "";
-    console.log("MongoDB Connected Successfully");
-    await ensureDefaultAdmin();
-  } catch (error) {
-    dbErrorMsg = error.message;
-    console.error("MongoDB Connection Error:", error.message);
   }
+
+  return cachedPromise;
 };
 
 app.use(async (req, res, next) => {
-  await connectDB();
-  if (req.path.startsWith("/api") && mongoose.connection.readyState !== 1) {
-    return res.status(503).json({
-      message: `Database connection failed (${dbErrorMsg || 'IP Whitelist / Network Error'}). Please allow 0.0.0.0/0 in MongoDB Atlas Network Access.`
-    });
+  if (req.path.startsWith("/api")) {
+    try {
+      await connectDB();
+    } catch (error) {
+      console.error("DB Connection Middleware Error:", error.message);
+      return res.status(503).json({
+        message: `Database connection failed (${error.message}). Please ensure 0.0.0.0/0 is allowed in MongoDB Atlas Network Access.`
+      });
+    }
   }
   next();
 });
