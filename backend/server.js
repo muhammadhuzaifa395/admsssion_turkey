@@ -25,7 +25,7 @@ app.use("/uploads", express.static(uploadsDir));
 
 const MONGO_URI =
   process.env.MONGO_URI ||
-  "mongodb://127.0.0.1:27017/admission_turkey";
+  "mongodb+srv://huzaifarasheed2006:Fcc986108@huzaifaauth.ylrg6rk.mongodb.net/admission_turkey?appName=HuzaifaAuth";
 
 let isConnected = false;
 const connectDB = async () => {
