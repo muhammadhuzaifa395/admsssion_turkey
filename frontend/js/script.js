@@ -794,7 +794,7 @@ if (applicationForm) {
       }
     } catch (error) {
       console.error("Application Error:", error);
-      alert("Server se connection nahi ho raha!");
+      alert(error.message || "Failed to submit application. Please check server connection.");
     }
   });
 }

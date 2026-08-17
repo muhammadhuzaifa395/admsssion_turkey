@@ -1,39 +1,27 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
-const fs = require("fs");
 
 const Application = require("../models/Application");
 const { verifyToken, isAdmin } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-const uploadsDir = path.join(__dirname, "../uploads");
-
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadsDir);
-  },
-  filename: function (req, file, cb) {
-    const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, `${file.fieldname}-${unique}${ext}`);
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 10 * 1024 * 1024 // 10MB limit per file
   }
 });
 
-const upload = multer({ storage });
-
-function toUploadUrl(filePath) {
-  if (!filePath) {
+function bufferToDataUrl(file) {
+  if (!file || !file.buffer) {
     return "";
   }
-
-  const fileName = path.basename(filePath);
-  return `/uploads/${fileName}`;
+  const mime = file.mimetype || "application/octet-stream";
+  const base64 = file.buffer.toString("base64");
+  return `data:${mime};base64,${base64}`;
 }
 
 router.get("/", verifyToken, isAdmin, async (req, res) => {
@@ -82,23 +70,23 @@ router.post(
         message
       } = req.body;
 
-      const passportDocument = toUploadUrl(
-        req.files?.passportDocument?.[0]?.path
+      const passportDocument = bufferToDataUrl(
+        req.files?.passportDocument?.[0]
       );
-      const certificateDocument = toUploadUrl(
-        req.files?.certificateDocument?.[0]?.path
+      const certificateDocument = bufferToDataUrl(
+        req.files?.certificateDocument?.[0]
       );
-      const diplomaDocument = toUploadUrl(
-        req.files?.diplomaDocument?.[0]?.path
+      const diplomaDocument = bufferToDataUrl(
+        req.files?.diplomaDocument?.[0]
       );
-      const transcriptDocument = toUploadUrl(
-        req.files?.transcriptDocument?.[0]?.path
+      const transcriptDocument = bufferToDataUrl(
+        req.files?.transcriptDocument?.[0]
       );
-      const masterDocument = toUploadUrl(
-        req.files?.masterDocument?.[0]?.path
+      const masterDocument = bufferToDataUrl(
+        req.files?.masterDocument?.[0]
       );
       const additionalDocuments = (req.files?.additionalDocuments || []).map(
-        (file) => toUploadUrl(file.path)
+        (file) => bufferToDataUrl(file)
       );
 
       const newApplication = new Application({
@@ -132,7 +120,7 @@ router.post(
     } catch (error) {
       console.log("Application Error:", error);
       res.status(500).json({
-        message: "Server error"
+        message: error.message || "Server error"
       });
     }
   }
