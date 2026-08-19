@@ -3289,7 +3289,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json();
         if (res.ok) {
           if (isBankPayment) {
-            alert("Consultation booked successfully! Please transfer $5.00 to our Bank Account (IBAN) using your full name as reference.");
+            alert("Consultation booked successfully! Please transfer $5.00 to United Bank Limited (IBAN: PK30UNIL01019000317604148 - Account Title: Muhammad Huzaifa).");
           } else {
             alert("Consultation booked successfully! Our education advisor will reach out to you shortly.");
           }
