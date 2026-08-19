@@ -3454,6 +3454,77 @@ function initBulkImportTool() {
     });
   }
 
+  const downloadDocBtn = document.getElementById("downloadDocTemplateBtn");
+
+  // Download Sample Word/Text Template
+  if (downloadDocBtn) {
+    downloadDocBtn.addEventListener("click", () => {
+      const docText = `=======================================================
+ADMISSION TURKEY - UNIVERSITY BULK DATA IMPORT TEMPLATE
+=======================================================
+
+University: Istanbul Medipol University
+Location: Istanbul, Turkey
+Description: Leading private university in Istanbul offering medical, engineering, and business programs.
+Image: https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=800&q=80
+
+Program: Computer Engineering
+Level: Bachelor
+Thesis: N/A
+Language: English
+Duration: 4 Years
+Original Fee: 8000
+Discount Fee: 4000
+
+Program: Biomedical Engineering
+Level: Master
+Thesis: Thesis
+Language: English
+Duration: 2 Years
+Original Fee: 9000
+Discount Fee: 4500
+
+Program: Business Administration
+Level: Master
+Thesis: Non-Thesis
+Language: English
+Duration: 1.5 Years
+Original Fee: 7500
+Discount Fee: 3800
+
+Program: Clinical Psychology
+Level: PhD
+Thesis: N/A
+Language: English
+Duration: 4 Years
+Original Fee: 12000
+Discount Fee: 6000
+
+=======================================================
+University: Bahcesehir University
+Location: Istanbul, Turkey
+Description: Innovative global university in Besiktas, Istanbul.
+Image: https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=800&q=80
+
+Program: Software Engineering
+Level: Bachelor
+Thesis: N/A
+Language: English
+Duration: 4 Years
+Original Fee: 8500
+Discount Fee: 4250
+`;
+
+      const blob = new Blob([docText], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "university_import_template.txt";
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  }
+
   // Handle Drag & Drop
   if (bulkDropZone) {
     bulkDropZone.addEventListener("dragover", (e) => {
@@ -3489,8 +3560,10 @@ function initBulkImportTool() {
       try {
         if (fileName.endsWith(".json")) {
           parsedUniversities = parseJsonImport(content);
-        } else {
+        } else if (fileName.endsWith(".csv")) {
           parsedUniversities = parseCsvImport(content);
+        } else {
+          parsedUniversities = parseTextOrDocImport(content);
         }
         renderBulkPreview();
       } catch (err) {
@@ -3500,6 +3573,65 @@ function initBulkImportTool() {
     };
 
     reader.readAsText(file);
+  }
+
+  function parseTextOrDocImport(textString) {
+    if (textString.includes(",") && (textString.includes("University Name") || textString.includes('"'))) {
+      return parseCsvImport(textString);
+    }
+
+    const lines = textString.split(/\r?\n/);
+    const uniMap = new Map();
+    let currentUni = null;
+    let currentProg = null;
+
+    for (let line of lines) {
+      const cleanLine = line.trim();
+      if (!cleanLine || cleanLine.startsWith("===") || cleanLine.startsWith("---")) continue;
+
+      const colonIdx = cleanLine.indexOf(":");
+      if (colonIdx === -1) continue;
+
+      const key = cleanLine.substring(0, colonIdx).trim().toLowerCase();
+      const val = cleanLine.substring(colonIdx + 1).trim();
+
+      if (key === "university" || key === "university name") {
+        currentUni = {
+          name: val,
+          location: "Turkey",
+          description: "University Description",
+          image: "",
+          programs: []
+        };
+        uniMap.set(val.toLowerCase(), currentUni);
+        currentProg = null;
+      } else if (currentUni) {
+        if (key === "location") currentUni.location = val;
+        else if (key === "description") currentUni.description = val;
+        else if (key === "image" || key === "logo" || key === "image url") currentUni.image = val;
+        else if (key === "program" || key === "program name") {
+          currentProg = {
+            name: val,
+            level: "Bachelor",
+            thesisType: "N/A",
+            language: "English",
+            duration: "4 Years",
+            originalFee: 0,
+            discountFee: 0
+          };
+          currentUni.programs.push(currentProg);
+        } else if (currentProg) {
+          if (key === "level" || key === "degree" || key === "degree level") currentProg.level = val;
+          else if (key === "thesis" || key === "thesis type" || key === "option") currentProg.thesisType = val;
+          else if (key === "language") currentProg.language = val;
+          else if (key === "duration" || key === "years") currentProg.duration = val;
+          else if (key === "original fee" || key === "fee") currentProg.originalFee = Number(val.replace(/[^0-9.]/g, "") || 0);
+          else if (key === "discount fee" || key === "discounted fee") currentProg.discountFee = Number(val.replace(/[^0-9.]/g, "") || 0);
+        }
+      }
+    }
+
+    return Array.from(uniMap.values());
   }
 
   function parseJsonImport(jsonString) {
