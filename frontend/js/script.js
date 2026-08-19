@@ -2178,8 +2178,11 @@ No Universities Added Yet.
       let totalPrograms = Object.values(uni.programs).flat().length;
 
       manageUniversityList.innerHTML += `
-        <div class="program-card">
-          <div class="program-info">
+        <div class="program-card" style="display: flex; align-items: center; gap: 15px;">
+          <div style="display: flex; align-items: center; padding-right: 5px;">
+            <input type="checkbox" class="uni-select-checkbox" value="${uni._id}" style="width: 22px; height: 22px; cursor: pointer; accent-color: #ea580c;" onchange="updateSelectedUniCount()" />
+          </div>
+          <div class="program-info" style="flex: 1;">
             <h3>${index + 1}. ${uni.name}</h3>
             <p><strong>Location:</strong> ${uni.location}</p>
             <p><strong>Total Programs:</strong> ${totalPrograms}</p>
@@ -2196,6 +2199,8 @@ No Universities Added Yet.
         </div>
       `;
     });
+
+    updateSelectedUniCount();
   } catch (error) {
     console.log("Manage University Error:", error);
   }
@@ -2556,6 +2561,96 @@ async function deleteAllUniversities() {
     loadManageUniversities();
   }
 }
+
+
+// ========================================
+// SELECTIVE DELETE UNIVERSITIES (CHECKBOXES)
+// ========================================
+
+function toggleSelectAllUniversities(isChecked) {
+  const checkboxes = document.querySelectorAll(".uni-select-checkbox");
+  checkboxes.forEach((cb) => {
+    cb.checked = isChecked;
+  });
+  updateSelectedUniCount();
+}
+
+function updateSelectedUniCount() {
+  const allCheckboxes = document.querySelectorAll(".uni-select-checkbox");
+  const checkedCheckboxes = document.querySelectorAll(".uni-select-checkbox:checked");
+  
+  const countSpan = document.getElementById("selectedUniCount");
+  if (countSpan) {
+    countSpan.textContent = checkedCheckboxes.length;
+  }
+
+  const selectAllCb = document.getElementById("selectAllUniCheckbox");
+  if (selectAllCb) {
+    selectAllCb.checked = allCheckboxes.length > 0 && allCheckboxes.length === checkedCheckboxes.length;
+  }
+}
+
+async function deleteSelectedUniversities() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user || !user.token) {
+    alert("Admin login required.");
+    return;
+  }
+
+  const checkedCheckboxes = Array.from(document.querySelectorAll(".uni-select-checkbox:checked"));
+  if (checkedCheckboxes.length === 0) {
+    alert("Please check at least one university checkbox to delete.");
+    return;
+  }
+
+  const selectedIds = checkedCheckboxes.map((cb) => cb.value);
+  const count = selectedIds.length;
+
+  const confirmDelete = confirm(
+    `⚠️ Are you sure you want to delete the ${count} selected university/universities?\n\nThis action CANNOT be undone!`
+  );
+
+  if (!confirmDelete) return;
+
+  const deleteBtn = document.getElementById("deleteSelectedBtn");
+  if (deleteBtn) {
+    deleteBtn.disabled = true;
+    deleteBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Deleting (${count})...`;
+  }
+
+  let successCount = 0;
+  let failCount = 0;
+
+  await Promise.all(
+    selectedIds.map(async (id) => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/universities/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        });
+        if (res.ok) {
+          successCount++;
+        } else {
+          failCount++;
+        }
+      } catch (err) {
+        console.error(`Error deleting selected university ${id}:`, err);
+        failCount++;
+      }
+    })
+  );
+
+  if (failCount === 0) {
+    alert(`Successfully deleted ${successCount} selected university/universities!`);
+  } else {
+    alert(`Deleted ${successCount} selected universities. ${failCount} failed to delete.`);
+  }
+
+  loadManageUniversities();
+}
+
 
 
 
