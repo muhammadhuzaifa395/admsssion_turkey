@@ -28,7 +28,10 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use("/uploads", express.static(uploadsDir));
 
 const ATLAS_URI = "mongodb+srv://huzaifarasheed2006:Fcc986108@huzaifaauth.ylrg6rk.mongodb.net/admission_turkey?appName=HuzaifaAuth";
-const PRIMARY_URI = process.env.MONGO_URI || ATLAS_URI;
+let PRIMARY_URI = ATLAS_URI;
+if (process.env.MONGO_URI && !process.env.VERCEL && !process.env.MONGO_URI.includes("127.0.0.1") && !process.env.MONGO_URI.includes("localhost")) {
+  PRIMARY_URI = process.env.MONGO_URI;
+}
 
 let cachedPromise = null;
 

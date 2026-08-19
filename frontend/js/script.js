@@ -9,22 +9,23 @@ const API_BASE_URL = (window.location.hostname && window.location.hostname.inclu
 // ADMIN PAGE PROTECTION
 // ===============================
 
-if (window.location.pathname.toLowerCase().includes("admin")) {
+if (window.location.pathname.toLowerCase().includes("/admin")) {
   const adminUserRaw = localStorage.getItem("user");
+  const loginRedirectPath = window.location.pathname.includes("/admin/") ? "../login.html" : "login.html";
 
   if (!adminUserRaw) {
-    window.location.href = "../login.html";
+    window.location.href = loginRedirectPath;
   } else {
     try {
       const adminUser = JSON.parse(adminUserRaw);
 
       if (adminUser.role !== "admin" || !adminUser.token) {
         alert("Access denied. Please login with an admin account.");
-        window.location.href = "../login.html";
+        window.location.href = loginRedirectPath;
       }
     } catch (error) {
       localStorage.removeItem("user");
-      window.location.href = "../login.html";
+      window.location.href = loginRedirectPath;
     }
   }
 }
@@ -50,7 +51,7 @@ if (menuBtn && navLinks) {
 
 
 // ===============================
-// LOGIN
+// LOGIN FORM HANDLER
 // ===============================
 const loginForm = document.getElementById("loginForm");
 
@@ -78,16 +79,22 @@ if (loginForm) {
       if (response.ok) {
         const loggedInUser = { ...data.user, token: data.token };
         localStorage.setItem("user", JSON.stringify(loggedInUser));
-        alert("Login successful! Welcome " + data.user.name);
-        window.location.href =
-          data.user.role === "admin" ? "admin/admin.html" : "index.html";
+        alert("Login successful! Welcome " + (data.user.name || "Admin"));
+
+        if (data.user.role === "admin") {
+          window.location.href = window.location.pathname.includes("/frontend/")
+            ? "admin/admin.html"
+            : "admin/admin.html";
+        } else {
+          window.location.href = "index.html";
+        }
       } else {
         alert(data.message || "Invalid email or password");
       }
 
     } catch (error) {
       console.error("Login Error:", error);
-      alert("Server se connection nahi ho raha!");
+      alert("Unable to connect to server. Please check your internet connection.");
     }
   });
 }
