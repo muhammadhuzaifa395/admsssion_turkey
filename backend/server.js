@@ -7,7 +7,8 @@ const cors = require("cors");
 const fs = require("fs");
 require("dotenv").config({ path: path.join(__dirname, ".env") });
 
-const { router: authRoutes, ensureDefaultAdmin } = require("./routes/authRoutes");
+const authRoutes = require("./routes/authRoutes");
+const ensureDefaultAdmin = authRoutes.ensureDefaultAdmin;
 const applicationRoutes = require("./routes/applicationRoutes");
 const universityRoutes = require("./routes/universityRoutes");
 const contactRoutes = require("./routes/contactRoutes");
