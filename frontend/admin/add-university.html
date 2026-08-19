@@ -67,6 +67,14 @@ Dashboard
 
 </a>
 
+<a href="export-fee-structure.html">
+
+<i class="fas fa-file-pdf"></i>
+
+Export Fee Structure
+
+</a>
+
 
 <a href="add-university.html" class="active">
 
@@ -131,56 +139,6 @@ First add university information, then add available degree programs.
 </div>
 
 
-
-<!-- BULK DATA FILE UPLOAD TOOL -->
-<div class="admin-form-box" style="margin-bottom: 30px; background: #ffffff; border: 2px solid var(--blue, #0d6efd); box-shadow: 0 4px 15px rgba(13, 110, 253, 0.1);">
-  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
-    <div>
-      <h2 style="margin: 0; color: var(--blue, #0d6efd); display: flex; align-items: center; gap: 10px;">
-        <i class="fas fa-file-pdf" style="font-size: 24px; color: var(--red, #d11a22);"></i> Automated Bulk Data File Upload Tool
-      </h2>
-      <p style="margin: 5px 0 0 0; color: #555; font-size: 14px;">
-        Upload PDF, Word (.docx), CSV, or JSON files containing university bio data, locations, logo URLs, and program fee structures. The tool will parse and publish them automatically!
-      </p>
-    </div>
-    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-      <button type="button" class="secondary-btn" id="downloadJsonTemplateBtn" style="font-size: 13px; padding: 8px 12px;">
-        <i class="fas fa-file-code"></i> JSON Template
-      </button>
-      <button type="button" class="secondary-btn" id="downloadCsvTemplateBtn" style="font-size: 13px; padding: 8px 12px;">
-        <i class="fas fa-file-excel"></i> CSV Template
-      </button>
-      <button type="button" class="secondary-btn" id="downloadDocTemplateBtn" style="font-size: 13px; padding: 8px 12px;">
-        <i class="fas fa-file-word"></i> Word / Text Template
-      </button>
-    </div>
-  </div>
-
-  <div style="border: 2px dashed #b6d4fe; background: #f4f8ff; border-radius: 10px; padding: 30px; text-align: center; cursor: pointer; transition: all 0.3s;" id="bulkDropZone">
-    <i class="fas fa-cloud-upload-alt" style="font-size: 42px; color: var(--blue, #0d6efd); margin-bottom: 10px;"></i>
-    <h3 style="margin: 0 0 8px 0; color: #333;">Choose a Data File or Drag & Drop Here</h3>
-    <p style="margin: 0 0 15px 0; color: #666; font-size: 13px;">Supports <strong>.PDF</strong>, <strong>.DOC / .DOCX (Word)</strong>, <strong>.JSON</strong>, <strong>.CSV</strong>, and <strong>.TXT</strong> files.</p>
-    <input type="file" id="bulkFileInput" accept=".json,.csv,.pdf,.doc,.docx,.txt" style="display: none;">
-    <button type="button" class="primary-btn" onclick="document.getElementById('bulkFileInput').click()">
-      <i class="fas fa-folder-open"></i> Browse Data File
-    </button>
-  </div>
-
-  <!-- LIVE PREVIEW CONTAINER -->
-  <div id="bulkPreviewContainer" style="display: none; margin-top: 20px; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
-    <h4 style="margin-top: 0; color: #333; display: flex; justify-content: space-between; align-items: center;">
-      <span><i class="fas fa-eye"></i> Parsed Data File Preview</span>
-      <span id="bulkParsedBadge" class="badge" style="background: #198754; color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 12px;">0 Universities Detected</span>
-    </h4>
-    <div id="bulkPreviewContent" style="max-height: 250px; overflow-y: auto; background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 13px;"></div>
-    <div style="display: flex; gap: 10px; justify-content: flex-end;">
-      <button type="button" class="secondary-btn" id="cancelBulkImportBtn">Cancel</button>
-      <button type="button" class="primary-btn" id="confirmBulkImportBtn">
-        <i class="fas fa-bolt"></i> Import & Display on Homepage
-      </button>
-    </div>
-  </div>
-</div>
 
 <!-- UNIVERSITY FORM -->
 

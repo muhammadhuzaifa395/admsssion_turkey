@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Export Fee Structure PDF | Admin Panel</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    /* DOCUMENT CANVAS PRINT STYLES */
+    .document-preview-box {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e0e0e0;
+      margin-top: 20px;
+    }
+
+    .fee-document-paper {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 8px;
+      border: 1px solid #dcdcdc;
+      color: #1a1a1a;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      box-shadow: 0 0 15px rgba(0,0,0,0.05);
+      position: relative;
+    }
+
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid var(--blue, #0d6efd);
+      padding-bottom: 20px;
+      margin-bottom: 25px;
+    }
+
+    .doc-logo-box {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .doc-logo-box img {
+      max-height: 65px;
+    }
+
+    .doc-title-group h2 {
+      margin: 0;
+      color: var(--blue, #0d6efd);
+      font-size: 22px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .doc-title-group p {
+      margin: 4px 0 0 0;
+      color: #666;
+      font-size: 13px;
+    }
+
+    .doc-uni-banner {
+      background: linear-gradient(135deg, #1d5bbf 0%, #0d6efd 100%);
+      color: #ffffff;
+      padding: 18px 24px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .doc-uni-banner h3 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .doc-uni-banner p {
+      margin: 4px 0 0 0;
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+      font-size: 13px;
+    }
+
+    .doc-table th {
+      background: #f1f5f9;
+      color: #0f172a;
+      text-align: left;
+      padding: 12px 14px;
+      font-weight: 700;
+      border-bottom: 2px solid #cbd5e1;
+    }
+
+    .doc-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #334155;
+    }
+
+    .doc-table tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .badge-discount {
+      background: rgba(25, 135, 84, 0.12);
+      color: #198754;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .badge-thesis {
+      background: rgba(209, 26, 34, 0.1);
+      color: #d11a22;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+
+    /* OFFICIAL BRANDED FOOTER BANNER */
+    .doc-official-footer {
+      border-top: 2px solid #e2e8f0;
+      padding-top: 20px;
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .doc-footer-info h4 {
+      margin: 0;
+      color: var(--blue, #0d6efd);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .doc-footer-info p {
+      margin: 4px 0 0 0;
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    .doc-footer-contacts {
+      text-align: right;
+      font-size: 12px;
+      color: #334155;
+      line-height: 1.6;
+    }
+
+    .doc-footer-contacts strong {
+      color: var(--blue, #0d6efd);
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #feeDocumentPaper, #feeDocumentPaper * {
+        visibility: visible;
+      }
+      #feeDocumentPaper {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+      }
+    }
+  </style>
+</head>
+
+<body class="admin-body">
+
+  <!-- ADMIN HEADER -->
+  <header class="admin-header">
+    <div class="admin-logo">
+      <img src="../images/logo.png" alt="Admission Turkey">
+      <div class="admin-title">
+        <h2><i class="fas fa-shield-halved"></i> Admin Panel</h2>
+      </div>
+    </div>
+    <a href="../index.html" class="admin-home-btn">
+      <i class="fas fa-globe"></i> View Website
+    </a>
+  </header>
+
+  <!-- ADMIN CONTAINER -->
+  <div class="admin-container">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <h3>Navigation</h3>
+      <a href="admin.html">
+        <i class="fas fa-chart-line"></i> Dashboard
+      </a>
+      <a href="export-fee-structure.html" class="active">
+        <i class="fas fa-file-pdf"></i> Export Fee Structure
+      </a>
+      <a href="add-university.html">
+        <i class="fas fa-plus-circle"></i> Add University
+      </a>
+      <a href="manage-universities.html">
+        <i class="fas fa-building-columns"></i> Manage Universities
+      </a>
+      <a href="manage-applications.html">
+        <i class="fas fa-id-card"></i> Manage Applications
+      </a>
+      <a href="../index.html">
+        <i class="fas fa-arrow-left"></i> Back to Website
+      </a>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="admin-main">
+
+      <div class="admin-welcome">
+        <h1><i class="fas fa-file-pdf"></i> Official Fee Structure Exporter</h1>
+        <p>Select a university, filter degree levels or languages, and export an official branded PDF flyer with footer.</p>
+      </div>
+
+      <!-- FILTER CONTROLS -->
+      <div class="admin-form-box">
+        <h2><i class="fas fa-sliders"></i> Document Search & Filters</h2>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="exportUniSelect">Select University *</label>
+            <select id="exportUniSelect" required>
+              <option value="">-- Choose University --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="exportDegreeSelect">Degree Level Filter</label>
+            <select id="exportDegreeSelect">
+              <option value="ALL">All Degree Programs</option>
+              <option value="Bachelor">Bachelor Programs</option>
+              <option value="Master-Thesis">Master (With Thesis)</option>
+              <option value="Master-NonThesis">Master (Without Thesis)</option>
+              <option value="PhD">PhD Programs</option>
+              <option value="Associate">Associate Degrees</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="exportLanguageSelect">Language Filter</label>
+            <select id="exportLanguageSelect">
+              <option value="ALL">All Languages</option>
+              <option value="English">English Medium</option>
+              <option value="Turkish">Turkish Medium</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 15px;">
+          <button type="button" class="primary-btn" id="generateDocBtn">
+            <i class="fas fa-sync"></i> Generate Document Preview
+          </button>
+          <button type="button" class="secondary-btn" id="downloadPdfBtn">
+            <i class="fas fa-file-pdf" style="color: var(--red);"></i> Download Official PDF
+          </button>
+          <button type="button" class="secondary-btn" id="printDocBtn">
+            <i class="fas fa-print"></i> Print Flyer
+          </button>
+        </div>
+      </div>
+
+      <!-- LIVE DOCUMENT PREVIEW CANVAS -->
+      <div class="document-preview-box">
+        <div class="fee-document-paper" id="feeDocumentPaper">
+          
+          <!-- DOC HEADER -->
+          <div class="doc-header">
+            <div class="doc-logo-box">
+              <img src="../images/logo.png" alt="Admission Turkey Logo">
+              <div>
+                <strong style="color: var(--blue); font-size: 18px; display: block;">ADMISSION TURKEY</strong>
+                <span style="color: #64748b; font-size: 12px;">Official International Student Admissions</span>
+              </div>
+            </div>
+            <div class="doc-title-group" style="text-align: right;">
+              <h2>Fee Structure Sheet</h2>
+              <p id="docGeneratedDate">Date: Aug 20, 2026 | Ref: AT-FS-2026</p>
+            </div>
+          </div>
+
+          <!-- UNIVERSITY BANNER -->
+          <div class="doc-uni-banner">
+            <div>
+              <h3 id="docUniName">Istanbul Medipol University</h3>
+              <p id="docUniLocation">📍 Location: Istanbul, Turkey</p>
+            </div>
+            <div style="text-align: right;">
+              <span style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 20px; font-size: 12px;" id="docUniBadge">Official Partner University</span>
+            </div>
+          </div>
+
+          <!-- PROGRAM FEES TABLE -->
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Program Name</th>
+                <th>Degree Level</th>
+                <th>Thesis Option</th>
+                <th>Language</th>
+                <th>Duration</th>
+                <th>Original Fee</th>
+                <th>Discount Fee</th>
+              </tr>
+            </thead>
+            <tbody id="docTableBody">
+              <tr>
+                <td colspan="7" style="text-align: center; color: #94a3b8; padding: 25px;">
+                  Please select a university above to generate the official fee structure sheet.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- OFFICIAL BRANDED FOOTER -->
+          <div class="doc-official-footer">
+            <div class="doc-footer-info">
+              <h4>ADMISSION TURKEY CONSULTANCY</h4>
+              <p>Your Gateway to World-Class Turkish Higher Education & Scholarships</p>
+              <p style="margin-top: 4px; font-weight: 600; color: #334155;">🌐 Website: <strong>www.admissionturkey.com</strong></p>
+            </div>
+            <div class="doc-footer-contacts">
+              <p><strong>Email:</strong> info@admissionturkey.com</p>
+              <p><strong>Bank Support:</strong> United Bank Limited (UBL)</p>
+              <p><strong>Official Admissions Desk</strong> | Stamp & Certified Document</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../js/script.js"></script>
+</body>
+
+</html>
