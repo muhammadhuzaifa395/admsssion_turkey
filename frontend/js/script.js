@@ -3623,12 +3623,33 @@ function initBulkImportTool() {
     confirmImportBtn.addEventListener("click", async () => {
       if (parsedUniversities.length === 0) return;
 
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      if (!user || !user.token) {
+        alert("Please log in as Admin before uploading bulk university data.");
+        const loginRedirectPath = window.location.pathname.includes("/admin/") ? "../login.html" : "login.html";
+        window.location.href = loginRedirectPath;
+        return;
+      }
+
       confirmImportBtn.disabled = true;
       confirmImportBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Importing Universities...';
 
       let successCount = 0;
+      let errorMessages = [];
 
       try {
+        // Fetch existing universities to merge or update if needed
+        let existingUniversities = [];
+        try {
+          const fetchRes = await fetch(`${API_BASE_URL}/api/universities`);
+          if (fetchRes.ok) {
+            const fetchJson = await fetchRes.json();
+            existingUniversities = fetchJson.universities || [];
+          }
+        } catch (e) {
+          console.warn("Could not fetch existing universities list:", e);
+        }
+
         for (const uniData of parsedUniversities) {
           const formattedPrograms = {
             associate: [],
@@ -3640,11 +3661,11 @@ function initBulkImportTool() {
           uniData.programs.forEach((p) => {
             const progObj = {
               name: p.name,
-              language: p.language,
-              duration: p.duration,
-              originalFee: p.originalFee,
-              discountFee: p.discountFee,
-              thesisType: p.thesisType
+              language: p.language || "English",
+              duration: p.duration || "4 Years",
+              originalFee: Number(p.originalFee || 0),
+              discountFee: Number(p.discountFee || 0),
+              thesisType: p.thesisType || "N/A"
             };
 
             const lvl = (p.level || "Bachelor").toLowerCase();
@@ -3654,33 +3675,77 @@ function initBulkImportTool() {
             else formattedPrograms.associate.push(progObj);
           });
 
-          const res = await fetch(`${API_BASE_URL}/api/universities/add`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              name: uniData.name,
-              location: uniData.location,
-              description: uniData.description,
-              image: uniData.image,
-              programs: formattedPrograms
-            })
+          // Check if university already exists in DB
+          const existing = existingUniversities.find(
+            (u) => u.name && u.name.trim().toLowerCase() === uniData.name.trim().toLowerCase()
+          );
+
+          let url = `${API_BASE_URL}/api/universities`;
+          let method = "POST";
+          let payload = {
+            name: uniData.name,
+            location: uniData.location,
+            description: uniData.description,
+            image: uniData.image,
+            programs: formattedPrograms
+          };
+
+          if (existing) {
+            url = `${API_BASE_URL}/api/universities/${existing._id}`;
+            method = "PUT";
+
+            const mergedPrograms = {
+              associate: [...(existing.programs?.associate || []), ...formattedPrograms.associate],
+              bachelors: [...(existing.programs?.bachelors || []), ...formattedPrograms.bachelors],
+              masters: [...(existing.programs?.masters || []), ...formattedPrograms.masters],
+              phd: [...(existing.programs?.phd || []), ...formattedPrograms.phd]
+            };
+
+            payload = {
+              name: uniData.name || existing.name,
+              location: uniData.location || existing.location,
+              description: uniData.description || existing.description,
+              image: uniData.image || existing.image,
+              programs: mergedPrograms
+            };
+          }
+
+          const res = await fetch(url, {
+            method: method,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.token}`
+            },
+            body: JSON.stringify(payload)
           });
 
-          if (res.ok) successCount++;
+          const resData = await res.json();
+
+          if (res.ok) {
+            successCount++;
+          } else {
+            console.error(`Failed to import ${uniData.name}:`, resData);
+            errorMessages.push(`${uniData.name}: ${resData.message || "Failed"}`);
+          }
         }
 
-        alert(`Successfully imported ${successCount} universities and their program fee structures! They are now live on your homepage cards.`);
+        if (successCount > 0) {
+          alert(`Successfully imported and published ${successCount} university card(s)! They are now live on your website homepage and universities page.`);
+        } else {
+          alert(`Import failed: ${errorMessages.join("; ") || "Please check your admin login session."}`);
+        }
 
         parsedUniversities = [];
         if (previewContainer) previewContainer.style.display = "none";
         if (bulkFileInput) bulkFileInput.value = "";
 
-        loadUniversities();
-        initAddUniversityPage();
+        if (typeof loadUniversities === "function") {
+          loadUniversities();
+        }
 
       } catch (err) {
         console.error("Bulk Import Execution Error:", err);
-        alert("Server connection error during import.");
+        alert("Connection error during bulk import: " + err.message);
       } finally {
         confirmImportBtn.disabled = false;
         confirmImportBtn.innerHTML = '<i class="fas fa-bolt"></i> Import & Display on Homepage';
