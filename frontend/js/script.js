@@ -3649,6 +3649,8 @@ async function initFeeStructureExporter() {
 
     const degreeFilter = degreeSelect ? degreeSelect.value : "ALL";
     const langFilter = langSelect ? langSelect.value : "ALL";
+    const depositInput = document.getElementById("exportDepositInput");
+    const overrideDepositVal = depositInput ? depositInput.value.trim() : "";
 
     let rows = [];
     const progs = selectedUni.programs || {};
@@ -3679,6 +3681,15 @@ async function initFeeStructureExporter() {
           rawDeposit = Number(rawDeposit.replace(/[^0-9.]/g, "")) || 0;
         }
 
+        let calculatedDeposit = Number(rawDeposit) || 0;
+
+        if (overrideDepositVal !== "") {
+          const customDep = Number(overrideDepositVal.replace(/[^0-9.]/g, ""));
+          if (!isNaN(customDep)) {
+            calculatedDeposit = customDep;
+          }
+        }
+
         rows.push({
           name: p.name,
           degree: cat.label,
@@ -3688,7 +3699,7 @@ async function initFeeStructureExporter() {
           duration: p.duration || "N/A",
           originalFee: p.originalFee || 0,
           discountFee: p.discountFee || 0,
-          initialDeposit: Number(rawDeposit) || 0
+          initialDeposit: calculatedDeposit
         });
       });
     });
@@ -3729,6 +3740,11 @@ async function initFeeStructureExporter() {
   }
   if (langSelect) {
     langSelect.addEventListener("change", renderFeeStructureDoc);
+  }
+  const depositFilterInput = document.getElementById("exportDepositInput");
+  if (depositFilterInput) {
+    depositFilterInput.addEventListener("input", renderFeeStructureDoc);
+    depositFilterInput.addEventListener("change", renderFeeStructureDoc);
   }
 
   if (printDocBtn) {
