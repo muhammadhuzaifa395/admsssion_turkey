@@ -1853,62 +1853,6 @@ function renderProgramList(university, degreeType, language) {
     })
     .join("");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  const programs = university.programs[degreeType] || [];
-  const degreeNames = {
-    associate: "Associate",
-    bachelors: "Bachelor",
-    masters: "Master",
-    phd: "PhD"
-  };
-  const displayLevel = degreeNames[degreeType] || "Program";
-  const selectedLanguage = language || "English";
-
-  const filteredPrograms = programs.filter((program) => {
-    const programLanguage = (program.language || "English").toString();
-    return programLanguage.toLowerCase() === selectedLanguage.toLowerCase();
-  });
-
-  if (filteredPrograms.length === 0) {
-    programListContainer.innerHTML = `<p class="empty-program">No ${selectedLanguage} ${displayLevel} programs available. Try another degree or language.</p>`;
-    return;
-  }
-
-  programListContainer.innerHTML = filteredPrograms
-    .map((program) => {
-      return `
-        <div class="program-card">
-          <div class="program-info">
-            <h4>${program.name}</h4>
-            <p><strong>Language:</strong> ${program.language || "English"}</p>
-            <p><strong>Level:</strong> ${displayLevel}</p>
-            <p><strong>Duration:</strong> ${program.duration}</p>
-            <p><strong>Original Fee:</strong> $${Number(program.originalFee).toLocaleString()}</p>
-            <p><strong>Discount Fee:</strong> $${Number(program.discountFee).toLocaleString()}</p>
-          </div>
-          <div class="program-card-actions">
-            <a href="program.html?id=${university._id}&program=${program._id}&degree=${degreeType}" class="primary-btn">View Program</a>
-          </div>
-        </div>
-      `;
-    })
-    .join("");
 }
 
 async function loadProgramDetails() {
