@@ -1,9 +1,11 @@
+const path = require("path");
+module.paths.push(path.join(__dirname, "node_modules"));
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const path = require("path");
 const fs = require("fs");
-require("dotenv").config();
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const { router: authRoutes, ensureDefaultAdmin } = require("./routes/authRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
@@ -20,12 +22,12 @@ if (!fs.existsSync(uploadsDir)) {
 }
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use("/uploads", express.static(uploadsDir));
 
-const MONGO_URI =
-  process.env.MONGO_URI ||
-  "mongodb+srv://huzaifarasheed2006:Fcc986108@huzaifaauth.ylrg6rk.mongodb.net/admission_turkey?appName=HuzaifaAuth";
+const ATLAS_URI = "mongodb+srv://huzaifarasheed2006:Fcc986108@huzaifaauth.ylrg6rk.mongodb.net/admission_turkey?appName=HuzaifaAuth";
+const PRIMARY_URI = process.env.MONGO_URI || ATLAS_URI;
 
 let cachedPromise = null;
 
@@ -35,17 +37,31 @@ const connectDB = async () => {
   }
 
   if (!cachedPromise) {
-    cachedPromise = mongoose.connect(MONGO_URI, {
-      serverSelectionTimeoutMS: 30000,
-      connectTimeoutMS: 30000,
-      socketTimeoutMS: 45000,
+    cachedPromise = mongoose.connect(PRIMARY_URI, {
+      serverSelectionTimeoutMS: 5000,
+      connectTimeoutMS: 10000,
     }).then((db) => {
       console.log("MongoDB Connected Successfully");
       ensureDefaultAdmin().catch((err) => console.error("Admin seed error:", err.message));
       return db;
-    }).catch((err) => {
+    }).catch(async (err) => {
+      console.error(`Primary MongoDB (${PRIMARY_URI}) Connection Error: ${err.message}`);
+      if (PRIMARY_URI !== ATLAS_URI) {
+        console.log("Attempting automatic fallback to MongoDB Atlas Cloud...");
+        return mongoose.connect(ATLAS_URI, {
+          serverSelectionTimeoutMS: 15000,
+          connectTimeoutMS: 15000,
+        }).then((db) => {
+          console.log("MongoDB Atlas Cloud Connected Successfully");
+          ensureDefaultAdmin().catch((e) => console.error("Admin seed error:", e.message));
+          return db;
+        }).catch((atlasErr) => {
+          cachedPromise = null;
+          console.error("MongoDB Atlas Connection Error:", atlasErr.message);
+          throw atlasErr;
+        });
+      }
       cachedPromise = null;
-      console.error("MongoDB Connection Error:", err.message);
       throw err;
     });
   }
@@ -60,7 +76,7 @@ app.use(async (req, res, next) => {
     } catch (error) {
       console.error("DB Connection Middleware Error:", error.message);
       return res.status(503).json({
-        message: `Database connection failed (${error.message}). Please ensure 0.0.0.0/0 is allowed in MongoDB Atlas Network Access.`
+        message: `Database connection failed (${error.message}). Please check network access.`
       });
     }
   }
@@ -87,10 +103,11 @@ app.use("/frontend", express.static(path.join(__dirname, "../frontend")));
 
 if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
   const PORT = process.env.PORT || 5000;
-  connectDB().then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+  connectDB().catch((err) => {
+    console.error("Initial DB Connection Error:", err.message);
   });
 }
 
