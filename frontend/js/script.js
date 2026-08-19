@@ -3354,4 +3354,342 @@ async function initAdminDashboard() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", initAdminDashboard);
+document.addEventListener("DOMContentLoaded", initAdminDashboard);
+
+// ========================================
+// AUTOMATED BULK DATA FILE UPLOAD TOOL
+// ========================================
+
+function initBulkImportTool() {
+  const bulkFileInput = document.getElementById("bulkFileInput");
+  const bulkDropZone = document.getElementById("bulkDropZone");
+  const downloadJsonBtn = document.getElementById("downloadJsonTemplateBtn");
+  const downloadCsvBtn = document.getElementById("downloadCsvTemplateBtn");
+  const previewContainer = document.getElementById("bulkPreviewContainer");
+  const previewContent = document.getElementById("bulkPreviewContent");
+  const parsedBadge = document.getElementById("bulkParsedBadge");
+  const confirmImportBtn = document.getElementById("confirmBulkImportBtn");
+  const cancelImportBtn = document.getElementById("cancelBulkImportBtn");
+
+  if (!bulkFileInput && !downloadJsonBtn && !downloadCsvBtn) return;
+
+  let parsedUniversities = [];
+
+  // Download Sample JSON Template
+  if (downloadJsonBtn) {
+    downloadJsonBtn.addEventListener("click", () => {
+      const sampleData = [
+        {
+          "name": "Istanbul Medipol University",
+          "location": "Istanbul, Turkey",
+          "description": "Leading private university in Istanbul offering medical, engineering, and business programs.",
+          "image": "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=800&q=80",
+          "programs": [
+            {
+              "name": "Computer Engineering",
+              "level": "Bachelor",
+              "language": "English",
+              "duration": "4 Years",
+              "originalFee": 8000,
+              "discountFee": 4000
+            },
+            {
+              "name": "Biomedical Engineering",
+              "level": "Master",
+              "thesisType": "Thesis",
+              "language": "English",
+              "duration": "2 Years",
+              "originalFee": 9000,
+              "discountFee": 4500
+            },
+            {
+              "name": "Business Administration",
+              "level": "Master",
+              "thesisType": "Non-Thesis",
+              "language": "English",
+              "duration": "1.5 Years",
+              "originalFee": 7500,
+              "discountFee": 3800
+            },
+            {
+              "name": "Clinical Psychology",
+              "level": "PhD",
+              "language": "English",
+              "duration": "4 Years",
+              "originalFee": 12000,
+              "discountFee": 6000
+            }
+          ]
+        }
+      ];
+
+      const blob = new Blob([JSON.stringify(sampleData, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "university_import_template.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  // Download Sample CSV Template
+  if (downloadCsvBtn) {
+    downloadCsvBtn.addEventListener("click", () => {
+      const csvHeader = 'University Name,Location,Description,Image URL,Program Name,Degree Level,Thesis Type,Language,Duration,Original Fee,Discount Fee\n';
+      const csvRows = [
+        '"Istanbul Medipol University","Istanbul, Turkey","Leading private university in Istanbul","https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=800&q=80","Computer Engineering","Bachelor","N/A","English","4 Years",8000,4000',
+        '"Istanbul Medipol University","Istanbul, Turkey","Leading private university in Istanbul","https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=800&q=80","Biomedical Engineering","Master","Thesis","English","2 Years",9000,4500',
+        '"Istanbul Medipol University","Istanbul, Turkey","Leading private university in Istanbul","https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=800&q=80","Business Administration","Master","Non-Thesis","English","1.5 Years",7500,3800',
+        '"Bahcesehir University","Istanbul, Turkey","Innovative global university in Besiktas","https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=800&q=80","Software Engineering","Bachelor","N/A","English","4 Years",8500,4250'
+      ].join('\n');
+
+      const blob = new Blob([csvHeader + csvRows], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "university_import_template.csv";
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  // Handle Drag & Drop
+  if (bulkDropZone) {
+    bulkDropZone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      bulkDropZone.style.background = "#e6f0ff";
+    });
+    bulkDropZone.addEventListener("dragleave", () => {
+      bulkDropZone.style.background = "#f4f8ff";
+    });
+    bulkDropZone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      bulkDropZone.style.background = "#f4f8ff";
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        processBulkFile(e.dataTransfer.files[0]);
+      }
+    });
+  }
+
+  if (bulkFileInput) {
+    bulkFileInput.addEventListener("change", (e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        processBulkFile(e.target.files[0]);
+      }
+    });
+  }
+
+  function processBulkFile(file) {
+    const reader = new FileReader();
+    const fileName = file.name.toLowerCase();
+
+    reader.onload = (e) => {
+      const content = e.target.result;
+      try {
+        if (fileName.endsWith(".json")) {
+          parsedUniversities = parseJsonImport(content);
+        } else {
+          parsedUniversities = parseCsvImport(content);
+        }
+        renderBulkPreview();
+      } catch (err) {
+        console.error("Bulk File Parse Error:", err);
+        alert("Failed to parse file. Please download and check our Sample Template format.");
+      }
+    };
+
+    reader.readAsText(file);
+  }
+
+  function parseJsonImport(jsonString) {
+    const rawData = JSON.parse(jsonString);
+    const list = Array.isArray(rawData) ? rawData : [rawData];
+    return list.map((uni) => {
+      return {
+        name: uni.name || "Unnamed University",
+        location: uni.location || "Turkey",
+        description: uni.description || "University description",
+        image: uni.image || "",
+        programs: Array.isArray(uni.programs) ? uni.programs.map(p => ({
+          name: p.name || "Program",
+          level: p.level || "Bachelor",
+          thesisType: p.thesisType || "N/A",
+          language: p.language || "English",
+          duration: p.duration || "4 Years",
+          originalFee: Number(p.originalFee || 0),
+          discountFee: Number(p.discountFee || 0)
+        })) : []
+      };
+    });
+  }
+
+  function parseCsvImport(csvString) {
+    const lines = csvString.split(/\r?\n/).filter(line => line.trim().length > 0);
+    if (lines.length <= 1) return [];
+
+    const uniMap = new Map();
+
+    for (let i = 1; i < lines.length; i++) {
+      const row = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || lines[i].split(",");
+      if (row.length < 5) continue;
+
+      const clean = (val) => val ? val.replace(/^"|"$/g, "").trim() : "";
+
+      const uniName = clean(row[0]);
+      const location = clean(row[1]);
+      const description = clean(row[2]);
+      const image = clean(row[3]);
+      const progName = clean(row[4]);
+      const level = clean(row[5]) || "Bachelor";
+      const thesisType = clean(row[6]) || "N/A";
+      const language = clean(row[7]) || "English";
+      const duration = clean(row[8]) || "4 Years";
+      const originalFee = Number(clean(row[9]) || 0);
+      const discountFee = Number(clean(row[10]) || 0);
+
+      if (!uniName) continue;
+
+      const key = uniName.toLowerCase();
+      if (!uniMap.has(key)) {
+        uniMap.set(key, {
+          name: uniName,
+          location: location || "Turkey",
+          description: description || "University Description",
+          image: image || "",
+          programs: []
+        });
+      }
+
+      if (progName) {
+        uniMap.get(key).programs.push({
+          name: progName,
+          level,
+          thesisType,
+          language,
+          duration,
+          originalFee,
+          discountFee
+        });
+      }
+    }
+
+    return Array.from(uniMap.values());
+  }
+
+  function renderBulkPreview() {
+    if (!previewContainer || !previewContent || !parsedBadge) return;
+
+    if (parsedUniversities.length === 0) {
+      alert("No valid university data found in file.");
+      previewContainer.style.display = "none";
+      return;
+    }
+
+    previewContainer.style.display = "block";
+    parsedBadge.innerText = `${parsedUniversities.length} Universities Detected`;
+
+    let html = "";
+    parsedUniversities.forEach((uni, idx) => {
+      let bCount = uni.programs.filter(p => p.level === "Bachelor").length;
+      let mCount = uni.programs.filter(p => p.level === "Master").length;
+      let pCount = uni.programs.filter(p => p.level === "PhD").length;
+      let aCount = uni.programs.filter(p => p.level === "Associate").length;
+
+      html += `
+        <div style="background: #fff; padding: 10px 12px; border-radius: 6px; margin-bottom: 8px; border-left: 4px solid var(--blue, #0d6efd);">
+          <div style="display: flex; justify-content: space-between; font-weight: 600;">
+            <span>#${idx + 1} ${uni.name}</span>
+            <span style="color: var(--blue);">${uni.programs.length} Programs Total</span>
+          </div>
+          <p style="margin: 4px 0; color: #666; font-size: 12px;">📍 ${uni.location} | Breakdown: ${bCount} Bachelor, ${mCount} Master, ${pCount} PhD, ${aCount} Associate</p>
+        </div>
+      `;
+    });
+
+    previewContent.innerHTML = html;
+  }
+
+  if (cancelImportBtn) {
+    cancelImportBtn.addEventListener("click", () => {
+      parsedUniversities = [];
+      if (previewContainer) previewContainer.style.display = "none";
+      if (bulkFileInput) bulkFileInput.value = "";
+    });
+  }
+
+  // Batch Submit to Backend API (100% Frontend execution)
+  if (confirmImportBtn) {
+    confirmImportBtn.addEventListener("click", async () => {
+      if (parsedUniversities.length === 0) return;
+
+      confirmImportBtn.disabled = true;
+      confirmImportBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Importing Universities...';
+
+      let successCount = 0;
+
+      try {
+        for (const uniData of parsedUniversities) {
+          const formattedPrograms = {
+            associate: [],
+            bachelors: [],
+            masters: [],
+            phd: []
+          };
+
+          uniData.programs.forEach((p) => {
+            const progObj = {
+              name: p.name,
+              language: p.language,
+              duration: p.duration,
+              originalFee: p.originalFee,
+              discountFee: p.discountFee,
+              thesisType: p.thesisType
+            };
+
+            const lvl = (p.level || "Bachelor").toLowerCase();
+            if (lvl.includes("bachelor")) formattedPrograms.bachelors.push(progObj);
+            else if (lvl.includes("master")) formattedPrograms.masters.push(progObj);
+            else if (lvl.includes("phd") || lvl.includes("doctor")) formattedPrograms.phd.push(progObj);
+            else formattedPrograms.associate.push(progObj);
+          });
+
+          const res = await fetch(`${API_BASE_URL}/api/universities/add`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: uniData.name,
+              location: uniData.location,
+              description: uniData.description,
+              image: uniData.image,
+              programs: formattedPrograms
+            })
+          });
+
+          if (res.ok) successCount++;
+        }
+
+        alert(`Successfully imported ${successCount} universities and their program fee structures! They are now live on your homepage cards.`);
+
+        parsedUniversities = [];
+        if (previewContainer) previewContainer.style.display = "none";
+        if (bulkFileInput) bulkFileInput.value = "";
+
+        loadUniversities();
+        initAddUniversityPage();
+
+      } catch (err) {
+        console.error("Bulk Import Execution Error:", err);
+        alert("Server connection error during import.");
+      } finally {
+        confirmImportBtn.disabled = false;
+        confirmImportBtn.innerHTML = '<i class="fas fa-bolt"></i> Import & Display on Homepage';
+      }
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initAdminDashboard();
+  initBulkImportTool();
+});
