@@ -1,9 +1,9 @@
 // =========================================================
 // API BASE URL CONFIGURATION
 // =========================================================
-const API_BASE_URL = (window.location.port === "5000")
+const API_BASE_URL = (window.location.hostname && window.location.hostname.includes("vercel.app"))
   ? window.location.origin
-  : (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" ? "http://localhost:5000" : "");
+  : "http://localhost:5000";
 
 // ===============================
 // ADMIN PAGE PROTECTION
@@ -1472,6 +1472,8 @@ async function loadUniversities() {
         existing.programs.phd.push(...(uni.programs?.phd || []));
       }
     });
+
+    const displayUniversities = Array.from(groupedMap.values());
 
     displayUniversities.forEach((uni) => {
       let totalPrograms = Object.values(uni.programs).flat().length;
