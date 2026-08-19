@@ -62,6 +62,11 @@ const applicationSchema = new mongoose.Schema(
       required: true
     },
 
+    passportNumber: {
+      type: String,
+      required: true
+    },
+
     universityId: {
       type: String,
       default: ""

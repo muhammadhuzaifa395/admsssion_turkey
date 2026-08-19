@@ -589,6 +589,7 @@ function updateReviewDetails() {
   const genderValue = document.getElementById("applicationGender")?.value || "N/A";
   const fatherNameValue = document.getElementById("applicationFatherName")?.value || "N/A";
   const motherNameValue = document.getElementById("applicationMotherName")?.value || "N/A";
+  const passportNumberValue = document.getElementById("applicationPassportNumber")?.value || "N/A";
   const feesValue = applicationDiscountFee ? Number(applicationDiscountFee.value).toLocaleString() : "0";
   const messageValue = document.getElementById("applicationMessage")?.value || "";
 
@@ -597,6 +598,7 @@ function updateReviewDetails() {
     <p><strong>Full Name:</strong> ${nameValue}</p>
     <p><strong>Email:</strong> ${emailValue}</p>
     <p><strong>Phone:</strong> ${phoneValue}</p>
+    <p><strong>Passport Number:</strong> ${passportNumberValue}</p>
     <p><strong>Father's Name:</strong> ${fatherNameValue}</p>
     <p><strong>Mother's Name:</strong> ${motherNameValue}</p>
     <p><strong>University:</strong> ${universityValue}</p>
@@ -1471,10 +1473,25 @@ async function loadUniversities() {
       }
     });
 
-    const displayUniversities = Array.from(groupedMap.values());
-
     displayUniversities.forEach((uni) => {
       let totalPrograms = Object.values(uni.programs).flat().length;
+
+      const masterProgs = uni.programs.masters || [];
+      const hasThesis = masterProgs.some(p => p.thesisType === "Thesis" || !p.thesisType || p.thesisType === "N/A");
+      const hasNonThesis = masterProgs.some(p => p.thesisType === "Non-Thesis");
+
+      let masterText = "";
+      if (masterProgs.length > 0) {
+        if (hasThesis && hasNonThesis) masterText = "Master (Thesis & Non-Thesis)";
+        else if (hasNonThesis) masterText = "Master (Non-Thesis)";
+        else masterText = "Master (Thesis)";
+      }
+
+      const degreeBadges = [];
+      if ((uni.programs.bachelors || []).length > 0) degreeBadges.push("Bachelor");
+      if (masterProgs.length > 0) degreeBadges.push(masterText);
+      if ((uni.programs.phd || []).length > 0) degreeBadges.push("PhD");
+      if ((uni.programs.associate || []).length > 0) degreeBadges.push("Associate");
 
       universityList.innerHTML += `
         <div class="university-card">
@@ -1496,6 +1513,7 @@ async function loadUniversities() {
             <p>
               <i class="fas fa-graduation-cap"></i>
               ${totalPrograms} Programs
+              ${degreeBadges.length > 0 ? `<br><small style="color: var(--blue); font-weight:600; display:block; margin-top:4px;">${degreeBadges.join(" • ")}</small>` : ""}
             </p>
             <div class="university-actions">
               <a href="university.html?id=${uni._id}" class="primary-btn">Visit University</a>
@@ -1676,19 +1694,6 @@ function renderLanguageTabs(university) {
 
 
 
-
-
-
-
-
-
-
-
-function renderProgramList(university, degreeType, language) {
-  const programListContainer = document.getElementById("programListContainer");
-  if (!programListContainer) {
-    return;
-  }
 
 
 
@@ -2903,6 +2908,16 @@ async function loadManageApplications() {
   }
 }
 
+function downloadDocFile(url, filename) {
+  if (!url) return;
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = (filename || "document").replace(/[^a-z0-9_\-\.]/gi, "_");
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
 function renderApplications(apps) {
   const countEl = document.getElementById("totalAppsCount");
   if (countEl) countEl.innerText = apps.length;
@@ -2931,24 +2946,24 @@ function renderApplications(apps) {
     const docList = [];
 
     if (app.passportDocument) {
-      docList.push({ label: "Passport", url: app.passportDocument, icon: "fa-id-card", type: "passport" });
+      docList.push({ label: "Passport", url: app.passportDocument, key: "passportDocument", icon: "fa-id-card" });
     }
     if (app.certificateDocument) {
-      docList.push({ label: "High School Certificate", url: app.certificateDocument, icon: "fa-certificate", type: "certificate" });
+      docList.push({ label: "High School Certificate", url: app.certificateDocument, key: "certificateDocument", icon: "fa-certificate" });
     }
     if (app.diplomaDocument) {
-      docList.push({ label: "High School Diploma", url: app.diplomaDocument, icon: "fa-graduation-cap", type: "diploma" });
+      docList.push({ label: "High School Diploma", url: app.diplomaDocument, key: "diplomaDocument", icon: "fa-graduation-cap" });
     }
     if (app.transcriptDocument) {
-      docList.push({ label: "Transcript", url: app.transcriptDocument, icon: "fa-file-invoice", type: "transcript" });
+      docList.push({ label: "Transcript", url: app.transcriptDocument, key: "transcriptDocument", icon: "fa-file-invoice" });
     }
     if (app.masterDocument) {
-      docList.push({ label: "Master Degree / Doc", url: app.masterDocument, icon: "fa-award", type: "master" });
+      docList.push({ label: "Master Degree / Doc", url: app.masterDocument, key: "masterDocument", icon: "fa-award" });
     }
     if (Array.isArray(app.additionalDocuments)) {
       app.additionalDocuments.forEach((addUrl, idx) => {
         if (addUrl) {
-          docList.push({ label: `Additional Document #${idx + 1}`, url: addUrl, icon: "fa-file-medical", type: "additional" });
+          docList.push({ label: `Additional Document #${idx + 1}`, url: addUrl, key: `additionalDocuments[${idx}]`, icon: "fa-file-medical" });
         }
       });
     }
@@ -2966,14 +2981,20 @@ function renderApplications(apps) {
       docsHTML = `<p class="no-docs-text"><i class="fas fa-exclamation-circle"></i> No user documents uploaded for this application.</p>`;
     } else {
       docsHTML = `<div class="docs-grid">`;
-      docList.forEach(doc => {
-        const fullUrl = doc.url.startsWith("http") ? doc.url : `${API_BASE_URL}${doc.url.startsWith('/') ? '' : '/'}${doc.url}`;
-        const isPdf = doc.url.toLowerCase().endsWith(".pdf");
-        const isImg = /\.(jpg|jpeg|png|webp|gif|svg)$/i.test(doc.url);
-        const fileExt = doc.url.split('.').pop().toUpperCase();
+      docList.forEach((doc) => {
+        const rawUrl = doc.url || "";
+        const isDataUrl = rawUrl.startsWith("data:");
+        const isHttp = rawUrl.startsWith("http://") || rawUrl.startsWith("https://");
+        const fullUrl = (isDataUrl || isHttp) ? rawUrl : `${API_BASE_URL}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`;
+
+        const isPdf = rawUrl.toLowerCase().includes("pdf");
+        const isImg = rawUrl.toLowerCase().includes("image/") || /\.(jpg|jpeg|png|webp|gif|svg)$/i.test(rawUrl);
+        const fileExt = isPdf ? "PDF" : (isImg ? "IMAGE" : "DOC");
 
         const iconClass = isPdf ? "pdf" : (isImg ? "image" : "");
         const displayIcon = isPdf ? "fa-file-pdf" : (isImg ? "fa-file-image" : "fa-file-alt");
+        const safeDocLabel = doc.label.replace(/'/g, "\\'");
+        const safeAppName = (app.name || "").replace(/'/g, "\\'");
 
         docsHTML += `
           <div class="doc-card-item">
@@ -2987,12 +3008,12 @@ function renderApplications(apps) {
               </div>
             </div>
             <div class="doc-actions">
-              <button class="doc-btn doc-btn-preview" onclick="openDocPreview('${fullUrl}', '${doc.label} - ${app.name}')">
+              <button type="button" class="doc-btn doc-btn-preview" onclick="openDocPreview(allApplicationsList[${index}].${doc.key}, '${safeDocLabel} - ${safeAppName}')">
                 <i class="fas fa-eye"></i> Preview
               </button>
-              <a href="${fullUrl}" target="_blank" download="${doc.label}-${app.name}" class="doc-btn doc-btn-download">
+              <button type="button" class="doc-btn doc-btn-download" onclick="downloadDocFile(allApplicationsList[${index}].${doc.key}, '${safeDocLabel}-${safeAppName}')">
                 <i class="fas fa-download"></i> Download
-              </a>
+              </button>
             </div>
           </div>
         `;
@@ -3027,6 +3048,10 @@ function renderApplications(apps) {
           <div class="meta-item">
             <strong>Phone / WhatsApp</strong>
             <span>${app.phone || "N/A"}</span>
+          </div>
+          <div class="meta-item">
+            <strong>Passport Number</strong>
+            <span>${app.passportNumber || "N/A"}</span>
           </div>
           <div class="meta-item">
             <strong>Country / Nationality</strong>
@@ -3092,6 +3117,7 @@ function filterApplications() {
     const matchesSearch = !query ||
       (app.name && app.name.toLowerCase().includes(query)) ||
       (app.email && app.email.toLowerCase().includes(query)) ||
+      (app.passportNumber && app.passportNumber.toLowerCase().includes(query)) ||
       (app.university && app.university.toLowerCase().includes(query)) ||
       (app.country && app.country.toLowerCase().includes(query)) ||
       (app.program && app.program.toLowerCase().includes(query));
@@ -3115,20 +3141,30 @@ function openDocPreview(fileUrl, docTitle) {
   if (!modal || !modalBody) return;
 
   modalTitle.innerText = docTitle || "Document Preview";
-  downloadBtn.href = fileUrl;
 
-  const isPdf = fileUrl.toLowerCase().includes(".pdf");
-  const isImg = /\.(jpg|jpeg|png|webp|gif|svg)/i.test(fileUrl);
+  if (downloadBtn) {
+    downloadBtn.onclick = (e) => {
+      e.preventDefault();
+      downloadDocFile(fileUrl, docTitle || "document");
+    };
+  }
+
+  const isPdf = fileUrl && fileUrl.toLowerCase().includes("pdf");
+  const isImg = fileUrl && (fileUrl.toLowerCase().includes("image/") || /\.(jpg|jpeg|png|webp|gif|svg)$/i.test(fileUrl));
 
   if (isImg) {
     if (icon) icon.className = "fas fa-file-image";
-    modalBody.innerHTML = `<img src="${fileUrl}" alt="Document Preview" />`;
+    modalBody.innerHTML = `<img src="${fileUrl}" alt="Document Preview" style="max-width:100%; max-height:75vh; display:block; margin:0 auto; object-fit:contain;" />`;
   } else if (isPdf) {
     if (icon) icon.className = "fas fa-file-pdf";
-    modalBody.innerHTML = `<iframe src="${fileUrl}" title="PDF Preview"></iframe>`;
+    modalBody.innerHTML = `<object data="${fileUrl}" type="application/pdf" width="100%" height="550px">
+      <iframe src="${fileUrl}" title="PDF Preview" width="100%" height="550px" style="border:none;">
+        <p>Your browser does not support inline PDF preview. <a href="${fileUrl}" target="_blank">Click here to download/view PDF</a></p>
+      </iframe>
+    </object>`;
   } else {
     if (icon) icon.className = "fas fa-file-alt";
-    modalBody.innerHTML = `<iframe src="${fileUrl}" title="Document Preview"></iframe>`;
+    modalBody.innerHTML = `<iframe src="${fileUrl}" title="Document Preview" width="100%" height="550px" style="border:none;"></iframe>`;
   }
 
   modal.classList.add("show");
