@@ -1053,6 +1053,10 @@ if (addProgramBtn) {
     // CREATE PROGRAM OBJECT
     // ========================================
 
+    const depNum = Number(
+      initialDeposit.replace(/[^0-9.]/g, "")
+    ) || 0;
+
     const program = {
 
       name: name,
@@ -1069,9 +1073,11 @@ if (addProgramBtn) {
         discountFee.replace(/[^0-9.]/g, "")
       ) || 0,
 
-      initialDeposit: Number(
-        initialDeposit.replace(/[^0-9.]/g, "")
-      ) || 0,
+      initialDeposit: depNum,
+
+      deposit: depNum,
+
+      depositFee: depNum,
 
       description: "",
 
@@ -2308,7 +2314,10 @@ function renderEditModalPrograms() {
 
 function updateProgramDepositInEditModal(degree, index, val) {
   if (!currentEditingUni || !currentEditingUni.programs || !currentEditingUni.programs[degree] || !currentEditingUni.programs[degree][index]) return;
-  currentEditingUni.programs[degree][index].initialDeposit = Number(val) || 0;
+  const depNum = Number(val) || 0;
+  currentEditingUni.programs[degree][index].initialDeposit = depNum;
+  currentEditingUni.programs[degree][index].deposit = depNum;
+  currentEditingUni.programs[degree][index].depositFee = depNum;
 }
 
 function addProgramInEditModal() {
@@ -2332,13 +2341,17 @@ function addProgramInEditModal() {
     currentEditingUni.programs[degreeType] = [];
   }
 
+  const depNum = Number(String(initialDeposit).replace(/[^0-9.]/g, "")) || 0;
+
   currentEditingUni.programs[degreeType].push({
     name,
     language,
     duration: duration || "",
     originalFee: Number(originalFee) || 0,
     discountFee: Number(discountFee) || 0,
-    initialDeposit: Number(initialDeposit) || 0,
+    initialDeposit: depNum,
+    deposit: depNum,
+    depositFee: depNum,
     thesisType
   });
 
@@ -3607,12 +3620,27 @@ async function initFeeStructureExporter() {
     console.error("Fee Structure Exporter Load Error:", err);
   }
 
-  function renderFeeStructureDoc() {
+  async function renderFeeStructureDoc() {
     const selectedId = uniSelect.value;
-    const selectedUni = loadedUniversities.find(u => u._id === selectedId);
+    if (!selectedId) {
+      tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #94a3b8; padding: 25px;">Please select a university above.</td></tr>`;
+      return;
+    }
+
+    let selectedUni = loadedUniversities.find(u => u._id === selectedId);
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/universities/${selectedId}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.university) selectedUni = data.university;
+      }
+    } catch (e) {
+      console.log("Fetch single uni error:", e);
+    }
 
     if (!selectedUni) {
-      tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #94a3b8; padding: 25px;">Please select a university above.</td></tr>`;
+      tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #94a3b8; padding: 25px;">University not found.</td></tr>`;
       return;
     }
 
@@ -3646,6 +3674,11 @@ async function initFeeStructureExporter() {
 
         if (langFilter !== "ALL" && !langVal.toLowerCase().includes(langFilter.toLowerCase())) return;
 
+        let rawDeposit = p.initialDeposit ?? p.deposit ?? p.depositFee ?? p.initial_deposit ?? p.initialDepositFee ?? p.prepayment ?? 0;
+        if (typeof rawDeposit === "string") {
+          rawDeposit = Number(rawDeposit.replace(/[^0-9.]/g, "")) || 0;
+        }
+
         rows.push({
           name: p.name,
           degree: cat.label,
@@ -3655,7 +3688,7 @@ async function initFeeStructureExporter() {
           duration: p.duration || "N/A",
           originalFee: p.originalFee || 0,
           discountFee: p.discountFee || 0,
-          initialDeposit: p.initialDeposit ?? p.depositFee ?? p.deposit ?? p.initial_deposit ?? 0
+          initialDeposit: Number(rawDeposit) || 0
         });
       });
     });
