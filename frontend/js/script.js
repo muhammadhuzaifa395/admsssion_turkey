@@ -2189,7 +2189,7 @@ No Universities Added Yet.
             <button class="secondary-btn" onclick="openEditUniModal('${uni._id}')">
               <i class="fas fa-edit"></i> Edit
             </button>
-            <button class="remove-program-btn" onclick="deleteUniversity('${uni._id}')">
+            <button class="remove-program-btn" onclick="deleteUniversity('${uni._id}', '${(uni.name || '').replace(/'/g, "\\'")}')">
               <i class="fas fa-trash"></i> Delete
             </button>
           </div>
@@ -2402,81 +2402,161 @@ loadManageUniversities();
 
 
 // ========================================
-// DELETE UNIVERSITY
+// ========================================
+// DELETE UNIVERSITY MODAL & ACTIONS
 // ========================================
 
+function closeDeleteUniModal() {
+  const modal = document.getElementById("deleteUniversityModal");
+  if (modal) modal.style.display = "none";
+}
 
-async function deleteUniversity(id) {
+async function deleteUniversity(id, uniName = "") {
+  const modal = document.getElementById("deleteUniversityModal");
+  
+  if (modal) {
+    const textEl = document.getElementById("deleteModalText");
+    if (textEl) {
+      textEl.innerHTML = uniName 
+        ? `What would you like to do for <strong>${uniName}</strong>?<br><br>Choose whether to delete only this university or delete ALL universities at once.`
+        : `Choose whether you want to delete only this university or delete ALL universities in the system.`;
+    }
 
+    const singleBtn = document.getElementById("confirmDeleteSingleBtn");
+    if (singleBtn) {
+      singleBtn.onclick = async () => {
+        closeDeleteUniModal();
+        await performDeleteSingle(id);
+      };
+    }
 
-  const user =
-    JSON.parse(localStorage.getItem("user"));
-
-
-
-  if (!confirm("Are you sure you want to delete this university?")) {
+    modal.style.display = "flex";
     return;
   }
 
+  // Fallback if modal is not present
+  if (confirm("Are you sure you want to delete this university?")) {
+    await performDeleteSingle(id);
+  }
+}
 
+async function performDeleteSingle(id) {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user || !user.token) {
+    alert("Admin login required.");
+    return;
+  }
 
   try {
+    const response = await fetch(`${API_BASE_URL}/api/universities/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${user.token}`
+      }
+    });
 
-
-    const response =
-      await fetch(
-
-        `${API_BASE_URL}/api/universities/${id}`,
-
-        {
-
-          method: "DELETE",
-
-          headers: {
-
-            Authorization:
-              `Bearer ${user.token}`
-
-          }
-
-        }
-
-      );
-
-
-
-    const data =
-      await response.json();
-
-
+    const data = await response.json();
 
     if (response.ok) {
-
       alert("University Deleted Successfully!");
-
-
       loadManageUniversities();
-
-
+    } else {
+      alert(data.message || "Delete Failed");
     }
-    else {
-
-      alert(
-        data.message || "Delete Failed"
-      );
-
-    }
-
-
+  } catch (error) {
+    console.error("Delete University Error:", error);
+    alert("Error deleting university.");
   }
-
-  catch (error) {
-
-    console.log(error);
-
-  }
-
 }
+
+
+
+// ========================================
+// DELETE ALL UNIVERSITIES
+// ========================================
+
+async function deleteAllUniversities() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user || !user.token) {
+    alert("Admin login required.");
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/universities`, {
+      headers: {
+        Authorization: `Bearer ${user.token}`
+      }
+    });
+
+    const data = await response.json();
+    const universities = data.universities || [];
+
+    if (universities.length === 0) {
+      alert("No universities found to delete.");
+      return;
+    }
+
+    const confirmDelete = confirm(
+      `⚠️ WARNING: Are you sure you want to delete ALL ${universities.length} universities at once?\n\nThis action CANNOT be undone!`
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    const deleteAllBtn = document.getElementById("deleteAllUniversitiesBtn");
+    if (deleteAllBtn) {
+      deleteAllBtn.disabled = true;
+      deleteAllBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Deleting All (${universities.length})...`;
+    }
+
+    if (manageUniversityList) {
+      manageUniversityList.innerHTML = `
+        <div class="empty-program">
+          <i class="fas fa-spinner fa-spin"></i> Deleting ${universities.length} universities... Please wait.
+        </div>
+      `;
+    }
+
+    let successCount = 0;
+    let failCount = 0;
+
+    await Promise.all(
+      universities.map(async (uni) => {
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/universities/${uni._id}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${user.token}`
+            }
+          });
+          if (res.ok) {
+            successCount++;
+          } else {
+            failCount++;
+          }
+        } catch (err) {
+          console.error(`Error deleting university ${uni._id}:`, err);
+          failCount++;
+        }
+      })
+    );
+
+    if (failCount === 0) {
+      alert(`Successfully deleted all ${successCount} universities!`);
+    } else {
+      alert(`Deleted ${successCount} universities. ${failCount} failed to delete.`);
+    }
+
+    loadManageUniversities();
+  } catch (error) {
+    console.error("Delete All Universities Error:", error);
+    alert("An error occurred while deleting all universities.");
+    loadManageUniversities();
+  }
+}
+
 
 
 // =========================================================
