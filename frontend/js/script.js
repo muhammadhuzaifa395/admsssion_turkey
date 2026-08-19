@@ -1860,7 +1860,6 @@ function renderProgramList(university, degreeType, language) {
     })
     .join("");
 }
-}
 
 async function loadProgramDetails() {
   const container = document.getElementById("programDetailContainer");
@@ -3286,4 +3285,48 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-});
+});
+
+// ========================================
+// ADMIN DASHBOARD STATS
+// ========================================
+async function initAdminDashboard() {
+  const uniEl = document.getElementById("universityCount");
+  const progEl = document.getElementById("programCount");
+  const appEl = document.getElementById("applicationCount");
+
+  if (!uniEl && !progEl && !appEl) return;
+
+  try {
+    const uniRes = await fetch(`${API_BASE_URL}/api/universities`);
+    const uniData = await uniRes.json();
+    const universities = uniData.universities || [];
+
+    if (uniEl) uniEl.innerText = universities.length;
+
+    let totalPrograms = 0;
+    universities.forEach((u) => {
+      if (u.programs) {
+        totalPrograms += (u.programs.associate?.length || 0) +
+                         (u.programs.bachelors?.length || 0) +
+                         (u.programs.masters?.length || 0) +
+                         (u.programs.phd?.length || 0);
+      }
+    });
+
+    if (progEl) progEl.innerText = totalPrograms;
+
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const appRes = await fetch(`${API_BASE_URL}/api/applications`, {
+      headers: user.token ? { Authorization: `Bearer ${user.token}` } : {}
+    });
+    const appData = await appRes.json();
+    if (appEl && appData.applications) {
+      appEl.innerText = appData.applications.length;
+    }
+  } catch (err) {
+    console.error("Dashboard Stats Error:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", initAdminDashboard);
