@@ -59,27 +59,27 @@ Fill in your details and our team will contact you.
     <h3>Personal Information</h3>
     <div class="form-grid">
       <div class="form-group">
-        <label for="applicationName">Full Name</label>
+        <label for="applicationName">Full Name *</label>
         <input type="text" id="applicationName" name="name" placeholder="Full Name" required>
       </div>
       <div class="form-group">
-        <label for="applicationEmail">Email Address</label>
+        <label for="applicationEmail">Email Address *</label>
         <input type="email" id="applicationEmail" name="email" placeholder="Email Address" required>
       </div>
       <div class="form-group">
-        <label for="applicationPhone">Phone Number</label>
+        <label for="applicationPhone">Phone Number *</label>
         <input type="tel" id="applicationPhone" name="phone" placeholder="Phone Number" required>
       </div>
       <div class="form-group">
-        <label for="applicationCountry">Country of Residence</label>
+        <label for="applicationCountry">Country of Residence *</label>
         <input type="text" id="applicationCountry" name="country" placeholder="Your Country" required>
       </div>
       <div class="form-group">
-        <label for="applicationNationality">Nationality</label>
+        <label for="applicationNationality">Nationality *</label>
         <input type="text" id="applicationNationality" name="nationality" placeholder="Nationality" required>
       </div>
       <div class="form-group">
-        <label for="applicationDob">Date of Birth</label>
+        <label for="applicationDob">Date of Birth *</label>
         <input type="date" id="applicationDob" name="dob" required>
       </div>
       <div class="form-group">
@@ -104,15 +104,15 @@ Fill in your details and our team will contact you.
         <input type="text" id="applicationPassportNumber" name="passportNumber" placeholder="Passport Number" required>
       </div>
       <div class="form-group">
-        <label for="applicationProgram">Preferred Program</label>
+        <label for="applicationProgram">Preferred Program *</label>
         <input type="text" id="applicationProgram" name="program" placeholder="Preferred Program" readonly required>
       </div>
       <div class="form-group full-width">
-        <label for="applicationUniversity">Preferred University</label>
+        <label for="applicationUniversity">Preferred University *</label>
         <input type="text" id="applicationUniversity" name="university" placeholder="Preferred University" readonly required>
       </div>
       <div class="form-group full-width">
-        <label for="applicationLevel">Education Level</label>
+        <label for="applicationLevel">Education Level *</label>
         <select id="applicationLevel" name="level" required>
           <option value="">Select Education Level</option>
           <option value="Bachelor">Bachelor</option>
@@ -129,33 +129,33 @@ Fill in your details and our team will contact you.
     <p id="documentHint" class="document-hint">Documents are updated automatically based on the selected program level.</p>
 
     <div class="form-group">
-      <label for="passportDocument">Passport Copy (PDF)</label>
+      <label for="passportDocument">Passport Copy (PDF) *</label>
       <input type="file" id="passportDocument" name="passportDocument" accept=".pdf" required>
     </div>
 
     <div class="form-group" id="schoolCertificateField">
-      <label for="certificateDocument">Higher School Certificate (PDF)</label>
+      <label for="certificateDocument">Higher School Certificate (PDF) *</label>
       <input type="file" id="certificateDocument" name="certificateDocument" accept=".pdf" required>
     </div>
 
     <div class="form-group" id="diplomaField" style="display:none;">
-      <label for="diplomaDocument">University Diploma (PDF)</label>
-      <input type="file" id="diplomaDocument" name="diplomaDocument" accept=".pdf">
+      <label for="diplomaDocument">University Diploma (PDF) *</label>
+      <input type="file" id="diplomaDocument" name="diplomaDocument" accept=".pdf" required>
     </div>
 
     <div class="form-group" id="transcriptField" style="display:none;">
-      <label for="transcriptDocument">University Transcript (PDF)</label>
-      <input type="file" id="transcriptDocument" name="transcriptDocument" accept=".pdf">
+      <label for="transcriptDocument">University Transcript (PDF) *</label>
+      <input type="file" id="transcriptDocument" name="transcriptDocument" accept=".pdf" required>
     </div>
 
     <div class="form-group" id="masterDocumentField" style="display:none;">
-      <label for="masterDocument">Master Degree Document (PDF)</label>
-      <input type="file" id="masterDocument" name="masterDocument" accept=".pdf">
+      <label for="masterDocument">Master Degree Document (PDF) *</label>
+      <input type="file" id="masterDocument" name="masterDocument" accept=".pdf" required>
     </div>
 
     <div class="form-group">
-      <label for="additionalDocuments">Other Supporting Documents (optional)</label>
-      <input type="file" id="additionalDocuments" name="additionalDocuments" accept=".pdf,.doc,.docx,.jpg,.png" multiple>
+      <label for="additionalDocuments">Other Supporting Documents (PDF / Images) *</label>
+      <input type="file" id="additionalDocuments" name="additionalDocuments" accept=".pdf,.doc,.docx,.jpg,.png" multiple required>
     </div>
   </div>
 
@@ -165,8 +165,8 @@ Fill in your details and our team will contact you.
     <div id="reviewDetails" class="review-details"></div>
     <div id="reviewDocuments" class="review-details"></div>
     <div class="form-group">
-      <label for="applicationMessage">Additional Message</label>
-      <textarea id="applicationMessage" name="message" placeholder="Additional Message" rows="5"></textarea>
+      <label for="applicationMessage">Additional Message *</label>
+      <textarea id="applicationMessage" name="message" placeholder="Additional Message / Notes for Admissions Team" rows="5" required></textarea>
     </div>
   </div>
 

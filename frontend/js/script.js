@@ -3238,10 +3238,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Consultation Booking Form Handler
   const bookingForm = document.getElementById("bookingForm");
+  const payCardRadio = document.getElementById("payCardRadio");
+  const payBankRadio = document.getElementById("payBankRadio");
+  const bankDetailsBox = document.getElementById("bankDetailsBox");
+  const cardElement = document.getElementById("card-element");
+  const submitBtn = document.getElementById("bookingSubmitBtn");
+
+  if (payCardRadio && payBankRadio) {
+    payCardRadio.addEventListener("change", () => {
+      if (bankDetailsBox) bankDetailsBox.style.display = "none";
+      if (cardElement) cardElement.style.display = "block";
+      if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-lock"></i> Pay $5 & Book Consultation';
+    });
+    payBankRadio.addEventListener("change", () => {
+      if (bankDetailsBox) bankDetailsBox.style.display = "block";
+      if (cardElement) cardElement.style.display = "none";
+      if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-university"></i> Confirm $5 Booking (Bank Transfer)';
+    });
+  }
+
   if (bookingForm) {
     bookingForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const submitBtn = document.getElementById("bookingSubmitBtn");
       const origText = submitBtn ? submitBtn.innerHTML : "Pay & Book Consultation";
 
       const name = document.getElementById("bookingName")?.value;
@@ -3250,6 +3268,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const topic = document.getElementById("bookingTopic")?.value;
       const date = document.getElementById("bookingDate")?.value;
       const time = document.getElementById("bookingTime")?.value;
+      const isBankPayment = payBankRadio && payBankRadio.checked;
 
       if (!name || !email || !phone || !topic || !date || !time) {
         alert("Please fill in all required booking details.");
@@ -3265,12 +3284,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const res = await fetch(`${API_BASE_URL}/api/bookings`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, phone, topic, date, time })
+          body: JSON.stringify({ name, email, phone, topic, date, time, paymentType: isBankPayment ? "Bank Transfer" : "Card" })
         });
         const data = await res.json();
         if (res.ok) {
-          alert("Consultation booked successfully! Our education advisor will reach out to you shortly.");
+          if (isBankPayment) {
+            alert("Consultation booked successfully! Please transfer $5.00 to our Bank Account (IBAN) using your full name as reference.");
+          } else {
+            alert("Consultation booked successfully! Our education advisor will reach out to you shortly.");
+          }
           bookingForm.reset();
+          if (bankDetailsBox) bankDetailsBox.style.display = "none";
+          if (cardElement) cardElement.style.display = "block";
         } else {
           alert(data.message || "Booking failed.");
         }
