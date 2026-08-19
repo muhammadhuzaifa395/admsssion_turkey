@@ -988,6 +988,7 @@ if (addProgramBtn) {
     const durationElement = document.getElementById("programYears");
     const originalFeeElement = document.getElementById("programOriginalFee");
     const discountFeeElement = document.getElementById("programDiscountFee");
+    const initialDepositElement = document.getElementById("programInitialDeposit");
     const thesisTypeElement = document.getElementById("programThesisType");
 
     const level = levelElement.value;
@@ -996,6 +997,7 @@ if (addProgramBtn) {
     const duration = durationElement.value.trim();
     const originalFee = originalFeeElement.value.trim();
     const discountFee = discountFeeElement.value.trim();
+    const initialDeposit = initialDepositElement ? initialDepositElement.value.trim() : "";
     const thesisType = (level === "Master" && thesisTypeElement) ? thesisTypeElement.value : "N/A";
 
 
@@ -1067,6 +1069,10 @@ if (addProgramBtn) {
         discountFee.replace(/[^0-9.]/g, "")
       ) || 0,
 
+      initialDeposit: Number(
+        initialDeposit.replace(/[^0-9.]/g, "")
+      ) || 0,
+
       description: "",
 
       thesisType: thesisType
@@ -1097,6 +1103,7 @@ if (addProgramBtn) {
     durationElement.value = "";
     originalFeeElement.value = "";
     discountFeeElement.value = "";
+    if (initialDepositElement) initialDepositElement.value = "";
 
 
     alert(
@@ -1223,6 +1230,11 @@ function displayPrograms() {
         <p>
           <strong>Discount Fee:</strong>
           $${program.discountFee.toLocaleString()}
+        </p>
+
+        <p>
+          <strong>Initial Deposit:</strong>
+          $${(program.initialDeposit || 0).toLocaleString()}
         </p>
 
       </div>
@@ -2277,7 +2289,7 @@ function renderEditModalPrograms() {
       <div style="background: white; padding: 12px; border-radius: 6px; border: 1px solid #e0e0e0; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
         <div>
           <strong>${p.name}</strong> - <span>${degreeNames[item.degree]}${thesisText} (${p.language || "English"})</span><br>
-          <small>Duration: ${p.duration || "N/A"} | Orig: $${p.originalFee || 0} | Disc: $${p.discountFee || 0}</small>
+          <small>Duration: ${p.duration || "N/A"} | Orig: $${p.originalFee || 0} | Disc: $${p.discountFee || 0} | Deposit: $${p.initialDeposit || 0}</small>
         </div>
         <button type="button" class="remove-program-btn" style="padding: 4px 8px; font-size: 12px;" onclick="removeProgramInEditModal('${item.degree}', ${item.index})">
           <i class="fas fa-trash"></i> Remove
@@ -2296,6 +2308,7 @@ function addProgramInEditModal() {
   const duration = document.getElementById("editProgDuration").value.trim();
   const originalFee = document.getElementById("editProgOriginalFee").value;
   const discountFee = document.getElementById("editProgDiscountFee").value;
+  const initialDeposit = document.getElementById("editProgInitialDeposit")?.value || 0;
   const thesisType = (level === "Master") ? document.getElementById("editProgThesisType").value : "N/A";
 
   if (!name) return alert("Please enter program name.");
@@ -2313,6 +2326,7 @@ function addProgramInEditModal() {
     duration: duration || "",
     originalFee: Number(originalFee) || 0,
     discountFee: Number(discountFee) || 0,
+    initialDeposit: Number(initialDeposit) || 0,
     thesisType
   });
 
@@ -2320,6 +2334,9 @@ function addProgramInEditModal() {
   document.getElementById("editProgDuration").value = "";
   document.getElementById("editProgOriginalFee").value = "";
   document.getElementById("editProgDiscountFee").value = "";
+  if (document.getElementById("editProgInitialDeposit")) {
+    document.getElementById("editProgInitialDeposit").value = "";
+  }
 
   renderEditModalPrograms();
 }
@@ -3624,13 +3641,14 @@ async function initFeeStructureExporter() {
           language: langVal,
           duration: p.duration || "N/A",
           originalFee: p.originalFee || 0,
-          discountFee: p.discountFee || 0
+          discountFee: p.discountFee || 0,
+          initialDeposit: p.initialDeposit || 0
         });
       });
     });
 
     if (rows.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #64748b; padding: 25px;">No program fee structures match the selected filter criteria.</td></tr>`;
+      tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #64748b; padding: 25px;">No program fee structures match the selected filter criteria.</td></tr>`;
       return;
     }
 
@@ -3646,6 +3664,7 @@ async function initFeeStructureExporter() {
           <td>${r.duration}</td>
           <td style="text-decoration: line-through; color: #94a3b8;">$${Number(r.originalFee).toLocaleString()}</td>
           <td><span class="badge-discount">$${Number(r.discountFee).toLocaleString()}</span></td>
+          <td><strong style="color: #1d5bbf;">$${Number(r.initialDeposit || 0).toLocaleString()}</strong></td>
         </tr>
       `;
     });
