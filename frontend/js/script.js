@@ -1805,7 +1805,7 @@ function renderProgramList(university, degreeType, language) {
             }
 
             <div class="program-level-badge">
-              ${displayLevel}${(program.thesisType && program.thesisType !== "N/A") ? ` (${program.thesisType})` : ""}
+              ${displayLevel}${(displayLevel === "Master" && program.thesisType && program.thesisType !== "N/A") ? ` (${program.thesisType})` : ""}
             </div>
 
           </div>
@@ -1815,13 +1815,15 @@ function renderProgramList(university, degreeType, language) {
           <div class="program-info">
 
             <h4>
-              ${program.name} ${(program.thesisType && program.thesisType !== "N/A") ? `<span style="font-size: 13px; font-weight: 600; color: var(--red); background: rgba(209, 26, 34, 0.1); padding: 2px 8px; border-radius: 4px; margin-left: 6px;">${program.thesisType}</span>` : ""}
+              ${program.name} ${(displayLevel === "Master" && program.thesisType && program.thesisType !== "N/A") ? `<span style="font-size: 13px; font-weight: 600; color: var(--red); background: rgba(209, 26, 34, 0.1); padding: 2px 8px; border-radius: 4px; margin-left: 6px;">${program.thesisType}</span>` : ""}
             </h4>
 
+            ${displayLevel === "Master" && program.thesisType && program.thesisType !== "N/A" ? `
             <p>
               <strong>Thesis Option:</strong>
-              ${program.thesisType && program.thesisType !== "N/A" ? program.thesisType : "N/A"}
+              ${program.thesisType}
             </p>
+            ` : ""}
 
             <p>
               <strong>Language:</strong>
@@ -2284,19 +2286,29 @@ function renderEditModalPrograms() {
 
   container.innerHTML = allProgs.map((item) => {
     const p = item.program;
-    const thesisText = (p.thesisType && p.thesisType !== "N/A") ? ` (${p.thesisType})` : "";
+    const thesisText = (item.degree === "masters" && p.thesisType && p.thesisType !== "N/A") ? ` (${p.thesisType})` : "";
+    const depositVal = p.initialDeposit ?? p.depositFee ?? p.deposit ?? 0;
     return `
-      <div style="background: white; padding: 12px; border-radius: 6px; border: 1px solid #e0e0e0; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+      <div style="background: white; padding: 12px; border-radius: 6px; border: 1px solid #e0e0e0; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
         <div>
           <strong>${p.name}</strong> - <span>${degreeNames[item.degree]}${thesisText} (${p.language || "English"})</span><br>
-          <small>Duration: ${p.duration || "N/A"} | Orig: $${p.originalFee || 0} | Disc: $${p.discountFee || 0} | Deposit: $${p.initialDeposit || 0}</small>
+          <small>Duration: ${p.duration || "N/A"} | Orig: $${p.originalFee || 0} | Disc: $${p.discountFee || 0}</small>
         </div>
-        <button type="button" class="remove-program-btn" style="padding: 4px 8px; font-size: 12px;" onclick="removeProgramInEditModal('${item.degree}', ${item.index})">
-          <i class="fas fa-trash"></i> Remove
-        </button>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <label style="font-size: 12px; font-weight: 600; color: #334155;">Deposit ($):</label>
+          <input type="number" value="${depositVal}" style="width: 90px; padding: 4px 8px; font-size: 12px; border: 1px solid #cbd5e1; border-radius: 4px;" onchange="updateProgramDepositInEditModal('${item.degree}', ${item.index}, this.value)" placeholder="1000" />
+          <button type="button" class="remove-program-btn" style="padding: 4px 8px; font-size: 12px;" onclick="removeProgramInEditModal('${item.degree}', ${item.index})">
+            <i class="fas fa-trash"></i> Remove
+          </button>
+        </div>
       </div>
     `;
   }).join("");
+}
+
+function updateProgramDepositInEditModal(degree, index, val) {
+  if (!currentEditingUni || !currentEditingUni.programs || !currentEditingUni.programs[degree] || !currentEditingUni.programs[degree][index]) return;
+  currentEditingUni.programs[degree][index].initialDeposit = Number(val) || 0;
 }
 
 function addProgramInEditModal() {
@@ -3637,12 +3649,13 @@ async function initFeeStructureExporter() {
         rows.push({
           name: p.name,
           degree: cat.label,
+          catKey: cat.key,
           thesis: thesisVal,
           language: langVal,
           duration: p.duration || "N/A",
           originalFee: p.originalFee || 0,
           discountFee: p.discountFee || 0,
-          initialDeposit: p.initialDeposit || 0
+          initialDeposit: p.initialDeposit ?? p.depositFee ?? p.deposit ?? p.initial_deposit ?? 0
         });
       });
     });
@@ -3654,7 +3667,7 @@ async function initFeeStructureExporter() {
 
     let html = "";
     rows.forEach(r => {
-      const thesisBadge = (r.thesis && r.thesis !== "N/A") ? `<span class="badge-thesis">${r.thesis}</span>` : '<span style="color:#94a3b8;">N/A</span>';
+      const thesisBadge = (r.catKey === "masters" && r.thesis && r.thesis !== "N/A") ? `<span class="badge-thesis">${r.thesis}</span>` : '<span style="color:#cbd5e1;">-</span>';
       html += `
         <tr>
           <td><strong>${r.name}</strong></td>
