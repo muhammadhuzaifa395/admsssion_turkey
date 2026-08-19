@@ -587,6 +587,8 @@ function updateReviewDetails() {
   const nationalityValue = document.getElementById("applicationNationality")?.value || "N/A";
   const dobValue = document.getElementById("applicationDob")?.value || "N/A";
   const genderValue = document.getElementById("applicationGender")?.value || "N/A";
+  const fatherNameValue = document.getElementById("applicationFatherName")?.value || "N/A";
+  const motherNameValue = document.getElementById("applicationMotherName")?.value || "N/A";
   const feesValue = applicationDiscountFee ? Number(applicationDiscountFee.value).toLocaleString() : "0";
   const messageValue = document.getElementById("applicationMessage")?.value || "";
 
@@ -595,6 +597,8 @@ function updateReviewDetails() {
     <p><strong>Full Name:</strong> ${nameValue}</p>
     <p><strong>Email:</strong> ${emailValue}</p>
     <p><strong>Phone:</strong> ${phoneValue}</p>
+    <p><strong>Father's Name:</strong> ${fatherNameValue}</p>
+    <p><strong>Mother's Name:</strong> ${motherNameValue}</p>
     <p><strong>University:</strong> ${universityValue}</p>
     <p><strong>Program:</strong> ${programValue}</p>
     <p><strong>Level:</strong> ${levelValue}</p>
@@ -895,6 +899,69 @@ let programs = {
   phd: []
 };
 
+// Toggle Thesis type dropdown when Master level is selected
+const programLevelSelect = document.getElementById("programLevel");
+const thesisTypeGroup = document.getElementById("thesisTypeGroup");
+
+if (programLevelSelect && thesisTypeGroup) {
+  function checkThesisToggle() {
+    thesisTypeGroup.style.display = programLevelSelect.value === "Master" ? "block" : "none";
+  }
+  programLevelSelect.addEventListener("change", checkThesisToggle);
+  checkThesisToggle();
+}
+
+// Select existing university to edit/append programs
+const selectExistingUniversity = document.getElementById("selectExistingUniversity");
+let existingUniversitiesCache = [];
+
+async function initAddUniversityPage() {
+  if (!selectExistingUniversity) return;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/universities`);
+    const data = await res.json();
+    existingUniversitiesCache = data.universities || [];
+
+    selectExistingUniversity.innerHTML = `<option value="">-- Create New University --</option>`;
+    existingUniversitiesCache.forEach((uni) => {
+      selectExistingUniversity.innerHTML += `<option value="${uni._id}">${uni.name} (${uni.location})</option>`;
+    });
+
+    selectExistingUniversity.addEventListener("change", function () {
+      const selectedId = this.value;
+      const editIdInput = document.getElementById("editUniversityId");
+
+      if (!selectedId) {
+        if (editIdInput) editIdInput.value = "";
+        universityForm.reset();
+        programs = { associate: [], bachelors: [], masters: [], phd: [] };
+        displayPrograms();
+        return;
+      }
+
+      const uni = existingUniversitiesCache.find((u) => u._id === selectedId);
+      if (uni) {
+        if (editIdInput) editIdInput.value = uni._id;
+        document.getElementById("universityName").value = uni.name || "";
+        document.getElementById("universityLocation").value = uni.location || "";
+        document.getElementById("universityDescription").value = uni.description || "";
+        document.getElementById("universityImage").value = uni.image || "";
+
+        programs = {
+          associate: uni.programs?.associate ? [...uni.programs.associate] : [],
+          bachelors: uni.programs?.bachelors ? [...uni.programs.bachelors] : [],
+          masters: uni.programs?.masters ? [...uni.programs.masters] : [],
+          phd: uni.programs?.phd ? [...uni.programs.phd] : []
+        };
+        displayPrograms();
+      }
+    });
+  } catch (err) {
+    console.error("Init select existing university error:", err);
+  }
+}
+initAddUniversityPage();
 
 // ========================================
 // ADD PROGRAM
@@ -912,6 +979,7 @@ if (addProgramBtn) {
     const durationElement = document.getElementById("programYears");
     const originalFeeElement = document.getElementById("programOriginalFee");
     const discountFeeElement = document.getElementById("programDiscountFee");
+    const thesisTypeElement = document.getElementById("programThesisType");
 
     const level = levelElement.value;
     const name = nameElement.value.trim();
@@ -919,6 +987,7 @@ if (addProgramBtn) {
     const duration = durationElement.value.trim();
     const originalFee = originalFeeElement.value.trim();
     const discountFee = discountFeeElement.value.trim();
+    const thesisType = (level === "Master" && thesisTypeElement) ? thesisTypeElement.value : "N/A";
 
 
     // ========================================
@@ -989,7 +1058,9 @@ if (addProgramBtn) {
         discountFee.replace(/[^0-9.]/g, "")
       ) || 0,
 
-      description: ""
+      description: "",
+
+      thesisType: thesisType
 
     };
 
@@ -1020,7 +1091,7 @@ if (addProgramBtn) {
 
 
     alert(
-      `${level} program added successfully!`
+      `${level} (${thesisType !== "N/A" ? thesisType : ""}) program added successfully!`
     );
 
   });
@@ -1105,6 +1176,7 @@ function displayPrograms() {
 
     };
 
+    const thesisLabel = (program.thesisType && program.thesisType !== "N/A") ? ` (${program.thesisType})` : "";
 
     const programCard = document.createElement("div");
 
@@ -1121,7 +1193,7 @@ function displayPrograms() {
 
         <p>
           <strong>Degree:</strong>
-          ${degreeNames[degreeType]}
+          ${degreeNames[degreeType]}${thesisLabel}
         </p>
 
         <p>
@@ -1210,10 +1282,8 @@ function displayPrograms() {
 
 
 // ===============================
-// ADD UNIVERSITY
+// ADD / EDIT UNIVERSITY SUBMIT
 // ===============================
-
-
 
 if (universityForm) {
 
@@ -1235,6 +1305,8 @@ if (universityForm) {
       return;
     }
 
+    const editId = document.getElementById("editUniversityId")?.value || "";
+
     const universityData = {
       name: document.getElementById("universityName").value.trim(),
       location: document.getElementById("universityLocation").value.trim(),
@@ -1243,13 +1315,17 @@ if (universityForm) {
       programs
     };
 
-    console.log("Submitting university:", universityData);
-
     try {
 
-      const response = await fetch(`${API_BASE_URL}/api/universities`, {
+      const url = editId
+        ? `${API_BASE_URL}/api/universities/${editId}`
+        : `${API_BASE_URL}/api/universities`;
 
-        method: "POST",
+      const method = editId ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+
+        method: method,
 
         headers: {
           "Content-Type": "application/json",
@@ -1264,9 +1340,16 @@ if (universityForm) {
 
       if (response.ok) {
 
-        alert("University Added Successfully!");
+        alert(editId ? "University Updated Successfully!" : "University Added Successfully!");
 
         universityForm.reset();
+
+        if (document.getElementById("editUniversityId")) {
+          document.getElementById("editUniversityId").value = "";
+        }
+        if (selectExistingUniversity) {
+          selectExistingUniversity.value = "";
+        }
 
         programs = {
           associate: [],
@@ -1276,10 +1359,11 @@ if (universityForm) {
         };
 
         displayPrograms();
+        initAddUniversityPage();
 
       } else {
 
-        alert(data.message || "Failed to add university.");
+        alert(data.message || "Failed to save university.");
 
       }
 
@@ -1358,51 +1442,67 @@ async function loadUniversities() {
     universityList.innerHTML = "";
 
 
+    // Group universities by name to avoid duplicate cards on frontend
+    const groupedMap = new Map();
     universities.forEach((uni) => {
+      const key = (uni.name || "").trim().toLowerCase();
+      if (!groupedMap.has(key)) {
+        groupedMap.set(key, {
+          _id: uni._id,
+          name: uni.name,
+          location: uni.location,
+          description: uni.description,
+          image: uni.image,
+          programs: {
+            associate: [...(uni.programs?.associate || [])],
+            bachelors: [...(uni.programs?.bachelors || [])],
+            masters: [...(uni.programs?.masters || [])],
+            phd: [...(uni.programs?.phd || [])]
+          }
+        });
+      } else {
+        const existing = groupedMap.get(key);
+        if (!existing.image && uni.image) existing.image = uni.image;
+        if (!existing.description && uni.description) existing.description = uni.description;
+        existing.programs.associate.push(...(uni.programs?.associate || []));
+        existing.programs.bachelors.push(...(uni.programs?.bachelors || []));
+        existing.programs.masters.push(...(uni.programs?.masters || []));
+        existing.programs.phd.push(...(uni.programs?.phd || []));
+      }
+    });
 
+    const displayUniversities = Array.from(groupedMap.values());
 
-      let totalPrograms =
-        Object.values(uni.programs)
-          .flat()
-          .length;
-
-
+    displayUniversities.forEach((uni) => {
+      let totalPrograms = Object.values(uni.programs).flat().length;
 
       universityList.innerHTML += `
-
-<div class="university-card">
-
-  ${uni.image ? `
-    <div class="university-image">
-      <img src="${uni.image}" alt="${uni.name}">
-    </div>
-  ` : `
-    <div class="university-image">
-      <i class="fas fa-university"></i>
-    </div>
-  `}
-
-  <div class="university-info">
-    <h3>${uni.name}</h3>
-
-    <p>
-      <i class="fas fa-location-dot"></i>
-      ${uni.location}
-    </p>
-
-    <p>
-      <i class="fas fa-graduation-cap"></i>
-      ${totalPrograms} Programs
-    </p>
-
-    <div class="university-actions">
-      <a href="university.html?id=${uni._id}" class="primary-btn">Visit University</a>
-    </div>
-  </div>
-
-</div>
-`;
-
+        <div class="university-card">
+          ${uni.image ? `
+            <div class="university-image">
+              <img src="${uni.image}" alt="${uni.name}">
+            </div>
+          ` : `
+            <div class="university-image">
+              <i class="fas fa-university"></i>
+            </div>
+          `}
+          <div class="university-info">
+            <h3>${uni.name}</h3>
+            <p>
+              <i class="fas fa-location-dot"></i>
+              ${uni.location}
+            </p>
+            <p>
+              <i class="fas fa-graduation-cap"></i>
+              ${totalPrograms} Programs
+            </p>
+            <div class="university-actions">
+              <a href="university.html?id=${uni._id}" class="primary-btn">Visit University</a>
+            </div>
+          </div>
+        </div>
+      `;
     });
 
 
@@ -1679,7 +1779,7 @@ function renderProgramList(university, degreeType, language) {
             }
 
             <div class="program-level-badge">
-              ${displayLevel}
+              ${displayLevel}${(program.thesisType && program.thesisType !== "N/A") ? ` (${program.thesisType})` : ""}
             </div>
 
           </div>
@@ -1689,8 +1789,13 @@ function renderProgramList(university, degreeType, language) {
           <div class="program-info">
 
             <h4>
-              ${program.name}
+              ${program.name} ${(program.thesisType && program.thesisType !== "N/A") ? `<span style="font-size: 13px; font-weight: 600; color: var(--red); background: rgba(209, 26, 34, 0.1); padding: 2px 8px; border-radius: 4px; margin-left: 6px;">${program.thesisType}</span>` : ""}
             </h4>
+
+            <p>
+              <strong>Thesis Option:</strong>
+              ${program.thesisType && program.thesisType !== "N/A" ? program.thesisType : "N/A"}
+            </p>
 
             <p>
               <strong>Language:</strong>
@@ -2113,107 +2218,202 @@ No Universities Added Yet.
 
 
     universities.forEach((uni, index) => {
-
-
-      let totalPrograms =
-        Object.values(uni.programs)
-          .flat()
-          .length;
-
-
+      let totalPrograms = Object.values(uni.programs).flat().length;
 
       manageUniversityList.innerHTML += `
-
-
-<div class="program-card">
-
-
-<div class="program-info">
-
-
-<h3>
-
-${index + 1}. ${uni.name}
-
-</h3>
-
-
-<p>
-
-<strong>Location:</strong>
-
-${uni.location}
-
-</p>
-
-
-
-<p>
-
-<strong>Total Programs:</strong>
-
-${totalPrograms}
-
-</p>
-
-
-
-<p>
-
-<strong>Description:</strong>
-
-${uni.description || "No description"}
-
-</p>
-
-
-
-</div>
-
-
-
-<div>
-
-
-<button 
-class="remove-program-btn"
-onclick="deleteUniversity('${uni._id}')">
-
-<i class="fas fa-trash"></i>
-
-Delete
-
-</button>
-
-
-</div>
-
-
-
-</div>
-
-
-`;
-
-
-
+        <div class="program-card">
+          <div class="program-info">
+            <h3>${index + 1}. ${uni.name}</h3>
+            <p><strong>Location:</strong> ${uni.location}</p>
+            <p><strong>Total Programs:</strong> ${totalPrograms}</p>
+            <p><strong>Description:</strong> ${uni.description || "No description"}</p>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button class="secondary-btn" onclick="openEditUniModal('${uni._id}')">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="remove-program-btn" onclick="deleteUniversity('${uni._id}')">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+      `;
     });
-
-
+  } catch (error) {
+    console.log("Manage University Error:", error);
   }
-
-
-  catch (error) {
-
-    console.log(
-      "Manage University Error:",
-      error
-    );
-
-  }
-
-
 }
+
+let currentEditingUni = null;
+
+async function openEditUniModal(id) {
+  const modal = document.getElementById("editUniversityModal");
+  if (!modal) {
+    // If on add-university page, redirect to add-university.html with edit parameter
+    window.location.href = `add-university.html?editId=${id}`;
+    return;
+  }
+
+  try {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const res = await fetch(`${API_BASE_URL}/api/universities/${id}`);
+    const data = await res.json();
+    const uni = data.university;
+
+    if (!uni) return alert("University not found.");
+
+    currentEditingUni = JSON.parse(JSON.stringify(uni));
+
+    document.getElementById("editUniId").value = uni._id;
+    document.getElementById("editUniName").value = uni.name || "";
+    document.getElementById("editUniLocation").value = uni.location || "";
+    document.getElementById("editUniDescription").value = uni.description || "";
+    document.getElementById("editUniImage").value = uni.image || "";
+
+    renderEditModalPrograms();
+    modal.style.display = "flex";
+  } catch (err) {
+    console.error("Open edit modal error:", err);
+    alert("Error fetching university details.");
+  }
+}
+
+function closeEditUniModal() {
+  const modal = document.getElementById("editUniversityModal");
+  if (modal) modal.style.display = "none";
+  currentEditingUni = null;
+}
+
+function toggleEditThesisField() {
+  const level = document.getElementById("editProgLevel")?.value;
+  const group = document.getElementById("editProgThesisGroup");
+  if (group) group.style.display = level === "Master" ? "block" : "none";
+}
+
+function renderEditModalPrograms() {
+  const container = document.getElementById("editUniProgramList");
+  if (!container || !currentEditingUni) return;
+
+  const degreeNames = { associate: "Associate", bachelors: "Bachelor", masters: "Master", phd: "PhD" };
+  const allProgs = [];
+
+  Object.keys(currentEditingUni.programs || {}).forEach((type) => {
+    (currentEditingUni.programs[type] || []).forEach((p, idx) => {
+      allProgs.push({ degree: type, program: p, index: idx });
+    });
+  });
+
+  if (allProgs.length === 0) {
+    container.innerHTML = `<p class="empty-program">No programs added to this university yet.</p>`;
+    return;
+  }
+
+  container.innerHTML = allProgs.map((item) => {
+    const p = item.program;
+    const thesisText = (p.thesisType && p.thesisType !== "N/A") ? ` (${p.thesisType})` : "";
+    return `
+      <div style="background: white; padding: 12px; border-radius: 6px; border: 1px solid #e0e0e0; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <strong>${p.name}</strong> - <span>${degreeNames[item.degree]}${thesisText} (${p.language || "English"})</span><br>
+          <small>Duration: ${p.duration || "N/A"} | Orig: $${p.originalFee || 0} | Disc: $${p.discountFee || 0}</small>
+        </div>
+        <button type="button" class="remove-program-btn" style="padding: 4px 8px; font-size: 12px;" onclick="removeProgramInEditModal('${item.degree}', ${item.index})">
+          <i class="fas fa-trash"></i> Remove
+        </button>
+      </div>
+    `;
+  }).join("");
+}
+
+function addProgramInEditModal() {
+  if (!currentEditingUni) return;
+
+  const level = document.getElementById("editProgLevel").value;
+  const name = document.getElementById("editProgName").value.trim();
+  const language = document.getElementById("editProgLanguage").value;
+  const duration = document.getElementById("editProgDuration").value.trim();
+  const originalFee = document.getElementById("editProgOriginalFee").value;
+  const discountFee = document.getElementById("editProgDiscountFee").value;
+  const thesisType = (level === "Master") ? document.getElementById("editProgThesisType").value : "N/A";
+
+  if (!name) return alert("Please enter program name.");
+
+  const degreeMap = { "Bachelor": "bachelors", "Associate": "associate", "Master": "masters", "PhD": "phd" };
+  const degreeType = degreeMap[level];
+
+  if (!currentEditingUni.programs[degreeType]) {
+    currentEditingUni.programs[degreeType] = [];
+  }
+
+  currentEditingUni.programs[degreeType].push({
+    name,
+    language,
+    duration: duration || "",
+    originalFee: Number(originalFee) || 0,
+    discountFee: Number(discountFee) || 0,
+    thesisType
+  });
+
+  document.getElementById("editProgName").value = "";
+  document.getElementById("editProgDuration").value = "";
+  document.getElementById("editProgOriginalFee").value = "";
+  document.getElementById("editProgDiscountFee").value = "";
+
+  renderEditModalPrograms();
+}
+
+function removeProgramInEditModal(degree, index) {
+  if (!currentEditingUni || !currentEditingUni.programs[degree]) return;
+  currentEditingUni.programs[degree].splice(index, 1);
+  renderEditModalPrograms();
+}
+
+// Edit University Form Submit
+document.addEventListener("DOMContentLoaded", () => {
+  const editForm = document.getElementById("editUniversityForm");
+  if (editForm) {
+    editForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || !user.token) return alert("Admin login required.");
+
+      const id = document.getElementById("editUniId").value;
+      const name = document.getElementById("editUniName").value.trim();
+      const location = document.getElementById("editUniLocation").value.trim();
+      const description = document.getElementById("editUniDescription").value.trim();
+      const image = document.getElementById("editUniImage").value.trim();
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/universities/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`
+          },
+          body: JSON.stringify({
+            name,
+            location,
+            description,
+            image,
+            programs: currentEditingUni.programs
+          })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          alert("University updated successfully!");
+          closeEditUniModal();
+          loadManageUniversities();
+        } else {
+          alert(data.message || "Failed to update university.");
+        }
+      } catch (err) {
+        console.error("Save edit university error:", err);
+        alert("Server error updating university.");
+      }
+    });
+  }
+});
 
 
 
@@ -2843,6 +3043,14 @@ function renderApplications(apps) {
           <div class="meta-item">
             <strong>Tuition Fee</strong>
             <span>$${app.discountFee || app.originalFee || 0}</span>
+          </div>
+          <div class="meta-item">
+            <strong>Father's Name</strong>
+            <span>${app.fatherName || "N/A"}</span>
+          </div>
+          <div class="meta-item">
+            <strong>Mother's Name</strong>
+            <span>${app.motherName || "N/A"}</span>
           </div>
           <div class="meta-item">
             <strong>DOB / Gender</strong>

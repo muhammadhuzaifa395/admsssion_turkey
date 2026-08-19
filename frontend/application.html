@@ -83,13 +83,21 @@ Fill in your details and our team will contact you.
         <input type="date" id="applicationDob" name="dob" required>
       </div>
       <div class="form-group">
-        <label for="applicationGender">Gender</label>
+        <label for="applicationGender">Gender *</label>
         <select id="applicationGender" name="gender" required>
           <option value="">Select Gender</option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
           <option value="Other">Other</option>
         </select>
+      </div>
+      <div class="form-group">
+        <label for="applicationFatherName">Father's Name *</label>
+        <input type="text" id="applicationFatherName" name="fatherName" placeholder="Father's Full Name" required>
+      </div>
+      <div class="form-group">
+        <label for="applicationMotherName">Mother's Name *</label>
+        <input type="text" id="applicationMotherName" name="motherName" placeholder="Mother's Full Name" required>
       </div>
       <div class="form-group">
         <label for="applicationProgram">Preferred Program</label>

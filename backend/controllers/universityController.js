@@ -341,96 +341,48 @@ exports.addProgram = async (
       duration,
       originalFee,
       discountFee,
-      description
+      description,
+      thesisType
     } = req.body;
 
-
     const allowedTypes = [
-
       "associate",
-
       "bachelors",
-
       "masters",
-
       "phd"
-
     ];
 
-
-    if (
-      !allowedTypes.includes(
-        degreeType
-      )
-    ) {
-
+    if (!allowedTypes.includes(degreeType)) {
       return res.status(400).json({
-
         success: false,
-
-        message:
-          "Invalid degree type."
-
+        message: "Invalid degree type."
       });
-
     }
-
 
     if (!name) {
-
       return res.status(400).json({
-
         success: false,
-
-        message:
-          "Program name is required."
-
+        message: "Program name is required."
       });
-
     }
 
-
-    const university =
-      await University.findById(
-        req.params.id
-      );
-
+    const university = await University.findById(req.params.id);
 
     if (!university) {
-
       return res.status(404).json({
-
         success: false,
-
-        message:
-          "University not found."
-
+        message: "University not found."
       });
-
     }
 
-
-    university.programs[
-      degreeType
-    ].push({
-
+    university.programs[degreeType].push({
       name,
-
-      language:
-        language || "English",
-
-      duration:
-        duration || "",
-
-      originalFee:
-        Number(originalFee) || 0,
-
-      discountFee:
-        Number(discountFee) || 0,
-
-      description:
-        description || ""
-
+      language: language || "English",
+      duration: duration || "",
+      originalFee: Number(originalFee) || 0,
+      discountFee: Number(discountFee) || 0,
+      description: description || "",
+      thesisType: thesisType || "N/A"
     });
 
 

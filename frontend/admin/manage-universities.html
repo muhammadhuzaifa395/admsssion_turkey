@@ -175,6 +175,96 @@ Loading Universities...
 
 </div>
 
+<!-- EDIT UNIVERSITY MODAL -->
+<div id="editUniversityModal" class="doc-modal" style="display:none;">
+  <div class="doc-modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+    <div class="doc-modal-header">
+      <h3><i class="fas fa-edit"></i> Edit University & Programs</h3>
+      <span class="doc-modal-close" onclick="closeEditUniModal()">&times;</span>
+    </div>
+    <div class="doc-modal-body" style="padding: 20px;">
+      <form id="editUniversityForm">
+        <input type="hidden" id="editUniId">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>University Name</label>
+            <input type="text" id="editUniName" required>
+          </div>
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" id="editUniLocation" required>
+          </div>
+          <div class="form-group full-width">
+            <label>Description</label>
+            <textarea id="editUniDescription" rows="4"></textarea>
+          </div>
+          <div class="form-group full-width">
+            <label>Image URL</label>
+            <input type="url" id="editUniImage">
+          </div>
+        </div>
+
+        <hr style="margin: 20px 0;">
+        <h4><i class="fas fa-graduation-cap"></i> Programs in this University</h4>
+        <div id="editUniProgramList" style="margin-bottom: 20px;"></div>
+
+        <div style="background: rgba(29,91,191,0.05); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+          <h5>Add Program to this University</h5>
+          <div class="form-grid" style="margin-top: 10px;">
+            <div class="form-group">
+              <label>Degree Level</label>
+              <select id="editProgLevel" onchange="toggleEditThesisField()">
+                <option value="Bachelor">Bachelor</option>
+                <option value="Associate">Associate</option>
+                <option value="Master">Master</option>
+                <option value="PhD">PhD</option>
+              </select>
+            </div>
+            <div class="form-group" id="editProgThesisGroup" style="display:none;">
+              <label>Master Thesis Option</label>
+              <select id="editProgThesisType">
+                <option value="Thesis">With Thesis (Thesis)</option>
+                <option value="Non-Thesis">Without Thesis (Non-Thesis)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Program Name</label>
+              <input type="text" id="editProgName" placeholder="e.g. Computer Science">
+            </div>
+            <div class="form-group">
+              <label>Language</label>
+              <select id="editProgLanguage">
+                <option value="English">English</option>
+                <option value="Turkish">Turkish</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Duration</label>
+              <input type="text" id="editProgDuration" placeholder="e.g. 2 Years / 4 Years">
+            </div>
+            <div class="form-group">
+              <label>Original Fee ($)</label>
+              <input type="number" id="editProgOriginalFee" placeholder="8000">
+            </div>
+            <div class="form-group">
+              <label>Discount Fee ($)</label>
+              <input type="number" id="editProgDiscountFee" placeholder="4000">
+            </div>
+          </div>
+          <button type="button" class="secondary-btn" style="margin-top: 10px;" onclick="addProgramInEditModal()">
+            <i class="fas fa-plus"></i> Add Program
+          </button>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" class="secondary-btn" onclick="closeEditUniModal()">Cancel</button>
+          <button type="submit" class="primary-btn"><i class="fas fa-save"></i> Save University Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 
 </main>
 

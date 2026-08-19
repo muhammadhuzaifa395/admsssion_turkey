@@ -144,7 +144,16 @@ University Information
 </h2>
 
 
+<div class="form-group full-width" style="margin-bottom: 20px; background: rgba(29, 91, 191, 0.05); padding: 15px; border-radius: 8px; border: 1px dashed var(--blue);">
+  <label><i class="fas fa-edit"></i> Edit Existing University or Create New</label>
+  <select id="selectExistingUniversity">
+    <option value="">-- Create New University --</option>
+  </select>
+  <small style="color: var(--gray); display: block; margin-top: 5px;">Select an existing university to add more programs (e.g. Master Thesis / Non-Thesis) without creating duplicate university cards.</small>
+</div>
+
 <form id="universityForm">
+<input type="hidden" id="editUniversityId" value="">
 
 
 <div class="form-grid">
@@ -164,8 +173,6 @@ required
 >
 
 </div>
-
-
 
 <div class="form-group">
 
@@ -238,13 +245,14 @@ Add Degree Programs
 
 <p class="form-help">
 
-Select a degree level and enter program details.
+Select a degree level and enter program details. For Master's programs, select Thesis or Non-Thesis.
 
 </p>
 
 
 
 <!-- PROGRAM TYPE -->
+<div class="form-grid">
 
 <div class="form-group">
 
@@ -271,6 +279,19 @@ PhD
 </option>
 
 </select>
+
+</div>
+
+<div class="form-group" id="thesisTypeGroup" style="display: none;">
+<label>
+Master Thesis Option
+</label>
+
+<select id="programThesisType">
+  <option value="Thesis">With Thesis (Thesis)</option>
+  <option value="Non-Thesis">Without Thesis (Non-Thesis)</option>
+</select>
+</div>
 
 </div>
 

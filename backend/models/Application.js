@@ -52,6 +52,16 @@ const applicationSchema = new mongoose.Schema(
       default: ""
     },
 
+    fatherName: {
+      type: String,
+      required: true
+    },
+
+    motherName: {
+      type: String,
+      required: true
+    },
+
     universityId: {
       type: String,
       default: ""

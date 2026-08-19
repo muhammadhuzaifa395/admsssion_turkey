@@ -36,6 +36,12 @@ const programSchema = new mongoose.Schema(
     description: {
       type: String,
       default: ""
+    },
+
+    thesisType: {
+      type: String,
+      enum: ["Thesis", "Non-Thesis", "N/A"],
+      default: "N/A"
     }
   },
   {
