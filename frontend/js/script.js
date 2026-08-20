@@ -3083,7 +3083,7 @@ async function loadManageApplications() {
   }
 }
 
-function downloadDocFile(url, filename) {
+function downloadDocFile(url, filename, appId = null) {
   if (!url) return;
   const a = document.createElement("a");
   a.href = url;
@@ -3091,6 +3091,32 @@ function downloadDocFile(url, filename) {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
+
+  // Auto update status from Pending to Under Review on document download
+  if (appId && typeof updateApplicationStatus === "function") {
+    const app = allApplicationsList.find(a => a._id === appId);
+    if (app && (!app.status || app.status.trim().toLowerCase() === "pending")) {
+      updateApplicationStatus(appId, "Under Review");
+    }
+  }
+}
+
+function uploadAdminDoc(appId, docType, file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const dataUrl = e.target.result;
+    const adminDocsKey = `admin_app_docs_${appId}`;
+    const storedAdminDocs = JSON.parse(localStorage.getItem(adminDocsKey) || "{}");
+    storedAdminDocs[docType] = dataUrl;
+    localStorage.setItem(adminDocsKey, JSON.stringify(storedAdminDocs));
+
+    const app = allApplicationsList.find(a => a._id === appId);
+    if (app) app[docType] = dataUrl;
+
+    filterApplications();
+  };
+  reader.readAsDataURL(file);
 }
 
 function renderApplications(apps) {
@@ -3117,7 +3143,7 @@ function renderApplications(apps) {
       year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit"
     }) : "N/A";
 
-    // Collect all documents
+    // Collect all student documents
     const docList = [];
 
     if (app.passportDocument) {
@@ -3150,7 +3176,14 @@ function renderApplications(apps) {
     else if (statusVal === "Approved") statusClass = "status-approved";
     else if (statusVal === "Rejected") statusClass = "status-rejected";
 
-    // Render HTML for documents
+    // Retrieve Admin Issued Documents (Offer Letter, Fee Slip, Final Acceptance)
+    const adminDocsKey = `admin_app_docs_${app._id}`;
+    const storedAdminDocs = JSON.parse(localStorage.getItem(adminDocsKey) || "{}");
+    const offerLetterUrl = app.offerLetter || storedAdminDocs.offerLetter || null;
+    const feeSlipUrl = app.feeSlip || storedAdminDocs.feeSlip || null;
+    const finalAcceptanceUrl = app.finalAcceptanceLetter || storedAdminDocs.finalAcceptanceLetter || null;
+
+    // Render HTML for student documents
     let docsHTML = "";
     if (docList.length === 0) {
       docsHTML = `<p class="no-docs-text"><i class="fas fa-exclamation-circle"></i> No user documents uploaded for this application.</p>`;
@@ -3186,7 +3219,7 @@ function renderApplications(apps) {
               <button type="button" class="doc-btn doc-btn-preview" onclick="openDocPreview(allApplicationsList[${index}].${doc.key}, '${safeDocLabel} - ${safeAppName}')">
                 <i class="fas fa-eye"></i> Preview
               </button>
-              <button type="button" class="doc-btn doc-btn-download" onclick="downloadDocFile(allApplicationsList[${index}].${doc.key}, '${safeDocLabel}-${safeAppName}')">
+              <button type="button" class="doc-btn doc-btn-download" onclick="downloadDocFile(allApplicationsList[${index}].${doc.key}, '${safeDocLabel}-${safeAppName}', '${app._id}')">
                 <i class="fas fa-download"></i> Download
               </button>
             </div>
@@ -3195,6 +3228,8 @@ function renderApplications(apps) {
       });
       docsHTML += `</div>`;
     }
+
+    const safeAppName = (app.name || "").replace(/'/g, "\\'");
 
     // Build Card HTML
     manageApplicationList.innerHTML += `
@@ -3267,6 +3302,74 @@ function renderApplications(apps) {
         <div class="app-docs-section">
           <h4><i class="fas fa-paperclip"></i> Uploaded Documents (${docList.length})</h4>
           ${docsHTML}
+        </div>
+
+        <!-- ADMIN ISSUED OFFICIAL DOCUMENTS & LETTERS SECTION -->
+        <div class="admin-issued-docs-section" style="margin-top: 20px; padding: 18px; background: #edf4ff; border-radius: 12px; border: 1px solid rgba(11, 63, 126, 0.16);">
+          <h4 style="color: var(--navy, #0b3f7e); font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-weight: 700;">
+            <i class="fas fa-file-signature" style="color: var(--blue, #1d5bbf);"></i> Official Issued Documents & Letters
+          </h4>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;">
+            
+            <!-- 1. OFFER LETTER -->
+            <div style="background: #ffffff; border-radius: 10px; padding: 12px 14px; border: 1px solid #cbd5e1;">
+              <strong style="font-size: 13px; color: #0f172a; display: block; margin-bottom: 6px;">
+                <i class="fas fa-file-contract" style="color: #f97316;"></i> 1. Offer Letter
+              </strong>
+              ${offerLetterUrl ? `
+                <div style="display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;">
+                  <button type="button" class="doc-btn doc-btn-preview" onclick="openDocPreview('${offerLetterUrl}', 'Offer Letter - ${safeAppName}')">
+                    <i class="fas fa-eye"></i> Preview
+                  </button>
+                  <button type="button" class="doc-btn doc-btn-download" onclick="downloadDocFile('${offerLetterUrl}', 'OfferLetter-${safeAppName}')">
+                    <i class="fas fa-download"></i> Download
+                  </button>
+                </div>
+              ` : `<span style="font-size: 12px; color: #94a3b8; display: block; margin-bottom: 6px;">No Offer Letter uploaded yet.</span>`}
+              <label style="font-size: 11px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">Upload / Update Offer Letter:</label>
+              <input type="file" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" style="font-size: 12px; width: 100%;" onchange="uploadAdminDoc('${app._id}', 'offerLetter', this.files[0])">
+            </div>
+
+            <!-- 2. FEE SLIP -->
+            <div style="background: #ffffff; border-radius: 10px; padding: 12px 14px; border: 1px solid #cbd5e1;">
+              <strong style="font-size: 13px; color: #0f172a; display: block; margin-bottom: 6px;">
+                <i class="fas fa-file-invoice-dollar" style="color: #10b981;"></i> 2. Fee Slip
+              </strong>
+              ${feeSlipUrl ? `
+                <div style="display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;">
+                  <button type="button" class="doc-btn doc-btn-preview" onclick="openDocPreview('${feeSlipUrl}', 'Fee Slip - ${safeAppName}')">
+                    <i class="fas fa-eye"></i> Preview
+                  </button>
+                  <button type="button" class="doc-btn doc-btn-download" onclick="downloadDocFile('${feeSlipUrl}', 'FeeSlip-${safeAppName}')">
+                    <i class="fas fa-download"></i> Download
+                  </button>
+                </div>
+              ` : `<span style="font-size: 12px; color: #94a3b8; display: block; margin-bottom: 6px;">No Fee Slip uploaded yet.</span>`}
+              <label style="font-size: 11px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">Upload / Update Fee Slip:</label>
+              <input type="file" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" style="font-size: 12px; width: 100%;" onchange="uploadAdminDoc('${app._id}', 'feeSlip', this.files[0])">
+            </div>
+
+            <!-- 3. FINAL ACCEPTANCE LETTER -->
+            <div style="background: #ffffff; border-radius: 10px; padding: 12px 14px; border: 1px solid #cbd5e1;">
+              <strong style="font-size: 13px; color: #0f172a; display: block; margin-bottom: 6px;">
+                <i class="fas fa-award" style="color: #1d5bbf;"></i> 3. Final Acceptance Letter
+              </strong>
+              ${finalAcceptanceUrl ? `
+                <div style="display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;">
+                  <button type="button" class="doc-btn doc-btn-preview" onclick="openDocPreview('${finalAcceptanceUrl}', 'Final Acceptance Letter - ${safeAppName}')">
+                    <i class="fas fa-eye"></i> Preview
+                  </button>
+                  <button type="button" class="doc-btn doc-btn-download" onclick="downloadDocFile('${finalAcceptanceUrl}', 'FinalAcceptanceLetter-${safeAppName}')">
+                    <i class="fas fa-download"></i> Download
+                  </button>
+                </div>
+              ` : `<span style="font-size: 12px; color: #94a3b8; display: block; margin-bottom: 6px;">No Final Acceptance Letter uploaded yet.</span>`}
+              <label style="font-size: 11px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">Upload / Update Final Acceptance Letter:</label>
+              <input type="file" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" style="font-size: 12px; width: 100%;" onchange="uploadAdminDoc('${app._id}', 'finalAcceptanceLetter', this.files[0])">
+            </div>
+
+          </div>
         </div>
 
         <div class="app-actions-footer">
