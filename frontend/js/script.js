@@ -4053,6 +4053,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initAnimations();
   initFaqAccordion();
   initHomeUniversitySlider();
+  initMindmapSection();
   initVideoModal();
   initReviewSystem();
   loadUniversities();
@@ -4641,6 +4642,60 @@ function initReviewSystem() {
     });
   }
 }
+
+function initMindmapSection() {
+  const container = document.querySelector(".mindmap-container");
+  const svg = document.getElementById("mindmapSvg");
+  const centerBadge = document.querySelector(".mindmap-center-badge");
+  const nodes = document.querySelectorAll(".mindmap-node");
+
+  if (!container || !svg || !centerBadge || nodes.length === 0) return;
+
+  function updateLines() {
+    if (window.innerWidth <= 992) {
+      svg.innerHTML = "";
+      return;
+    }
+
+    const containerRect = container.getBoundingClientRect();
+    const centerRect = centerBadge.getBoundingClientRect();
+
+    const cX = (centerRect.left + centerRect.width / 2) - containerRect.left;
+    const cY = (centerRect.top + centerRect.height / 2) - containerRect.top;
+
+    let svgHTML = "";
+
+    nodes.forEach((node, idx) => {
+      const nodeRect = node.getBoundingClientRect();
+      const nX = (nodeRect.left + nodeRect.width / 2) - containerRect.left;
+      const nY = (nodeRect.top + nodeRect.height / 2) - containerRect.top;
+
+      const controlX = (cX + nX) / 2;
+
+      const pathData = `M ${cX} ${cY} Q ${controlX} ${nY}, ${nX} ${nY}`;
+      const pathId = `line-node-${idx}`;
+
+      svgHTML += `<path id="${pathId}" d="${pathData}" class="mindmap-path"></path>`;
+    });
+
+    svg.innerHTML = svgHTML;
+  }
+
+  setTimeout(updateLines, 100);
+  window.addEventListener("resize", updateLines);
+
+  nodes.forEach((node, idx) => {
+    node.addEventListener("mouseenter", () => {
+      const path = document.getElementById(`line-node-${idx}`);
+      if (path) path.classList.add("active");
+    });
+    node.addEventListener("mouseleave", () => {
+      const path = document.getElementById(`line-node-${idx}`);
+      if (path) path.classList.remove("active");
+    });
+  });
+}
+
 
 
 

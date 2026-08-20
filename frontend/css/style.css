@@ -4187,9 +4187,188 @@ body {
   cursor: pointer;
 }
 
-.review-modal-close:hover {
-  color: var(--red);
+/* =========================================================
+   INTERACTIVE ROUTE MINDMAP ANIMATION SECTION
+   ========================================================= */
+
+.mindmap-section {
+  background: radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.06) 0%, rgba(29, 91, 191, 0.03) 50%, transparent 80%);
+  position: relative;
+  padding: 80px 20px;
+  overflow: hidden;
 }
+
+.mindmap-title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-top: 8px;
+}
+
+.accent-orange {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.mindmap-container {
+  position: relative;
+  max-width: 1100px;
+  min-height: 520px;
+  margin: 50px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mindmap-lines-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.mindmap-lines-svg path {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 2px;
+  stroke-dasharray: 6 4;
+  opacity: 0.3;
+  transition: all 0.4s ease;
+}
+
+.mindmap-lines-svg path.active {
+  stroke: #f59e0b;
+  stroke-width: 3.5px;
+  stroke-dasharray: none;
+  opacity: 1;
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.5));
+}
+
+/* Center Badge */
+.mindmap-center-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: 24px;
+  padding: 18px 30px;
+  box-shadow: var(--shadow-lg), 0 0 40px rgba(29, 91, 191, 0.15);
+  animation: floatLevitate 5s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 260px;
+}
+
+.mindmap-logo-img {
+  max-height: 65px;
+  width: auto;
+  object-fit: contain;
+}
+
+@keyframes floatLevitate {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0px) rotate(0deg); }
+  50% { transform: translate(-50%, -50%) translateY(-12px) rotate(-1deg); }
+}
+
+/* Node Cards */
+.mindmap-node {
+  position: absolute;
+  z-index: 4;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 14px 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 280px;
+  transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+  cursor: pointer;
+}
+
+.mindmap-node:hover, .mindmap-node.active {
+  transform: scale(1.06) translateY(-4px);
+  border-color: #f59e0b;
+  box-shadow: 0 12px 30px rgba(245, 158, 11, 0.25);
+}
+
+.node-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.node-icon-wrap.cyan { background: rgba(6, 182, 212, 0.12); color: #06b6d4; }
+.node-icon-wrap.green { background: rgba(16, 185, 129, 0.12); color: #10b981; }
+.node-icon-wrap.pink { background: rgba(236, 72, 153, 0.12); color: #ec4899; }
+.node-icon-wrap.orange { background: rgba(245, 158, 11, 0.12); color: #f59e0b; }
+.node-icon-wrap.blue { background: rgba(29, 91, 191, 0.12); color: var(--blue); }
+.node-icon-wrap.purple { background: rgba(139, 92, 246, 0.12); color: #8b5cf6; }
+
+.node-text h4 {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 2px;
+  line-height: 1.3;
+}
+
+.node-text p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* Positioning Nodes */
+.node-top-left { top: 30px; left: 20px; }
+.node-mid-left { top: 50%; left: 0; transform: translateY(-50%); }
+.node-bot-left { bottom: 30px; left: 20px; }
+
+.node-top-right { top: 30px; right: 20px; }
+.node-mid-right { top: 50%; right: 0; transform: translateY(-50%); }
+.node-bot-right { bottom: 30px; right: 20px; }
+
+@media (max-width: 992px) {
+  .mindmap-container {
+    min-height: auto;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .mindmap-lines-svg { display: none; }
+  .mindmap-center-badge {
+    position: relative;
+    top: 0; left: 0;
+    transform: none;
+    animation: none;
+    margin-bottom: 25px;
+    width: 100%;
+    max-width: 300px;
+  }
+  .mindmap-node {
+    position: relative;
+    top: auto; left: auto; right: auto; bottom: auto;
+    transform: none !important;
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
 
 
 
