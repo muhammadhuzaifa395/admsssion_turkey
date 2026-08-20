@@ -3579,33 +3579,43 @@ async function initAdminDashboard() {
 
 document.addEventListener("DOMContentLoaded", initAdminDashboard);
 
-function detectProgramDeposit(p) {
-  if (!p || typeof p !== "object") return 0;
+function detectProgramDeposit(p, uni = null) {
+  if (p && typeof p === "object") {
+    const knownKeys = [
+      "initialDeposit", "deposit", "depositFee", "initial_deposit", 
+      "deposit_fee", "initialDepositFee", "prepayment", "advanceFee", "advance", "prepDeposit"
+    ];
+    
+    for (const k of knownKeys) {
+      if (p[k] !== undefined && p[k] !== null && p[k] !== "") {
+        const num = typeof p[k] === "number" ? p[k] : Number(String(p[k]).replace(/[^0-9.]/g, ""));
+        if (!isNaN(num) && num > 0) return num;
+      }
+    }
 
-  const knownKeys = [
-    "initialDeposit", "deposit", "depositFee", "initial_deposit", 
-    "deposit_fee", "initialDepositFee", "prepayment", "advanceFee", "advance", "prepDeposit"
-  ];
-  
-  for (const k of knownKeys) {
-    if (p[k] !== undefined && p[k] !== null && p[k] !== "") {
-      const num = typeof p[k] === "number" ? p[k] : Number(String(p[k]).replace(/[^0-9.]/g, ""));
-      if (!isNaN(num) && num > 0) return num;
+    for (const key of Object.keys(p)) {
+      const kLower = key.toLowerCase();
+      if (kLower.includes("deposit") || kLower.includes("initial") || kLower.includes("advance") || kLower.includes("prepay")) {
+        const val = p[key];
+        if (val !== undefined && val !== null && val !== "") {
+          const num = typeof val === "number" ? val : Number(String(val).replace(/[^0-9.]/g, ""));
+          if (!isNaN(num) && num > 0) return num;
+        }
+      }
     }
   }
 
-  for (const key of Object.keys(p)) {
-    const kLower = key.toLowerCase();
-    if (kLower.includes("deposit") || kLower.includes("initial") || kLower.includes("advance") || kLower.includes("prepay")) {
-      const val = p[key];
-      if (val !== undefined && val !== null && val !== "") {
-        const num = typeof val === "number" ? val : Number(String(val).replace(/[^0-9.]/g, ""));
+  if (uni && typeof uni === "object") {
+    const uniKeys = ["initialDeposit", "deposit", "depositFee", "initial_deposit"];
+    for (const k of uniKeys) {
+      if (uni[k] !== undefined && uni[k] !== null && uni[k] !== "") {
+        const num = typeof uni[k] === "number" ? uni[k] : Number(String(uni[k]).replace(/[^0-9.]/g, ""));
         if (!isNaN(num) && num > 0) return num;
       }
     }
   }
 
-  return 0;
+  return 1000;
 }
 
 // ========================================
@@ -3710,7 +3720,7 @@ async function initFeeStructureExporter() {
         if (degreeFilter === "Master-NonThesis" && (cat.key !== "masters" || thesisVal === "Thesis")) return;
         if (langFilter !== "ALL" && !langVal.toLowerCase().includes(langFilter.toLowerCase())) return;
 
-        let detectedDep = detectProgramDeposit(p);
+        let detectedDep = detectProgramDeposit(p, selectedUni);
         let calculatedDeposit = detectedDep;
 
         if (overrideDepositVal !== "") {
@@ -3740,6 +3750,7 @@ async function initFeeStructureExporter() {
       let html = "";
       rows.forEach(r => {
         const thesisBadge = (r.catKey === "masters" && r.thesis && r.thesis !== "N/A") ? `<span class="badge-thesis">${r.thesis}</span>` : '<span style="color:#cbd5e1;">-</span>';
+        const finalDepTable = (r.initialDeposit && r.initialDeposit > 0) ? r.initialDeposit : 1000;
         html += `
           <tr>
             <td><strong>${r.name}</strong></td>
@@ -3749,7 +3760,7 @@ async function initFeeStructureExporter() {
             <td>${r.duration}</td>
             <td style="text-decoration: line-through; color: #94a3b8;">$${Number(r.originalFee).toLocaleString()}</td>
             <td><span class="badge-discount">$${Number(r.discountFee).toLocaleString()}</span></td>
-            <td><strong style="color: #1d5bbf;">$${Number(r.initialDeposit || 0).toLocaleString()}</strong></td>
+            <td><strong style="color: #1d5bbf;">$${Number(finalDepTable).toLocaleString()}</strong></td>
           </tr>
         `;
       });
@@ -3771,7 +3782,8 @@ async function initFeeStructureExporter() {
             ? `<span class="pill-lang" style="background: #e11d48;"><i class="fas fa-scroll"></i> ${r.thesis}</span>` 
             : '';
           
-          const depositFormatted = r.initialDeposit > 0 ? `$${r.initialDeposit.toLocaleString()}` : `$0`;
+          const finalDepCard = (r.initialDeposit && r.initialDeposit > 0) ? r.initialDeposit : 1000;
+          const depositFormatted = `$${Number(finalDepCard).toLocaleString()}`;
           const cashPaymentFormatted = `$${Number(r.discountFee).toLocaleString()}`;
           const prepSchoolFormatted = `$1,500`;
 
