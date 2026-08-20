@@ -3615,7 +3615,7 @@ function detectProgramDeposit(p, uni = null) {
     }
   }
 
-  return 1000;
+  return 0;
 }
 
 // ========================================
@@ -3750,7 +3750,7 @@ async function initFeeStructureExporter() {
       let html = "";
       rows.forEach(r => {
         const thesisBadge = (r.catKey === "masters" && r.thesis && r.thesis !== "N/A") ? `<span class="badge-thesis">${r.thesis}</span>` : '<span style="color:#cbd5e1;">-</span>';
-        const finalDepTable = (r.initialDeposit && r.initialDeposit > 0) ? r.initialDeposit : 1000;
+        const finalDepTable = Number(r.initialDeposit || 0);
         html += `
           <tr>
             <td><strong>${r.name}</strong></td>
@@ -3782,8 +3782,7 @@ async function initFeeStructureExporter() {
             ? `<span class="pill-lang" style="background: #e11d48;"><i class="fas fa-scroll"></i> ${r.thesis}</span>` 
             : '';
           
-          const finalDepCard = (r.initialDeposit && r.initialDeposit > 0) ? r.initialDeposit : 1000;
-          const depositFormatted = `$${Number(finalDepCard).toLocaleString()}`;
+          const depositFormatted = `$${Number(r.initialDeposit || 0).toLocaleString()}`;
           const cashPaymentFormatted = `$${Number(r.discountFee).toLocaleString()}`;
           const prepSchoolFormatted = `$1,500`;
 
