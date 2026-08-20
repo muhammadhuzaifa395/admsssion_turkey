@@ -3603,6 +3603,14 @@ function detectProgramDeposit(p, uni = null) {
         }
       }
     }
+    // Smart detection for high-tier medical & high-tuition programs (Medicine, Dentistry, Pharmacy)
+    const nameLower = (p.name || "").toLowerCase();
+    const isMedical = nameLower.includes("medicine") || nameLower.includes("dentistry") || nameLower.includes("pharmacy") || nameLower.includes("medical") || nameLower.includes("tıp") || nameLower.includes("diş") || nameLower.includes("eczacılık");
+    const fee = Number(p.discountFee || p.originalFee || 0);
+
+    if (isMedical || fee >= 10000) {
+      return 5000;
+    }
   }
 
   if (uni && typeof uni === "object") {
@@ -3615,7 +3623,7 @@ function detectProgramDeposit(p, uni = null) {
     }
   }
 
-  return 0;
+  return 1000;
 }
 
 // ========================================
