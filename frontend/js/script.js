@@ -1857,6 +1857,11 @@ function renderProgramList(university, degreeType, language) {
                 ).toLocaleString()}
               </p>
 
+              <p style="color: #0b3f7e; font-weight: 700; margin-top: 4px;">
+                <strong>Initial Deposit:</strong>
+                $${Number(detectProgramDeposit(program) || 0).toLocaleString()}
+              </p>
+
             </div>
 
           </div>
@@ -1949,6 +1954,7 @@ async function loadProgramDetails() {
           <p><strong>Duration:</strong> ${selectedProgram.duration || "N/A"}</p>
           <p><strong>Original Fee:</strong> $${Number(selectedProgram.originalFee).toLocaleString()}</p>
           <p><strong>Discount Fee:</strong> $${Number(selectedProgram.discountFee).toLocaleString()}</p>
+          <p><strong>Initial Deposit:</strong> <span style="color: #0b3f7e; font-weight: 700;">$${Number(detectProgramDeposit(selectedProgram) || 0).toLocaleString()}</span></p>
           <p>${selectedProgram.description || "This program is available for international students through Admission Turkey."}</p>
         </div>
 
