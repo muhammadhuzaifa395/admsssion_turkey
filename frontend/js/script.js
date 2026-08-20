@@ -1521,29 +1521,36 @@ async function loadUniversities() {
       if ((uni.programs.associate || []).length > 0) degreeBadges.push("Associate");
 
       universityList.innerHTML += `
-        <div class="university-card">
+        <div class="university-card card-tilt reveal-fade-up">
           ${uni.image ? `
             <div class="university-image">
               <img src="${uni.image}" alt="${uni.name}">
+              <div class="uni-card-badges">
+                <span class="uni-badge discount"><i class="fas fa-tags"></i> Scholarship Available</span>
+                <span class="uni-badge"><i class="fas fa-globe"></i> English Medium</span>
+              </div>
             </div>
           ` : `
             <div class="university-image">
               <i class="fas fa-university"></i>
+              <div class="uni-card-badges">
+                <span class="uni-badge discount"><i class="fas fa-tags"></i> Scholarship Available</span>
+              </div>
             </div>
           `}
           <div class="university-info">
             <h3>${uni.name}</h3>
             <p>
-              <i class="fas fa-location-dot"></i>
-              ${uni.location}
+              <i class="fas fa-location-dot" style="color:var(--red);"></i>
+              <strong>${uni.location}</strong>
             </p>
-            <p>
-              <i class="fas fa-graduation-cap"></i>
-              ${totalPrograms} Programs
+            <p style="margin-top:6px;">
+              <i class="fas fa-graduation-cap" style="color:var(--blue);"></i>
+              <strong>${totalPrograms} Available Programs</strong>
               ${degreeBadges.length > 0 ? `<br><small style="color: var(--blue); font-weight:600; display:block; margin-top:4px;">${degreeBadges.join(" • ")}</small>` : ""}
             </p>
-            <div class="university-actions">
-              <a href="university.html?id=${uni._id}" class="primary-btn">Visit University</a>
+            <div class="university-actions" style="margin-top:16px;">
+              <a href="university.html?id=${uni._id}" class="primary-btn" style="width:100%; justify-content:center;">Visit University <i class="fas fa-arrow-right"></i></a>
             </div>
           </div>
         </div>
@@ -4010,6 +4017,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initThemeEngine();
   initI18nEngine();
   initAnimations();
+  initFaqAccordion();
 });
 
 /* =========================================================
@@ -4354,4 +4362,21 @@ function initButtonRipples() {
     });
   });
 }
+
+function initFaqAccordion() {
+  const faqItems = document.querySelectorAll(".faq-item");
+  faqItems.forEach(item => {
+    const question = item.querySelector(".faq-question");
+    if (question) {
+      question.addEventListener("click", () => {
+        const isActive = item.classList.contains("active");
+        faqItems.forEach(i => i.classList.remove("active"));
+        if (!isActive) {
+          item.classList.add("active");
+        }
+      });
+    }
+  });
+}
+
 
