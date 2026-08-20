@@ -32,31 +32,42 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 <ul class="nav-links">
 
-<li><a href="index.html">Home</a></li>
+<li><a href="index.html" data-i18n="nav_home">Home</a></li>
 
-<li><a class="active" href="services.html">
-Services
-</a></li>
+<li><a class="active" href="services.html" data-i18n="nav_services">Services</a></li>
 
-<li><a href="universities.html">
-Universities
-</a></li>
+<li><a href="universities.html" data-i18n="nav_universities">Universities</a></li>
 
-<li><a href="about.html">About</a></li>
+<li><a href="about.html" data-i18n="nav_about">About</a></li>
 
-<li><a href="contact.html">Contact</a></li>
+<li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
 
 </ul>
 
 <div class="nav-buttons">
 
-<a href="login.html"
-class="login-btn">
+<button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle Theme">
+  <i class="fas fa-moon"></i>
+</button>
+
+<div class="lang-selector">
+  <button id="langDropdownBtn" class="lang-dropdown-btn" aria-label="Select Language">
+    <i class="fas fa-globe"></i>
+    <span id="currentLangLabel">EN</span>
+    <i class="fas fa-chevron-down"></i>
+  </button>
+  <div class="lang-dropdown-menu">
+    <button data-lang="en" class="lang-option active">English (EN)</button>
+    <button data-lang="tr" class="lang-option">Türkçe (TR)</button>
+    <button data-lang="ar" class="lang-option">العربية (AR)</button>
+  </div>
+</div>
+
+<a href="login.html" class="login-btn" data-i18n="nav_login">
 Login
 </a>
 
-<a href="signup.html"
-class="signup-btn">
+<a href="signup.html" class="signup-btn" data-i18n="nav_signup">
 Sign Up
 </a>
 

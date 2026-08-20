@@ -4007,4 +4007,351 @@ async function initFeeStructureExporter() {
 document.addEventListener("DOMContentLoaded", () => {
   initAdminDashboard();
   initFeeStructureExporter();
-});
+  initThemeEngine();
+  initI18nEngine();
+  initAnimations();
+});
+
+/* =========================================================
+   THEME, I18N & ANIMATION ENGINES FOR FRONTEND
+   ========================================================= */
+
+const i18nTranslations = {
+  en: {
+    nav_home: "Home",
+    nav_services: "Services",
+    nav_universities: "Universities",
+    nav_about: "About",
+    nav_contact: "Contact",
+    nav_login: "Login",
+    nav_signup: "Sign Up",
+    nav_admin: "Admin Panel",
+    nav_logout: "Logout",
+    
+    hero_label: "YOUR GATEWAY TO WORLD-CLASS EDUCATION",
+    hero_title: "Study in <span>Turkey</span><br>Build Your Future",
+    hero_desc: "We help international students find the right university, apply for admission, get scholarship guidance and start their educational journey in Turkey.",
+    hero_btn_explore: "Explore Universities",
+    hero_btn_consult: "Book Consultation",
+    hero_card_title: "Start Your Journey",
+    hero_card_desc: "Get expert guidance for studying in Turkey.",
+    stat_students: "Students Guided",
+    stat_options: "University Options",
+
+    sec_services_title: "Our Services",
+    sec_services_subtitle: "Comprehensive support for your educational journey in Turkey",
+    service_uni_title: "University Admission",
+    service_uni_desc: "Direct application to top Turkish universities with high acceptance rates.",
+    service_visa_title: "Student Visa Support",
+    service_visa_desc: "Full guidance on visa documentation, appointments, and procedures.",
+    service_scholar_title: "Scholarship Guidance",
+    service_scholar_desc: "Discover partial and full tuition scholarships tailored for international students.",
+
+    footer_tagline: "Empowering international students to achieve academic excellence in Turkey.",
+    footer_quick_links: "Quick Links",
+    footer_contact_us: "Contact Us",
+    footer_rights: "All Rights Reserved."
+  },
+  tr: {
+    nav_home: "Ana Sayfa",
+    nav_services: "Hizmetler",
+    nav_universities: "Üniversiteler",
+    nav_about: "Hakkımızda",
+    nav_contact: "İletişim",
+    nav_login: "Giriş Yap",
+    nav_signup: "Kayıt Ol",
+    nav_admin: "Yönetici Paneli",
+    nav_logout: "Çıkış Yap",
+    
+    hero_label: "DÜNYA STANDARTLARINDA EĞİTİME GİDEN YOLUNUZ",
+    hero_title: "<span>Türkiye'de</span> Okuyun<br>Geleceğinizi İnşa Edin",
+    hero_desc: "Uluslararası öğrencilerin doğru üniversiteyi bulmalarına, başvuru yapmalarına, burs rehberliği almalarına ve Türkiye'deki eğitim yolculuklarına başlamalarına yardımcı oluyoruz.",
+    hero_btn_explore: "Üniversiteleri Keşfet",
+    hero_btn_consult: "Danışmanlık Alın",
+    hero_card_title: "Yolculuğunuza Başlayın",
+    hero_card_desc: "Türkiye'de eğitim almak için uzman rehberliği alın.",
+    stat_students: "Rehberlik Edilen Öğrenci",
+    stat_options: "Üniversite Seçeneği",
+
+    sec_services_title: "Hizmetlerimiz",
+    sec_services_subtitle: "Türkiye'deki eğitim yolculuğunuz için kapsamlı destek",
+    service_uni_title: "Üniversite Kabulü",
+    service_uni_desc: "Yüksek kabul oranlarıyla en iyi Türk üniversitelerine doğrudan başvuru.",
+    service_visa_title: "Öğrenci Vizesi Desteği",
+    service_visa_desc: "Vize belgeleri, randevular ve süreçler hakkında tam rehberlik.",
+    service_scholar_title: "Burs Rehberliği",
+    service_scholar_desc: "Uluslararası öğrenciler için özel kısmi ve tam öğrenim burslarını keşfedin.",
+
+    footer_tagline: "Uluslararası öğrencilerin Türkiye'de akademik başarıya ulaşmalarını destekliyoruz.",
+    footer_quick_links: "Hızlı Bağlantılar",
+    footer_contact_us: "İletişim",
+    footer_rights: "Tüm Hakları Saklıdır."
+  },
+  ar: {
+    nav_home: "الرئيسية",
+    nav_services: "خدماتنا",
+    nav_universities: "الجامعات",
+    nav_about: "عن الشركة",
+    nav_contact: "اتصل بنا",
+    nav_login: "تسجيل الدخول",
+    nav_signup: "إنشاء حساب",
+    nav_admin: "لوحة التحكم",
+    nav_logout: "تسجيل الخروج",
+    
+    hero_label: "بوابتك إلى تعليم عالمي المستوى",
+    hero_title: "ادرس في <span>تركيا</span><br>ابنِ مستقبلك",
+    hero_desc: "نساعد الطلاب الدوليين في العثور على الجامعة المناسبة، والتقديم للقبول، والحصول على التوجيه للمنح الدراسية وبدء رحلتهم التعليمية في تركيا.",
+    hero_btn_explore: "استكشف الجامعات",
+    hero_btn_consult: "احجز استشارة",
+    hero_card_title: "ابدأ رحلتك",
+    hero_card_desc: "احصل على توجيه متخصص للدراسة في تركيا.",
+    stat_students: "طالب تم توجيههم",
+    stat_options: "خيار جامعي",
+
+    sec_services_title: "خدماتنا",
+    sec_services_subtitle: "دعم شامل لرحلتك التعليمية في تركيا",
+    service_uni_title: "القبول الجامعي",
+    service_uni_desc: "التقديم المباشر لأفضل الجامعات التركية بنسب قبول عالية.",
+    service_visa_title: "دعم التأشيرة الدراسية",
+    service_visa_desc: "توجيه كامل حول وثائق التأشيرة والمواعيد والإجراءات.",
+    service_scholar_title: "توجيه المنح الدراسية",
+    service_scholar_desc: "اكتشف المنح الجزئية والكاملة المصممة للطلاب الدوليين.",
+
+    footer_tagline: "تمكين الطلاب الدوليين لتحقيق التميز الأكاديمي في تركيا.",
+    footer_quick_links: "روابط سريعة",
+    footer_contact_us: "تواصل معنا",
+    footer_rights: "جميع الحقوق محفوظة."
+  }
+};
+
+function initThemeEngine() {
+  const savedTheme = localStorage.getItem("site_theme") || "light";
+  document.documentElement.setAttribute("data-theme", savedTheme);
+  
+  const toggleBtn = document.getElementById("themeToggleBtn");
+  if (toggleBtn) {
+    updateThemeIcon(toggleBtn, savedTheme);
+    toggleBtn.addEventListener("click", () => {
+      const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", newTheme);
+      localStorage.setItem("site_theme", newTheme);
+      updateThemeIcon(toggleBtn, newTheme);
+    });
+  }
+}
+
+function updateThemeIcon(btn, theme) {
+  btn.innerHTML = theme === "dark" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+}
+
+function initI18nEngine() {
+  const savedLang = localStorage.getItem("site_lang") || "en";
+  setLanguage(savedLang);
+
+  const dropdownBtn = document.getElementById("langDropdownBtn");
+  const dropdownSelector = document.querySelector(".lang-selector");
+  
+  if (dropdownBtn && dropdownSelector) {
+    dropdownBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdownSelector.classList.toggle("active");
+    });
+
+    document.addEventListener("click", () => {
+      dropdownSelector.classList.remove("active");
+    });
+
+    const langOptions = document.querySelectorAll(".lang-option");
+    langOptions.forEach(opt => {
+      opt.addEventListener("click", () => {
+        const selectedLang = opt.getAttribute("data-lang");
+        if (selectedLang) {
+          setLanguage(selectedLang);
+          localStorage.setItem("site_lang", selectedLang);
+          dropdownSelector.classList.remove("active");
+        }
+      });
+    });
+  }
+}
+
+function setLanguage(lang) {
+  if (!i18nTranslations[lang]) lang = "en";
+  
+  document.documentElement.setAttribute("lang", lang);
+  if (lang === "ar") {
+    document.documentElement.setAttribute("dir", "rtl");
+  } else {
+    document.documentElement.setAttribute("dir", "ltr");
+  }
+
+  const labelSpan = document.getElementById("currentLangLabel");
+  if (labelSpan) {
+    labelSpan.textContent = lang.toUpperCase();
+  }
+
+  document.querySelectorAll(".lang-option").forEach(opt => {
+    if (opt.getAttribute("data-lang") === lang) {
+      opt.classList.add("active");
+    } else {
+      opt.classList.remove("active");
+    }
+  });
+
+  const translatableElements = document.querySelectorAll("[data-i18n]");
+  translatableElements.forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (i18nTranslations[lang][key]) {
+      if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+        el.placeholder = i18nTranslations[lang][key];
+      } else {
+        el.innerHTML = i18nTranslations[lang][key];
+      }
+    }
+  });
+}
+
+function initAnimations() {
+  const observerOptions = {
+    threshold: 0.12,
+    rootMargin: "0px 0px -40px 0px"
+  };
+
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("reveal-visible");
+        
+        const countElements = entry.target.querySelectorAll("[data-count]");
+        countElements.forEach(c => animateCounter(c));
+        if (entry.target.hasAttribute("data-count")) {
+          animateCounter(entry.target);
+        }
+
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll(".reveal-on-scroll, .reveal-fade-up, .reveal-slide-left, .reveal-slide-right, .reveal-scale").forEach(el => {
+    el.classList.add("reveal-on-scroll");
+    revealObserver.observe(el);
+  });
+
+  initHeroParticles();
+  initCardTilt();
+  initButtonRipples();
+}
+
+function animateCounter(el) {
+  if (el.dataset.counterDone) return;
+  el.dataset.counterDone = "true";
+
+  const target = parseInt(el.getAttribute("data-count"), 10);
+  if (isNaN(target)) return;
+
+  const duration = 1800;
+  const frameRate = 1000 / 60;
+  const totalFrames = Math.round(duration / frameRate);
+  let frame = 0;
+
+  const timer = setInterval(() => {
+    frame++;
+    const progress = frame / totalFrames;
+    const currentCount = Math.round(target * (1 - Math.pow(1 - progress, 3)));
+    el.textContent = currentCount + "+";
+
+    if (frame >= totalFrames) {
+      clearInterval(timer);
+      el.textContent = target + "+";
+    }
+  }, frameRate);
+}
+
+function initHeroParticles() {
+  const heroSec = document.querySelector(".hero");
+  if (!heroSec || document.getElementById("heroParticleCanvas")) return;
+
+  const canvas = document.createElement("canvas");
+  canvas.id = "heroParticleCanvas";
+  heroSec.appendChild(canvas);
+
+  const ctx = canvas.getContext("2d");
+  let width = (canvas.width = heroSec.offsetWidth);
+  let height = (canvas.height = heroSec.offsetHeight);
+
+  window.addEventListener("resize", () => {
+    width = canvas.width = heroSec.offsetWidth;
+    height = canvas.height = heroSec.offsetHeight;
+  });
+
+  const particles = [];
+  const particleCount = 40;
+
+  for (let i = 0; i < particleCount; i++) {
+    particles.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      radius: Math.random() * 3 + 1,
+      speedX: (Math.random() - 0.5) * 0.6,
+      speedY: (Math.random() - 0.5) * 0.6,
+      alpha: Math.random() * 0.5 + 0.2
+    });
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, width, height);
+
+    particles.forEach(p => {
+      p.x += p.speedX;
+      p.y += p.speedY;
+
+      if (p.x < 0) p.x = width;
+      if (p.x > width) p.x = 0;
+      if (p.y < 0) p.y = height;
+      if (p.y > height) p.y = 0;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(29, 91, 191, ${p.alpha})`;
+      ctx.fill();
+    });
+
+    requestAnimationFrame(drawParticles);
+  }
+
+  drawParticles();
+}
+
+function initCardTilt() {
+  const cards = document.querySelectorAll(".hero-card, .university-card, .service-card, .program-card, .feature-card");
+  cards.forEach(card => {
+    card.classList.add("card-tilt");
+  });
+}
+
+function initButtonRipples() {
+  const buttons = document.querySelectorAll(".primary-btn, .secondary-btn, .login-btn, .signup-btn");
+  buttons.forEach(btn => {
+    btn.addEventListener("click", function(e) {
+      const circle = document.createElement("span");
+      const diameter = Math.max(btn.clientWidth, btn.clientHeight);
+      const radius = diameter / 2;
+
+      const rect = btn.getBoundingClientRect();
+      circle.style.width = circle.style.height = `${diameter}px`;
+      circle.style.left = `${e.clientX - rect.left - radius}px`;
+      circle.style.top = `${e.clientY - rect.top - radius}px`;
+      circle.classList.add("ripple-effect");
+
+      const existingRipple = btn.querySelector(".ripple-effect");
+      if (existingRipple) {
+        existingRipple.remove();
+      }
+
+      btn.appendChild(circle);
+    });
+  });
+}
+

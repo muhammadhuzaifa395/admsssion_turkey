@@ -13,13 +13,30 @@ content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet"
 href="css/style.css">
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
-
 
 <body class="auth-body">
 
+<div style="position: absolute; top: 15px; right: 20px; display: flex; gap: 10px; z-index: 100;">
+  <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle Theme">
+    <i class="fas fa-moon"></i>
+  </button>
+  <div class="lang-selector">
+    <button id="langDropdownBtn" class="lang-dropdown-btn" aria-label="Select Language">
+      <i class="fas fa-globe"></i>
+      <span id="currentLangLabel">EN</span>
+      <i class="fas fa-chevron-down"></i>
+    </button>
+    <div class="lang-dropdown-menu">
+      <button data-lang="en" class="lang-option active">English (EN)</button>
+      <button data-lang="tr" class="lang-option">Türkçe (TR)</button>
+      <button data-lang="ar" class="lang-option">العربية (AR)</button>
+    </div>
+  </div>
+</div>
 
-<div class="auth-box">
+<div class="auth-box reveal-scale">
 
 
 <img src="images/logo.png"
