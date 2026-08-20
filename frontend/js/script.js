@@ -61,18 +61,14 @@ if (menuBtn && navLinks) {
   });
 }
 
-
-
-
-
-
-
 // ===============================
-// LOGIN FORM HANDLER
+// LOGIN & SIGNUP FORM HANDLERS
 // ===============================
-const loginForm = document.getElementById("loginForm");
 
-if (loginForm) {
+function initLoginForm() {
+  const loginForm = document.getElementById("loginForm");
+  if (!loginForm) return;
+
   loginForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
@@ -82,7 +78,7 @@ if (loginForm) {
     const email = emailInput ? emailInput.value.trim() : "";
     const password = passwordInput ? passwordInput.value : "";
 
-    console.log("Login submit:", { email, passwordPresent: !!password });
+    console.log("Login submit attempt:", { email });
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
@@ -96,166 +92,18 @@ if (loginForm) {
       if (response.ok) {
         const loggedInUser = { ...data.user, token: data.token };
         localStorage.setItem("user", JSON.stringify(loggedInUser));
-        alert("Login successful! Welcome " + (data.user.name || "Admin"));
+        alert("Login successful! Welcome " + (data.user.name || "User"));
 
         if (data.user.role === "admin") {
-          window.location.href = window.location.pathname.includes("/frontend/")
-            ? "admin/admin.html"
-            : "admin/admin.html";
+          window.location.href = "admin/admin.html";
         } else {
           window.location.href = "index.html";
         }
       } else {
         alert(data.message || "Invalid email or password");
       }
-
     } catch (error) {
       console.error("Login Error:", error);
-      alert("Unable to connect to server. Please check your internet connection.");
-    }
-  });
-}
-
-
-// ===============================
-// SIGNUP
-// ===============================
-
-const signupForm =
-  document.getElementById(
-    "signupForm"
-  );
-
-
-if (signupForm) {
-
-  signupForm.addEventListener(
-    "submit",
-    async function (e) {
-
-      e.preventDefault();
-
-
-      const inputs =
-        signupForm.querySelectorAll(
-          "input"
-        );
-
-
-      const fullName =
-        inputs[0].value.trim();
-
-      const email =
-        inputs[1].value.trim();
-
-      const phone =
-        inputs[2].value.trim();
-
-      const password =
-        inputs[3].value;
-
-      const confirmPassword =
-        inputs[4].value;
-
-
-      // Check password
-
-      if (
-        password !==
-        confirmPassword
-      ) {
-
-        alert(
-          "Passwords do not match!"
-        );
-
-        return;
-
-      }
-
-
-      try {
-
-        const response =
-          await fetch(
-            `${API_BASE_URL}/api/auth/signup`,
-            {
-
-              method: "POST",
-
-              headers: {
-
-                "Content-Type":
-                  "application/json"
-
-              },
-
-              body: JSON.stringify({
-
-                name:
-                  fullName,
-
-                email:
-                  email,
-
-                phone:
-                  phone,
-
-                password:
-                  password
-
-              })
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (response.ok) {
-
-          alert(
-            "Account created successfully!"
-          );
-
-
-          signupForm.reset();
-
-
-          window.location.href =
-            "login.html";
-
-
-        } else {
-
-          alert(
-
-            data.message ||
-
-            "Signup failed!"
-
-          );
-
-        }
-
-
-      } catch (error) {
-
-        console.error(
-          "Signup Error:",
-          error
-        );
-
-
-        alert(
-          "Server se connection nahi ho raha!"
-        );
-
-      }
-
-    }
   );
 
 }
@@ -4046,6 +3894,8 @@ async function initFeeStructureExporter() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  initLoginForm();
+  initSignupForm();
   initAdminDashboard();
   initFeeStructureExporter();
   initThemeEngine();
