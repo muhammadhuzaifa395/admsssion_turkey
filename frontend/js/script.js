@@ -5,6 +5,23 @@ const API_BASE_URL = (window.location.hostname && window.location.hostname.inclu
   ? window.location.origin
   : "http://localhost:5000";
 
+// Helper: Fast Fetch with Timeout (prevents page hanging on unreachable servers)
+async function fetchWithTimeout(resource, options = {}, timeoutMs = 1500) {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(resource, {
+      ...options,
+      signal: controller.signal
+    });
+    clearTimeout(id);
+    return response;
+  } catch (error) {
+    clearTimeout(id);
+    throw error;
+  }
+}
+
 // ===============================
 // ADMIN PAGE PROTECTION
 // ===============================
@@ -1488,17 +1505,72 @@ const defaultTurkishUniversities = [
   }
 ];
 
+function renderUniversityGridCards(container, universitiesList) {
+  if (!container) return;
+  container.innerHTML = "";
+  universitiesList.forEach((uni) => {
+    let totalPrograms = Object.values(uni.programs || {}).flat().length || 4;
+
+    const masterProgs = uni.programs?.masters || [];
+    const hasThesis = masterProgs.some(p => p.thesisType === "Thesis" || !p.thesisType || p.thesisType === "N/A");
+    const hasNonThesis = masterProgs.some(p => p.thesisType === "Non-Thesis");
+
+    let masterText = "";
+    if (masterProgs.length > 0) {
+      if (hasThesis && hasNonThesis) masterText = "Master (Thesis & Non-Thesis)";
+      else if (hasNonThesis) masterText = "Master (Non-Thesis)";
+      else masterText = "Master (Thesis)";
+    }
+
+    const degreeBadges = [];
+    if ((uni.programs?.bachelors || []).length > 0) degreeBadges.push("Bachelor");
+    if (masterProgs.length > 0) degreeBadges.push(masterText);
+    if ((uni.programs?.phd || []).length > 0) degreeBadges.push("PhD");
+    if ((uni.programs?.associate || []).length > 0) degreeBadges.push("Associate");
+    if (degreeBadges.length === 0) degreeBadges.push("Bachelor", "Master");
+
+    container.innerHTML += `
+      <div class="university-card card-tilt reveal-fade-up">
+        <div class="university-image">
+          <img src="${uni.image || 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=600&q=80'}" alt="${uni.name}" loading="lazy" decoding="async">
+          <div class="uni-card-badges">
+            <span class="uni-badge discount"><i class="fas fa-tags"></i> Scholarship Available</span>
+            <span class="uni-badge"><i class="fas fa-globe"></i> English Medium</span>
+          </div>
+        </div>
+        <div class="university-info">
+          <h3>${uni.name}</h3>
+          <p>
+            <i class="fas fa-location-dot" style="color:var(--red);"></i>
+            <strong>${uni.location}</strong>
+          </p>
+          <p style="margin-top:6px;">
+            <i class="fas fa-graduation-cap" style="color:var(--blue);"></i>
+            <strong>${totalPrograms} Available Programs</strong>
+            <br><small style="color: var(--blue); font-weight:600; display:block; margin-top:4px;">Degrees: ${degreeBadges.join(" • ")}</small>
+          </p>
+          <div class="university-actions" style="margin-top:16px;">
+            <a href="university.html?id=${uni._id}" class="primary-btn" style="width:100%; justify-content:center;">Visit University <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+}
+
 async function loadUniversities() {
   const universityList = document.getElementById("universityList");
   if (!universityList) {
     return;
   }
 
-  let displayUniversities = [];
+  // 1. INSTANT RENDER (0ms delay): Show default featured cards right away!
+  renderUniversityGridCards(universityList, defaultTurkishUniversities);
 
+  // 2. FAST BACKGROUND FETCH (1.5s max timeout) to check for backend DB items
   try {
-    const response = await fetch(`${API_BASE_URL}/api/universities`);
-    if (response.ok) {
+    const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities`, {}, 1500);
+    if (response && response.ok) {
       const data = await response.json();
       const fetchedUnis = data.universities || [];
 
@@ -1530,67 +1602,15 @@ async function loadUniversities() {
             existing.programs.phd.push(...(uni.programs?.phd || []));
           }
         });
-        displayUniversities = Array.from(groupedMap.values());
+        const displayUnis = Array.from(groupedMap.values());
+        if (displayUnis.length > 0) {
+          renderUniversityGridCards(universityList, displayUnis);
+        }
       }
     }
   } catch (error) {
-    console.log("Unable to load API universities, loading featured list:", error);
+    // Backend offline or timeout -> instant fallback cards already visible!
   }
-
-  if (displayUniversities.length === 0) {
-    displayUniversities = defaultTurkishUniversities;
-  }
-
-  universityList.innerHTML = "";
-
-  displayUniversities.forEach((uni) => {
-    let totalPrograms = Object.values(uni.programs || {}).flat().length || 4;
-
-    const masterProgs = uni.programs?.masters || [];
-    const hasThesis = masterProgs.some(p => p.thesisType === "Thesis" || !p.thesisType || p.thesisType === "N/A");
-    const hasNonThesis = masterProgs.some(p => p.thesisType === "Non-Thesis");
-
-    let masterText = "";
-    if (masterProgs.length > 0) {
-      if (hasThesis && hasNonThesis) masterText = "Master (Thesis & Non-Thesis)";
-      else if (hasNonThesis) masterText = "Master (Non-Thesis)";
-      else masterText = "Master (Thesis)";
-    }
-
-    const degreeBadges = [];
-    if ((uni.programs?.bachelors || []).length > 0) degreeBadges.push("Bachelor");
-    if (masterProgs.length > 0) degreeBadges.push(masterText);
-    if ((uni.programs?.phd || []).length > 0) degreeBadges.push("PhD");
-    if ((uni.programs?.associate || []).length > 0) degreeBadges.push("Associate");
-    if (degreeBadges.length === 0) degreeBadges.push("Bachelor", "Master");
-
-    universityList.innerHTML += `
-      <div class="university-card card-tilt reveal-fade-up">
-        <div class="university-image">
-          <img src="${uni.image || 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=600&q=80'}" alt="${uni.name}">
-          <div class="uni-card-badges">
-            <span class="uni-badge discount"><i class="fas fa-tags"></i> Scholarship Available</span>
-            <span class="uni-badge"><i class="fas fa-globe"></i> English Medium</span>
-          </div>
-        </div>
-        <div class="university-info">
-          <h3>${uni.name}</h3>
-          <p>
-            <i class="fas fa-location-dot" style="color:var(--red);"></i>
-            <strong>${uni.location}</strong>
-          </p>
-          <p style="margin-top:6px;">
-            <i class="fas fa-graduation-cap" style="color:var(--blue);"></i>
-            <strong>${totalPrograms} Available Programs</strong>
-            <br><small style="color: var(--blue); font-weight:600; display:block; margin-top:4px;">Degrees: ${degreeBadges.join(" • ")}</small>
-          </p>
-          <div class="university-actions" style="margin-top:16px;">
-            <a href="university.html?id=${uni._id}" class="primary-btn" style="width:100%; justify-content:center;">Visit University <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </div>
-    `;
-  });
 }
 }
 async function loadUniversityDetails() {
@@ -4403,91 +4423,91 @@ function initFaqAccordion() {
    HOME DYNAMIC UNIVERSITY FLOW SLIDER, VIDEO MODAL & REVIEW SYSTEM
    ========================================================= */
 
+function renderHomeSliderCards(container, unisList) {
+  if (!container) return;
+  container.innerHTML = "";
+  unisList.forEach(uni => {
+    const card = document.createElement("div");
+    card.className = "uni-flow-card card-tilt";
+    const pCount = Object.values(uni.programs || {}).flat().length || 4;
+    card.innerHTML = `
+      <div class="uni-card-img-wrap">
+        <img src="${uni.image || 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=600&q=80'}" alt="${uni.name}" loading="lazy" decoding="async">
+        <div class="uni-card-badges">
+          <span class="uni-badge discount"><i class="fas fa-tags"></i> Scholarship Available</span>
+        </div>
+      </div>
+      <div class="uni-card-body">
+        <h3 style="font-size:17px; font-weight:700; margin-bottom:6px; color:var(--text-main);">${uni.name}</h3>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">
+          <i class="fas fa-location-dot" style="color:var(--red);"></i> ${uni.location || 'Türkiye'}
+        </p>
+        <div style="margin-top:auto; display:flex; align-items:center; justify-content:space-between; padding-top:10px; border-top:1px solid var(--border-color);">
+          <span style="font-size:12.5px; font-weight:600; color:var(--blue);">${pCount} Programs</span>
+          <a href="university.html?id=${uni._id}" class="primary-btn" style="padding:6px 12px; font-size:12.5px;">Visit <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
 async function initHomeUniversitySlider() {
   const container = document.getElementById("homeUniversityFlowContainer");
   if (!container) return;
 
+  // 1. INSTANT RENDER (0ms delay)
+  renderHomeSliderCards(container, defaultTurkishUniversities);
+
+  const prevBtn = document.getElementById("uniFlowPrevBtn");
+  const nextBtn = document.getElementById("uniFlowNextBtn");
+
+  if (prevBtn) {
+    prevBtn.onclick = () => container.scrollBy({ left: -340, behavior: "smooth" });
+  }
+  if (nextBtn) {
+    nextBtn.onclick = () => container.scrollBy({ left: 340, behavior: "smooth" });
+  }
+
+  let autoFlowInterval = setInterval(() => {
+    if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
+      container.scrollTo({ left: 0, behavior: "smooth" });
+    } else {
+      container.scrollBy({ left: 340, behavior: "smooth" });
+    }
+  }, 4000);
+
+  container.addEventListener("mouseenter", () => clearInterval(autoFlowInterval));
+
+  // 2. FAST BACKGROUND FETCH (1.5s timeout)
   try {
-    const response = await fetch(`${API_BASE_URL}/api/universities`);
-    const data = await response.json();
-    const universities = data.universities || [];
+    const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities`, {}, 1500);
+    if (response && response.ok) {
+      const data = await response.json();
+      const fetchedUnis = data.universities || [];
 
-    if (universities.length === 0) {
-      container.innerHTML = `
-        <div style="padding:20px; text-align:center; color:var(--text-muted); width:100%;">
-          <p>No universities found yet. Add universities from the admin panel to display them here.</p>
-        </div>
-      `;
-      return;
-    }
-
-    const groupedMap = new Map();
-    universities.forEach((uni) => {
-      const key = (uni.name || "").trim().toLowerCase();
-      if (!groupedMap.has(key)) {
-        groupedMap.set(key, {
-          _id: uni._id,
-          name: uni.name,
-          location: uni.location || "Turkey",
-          image: uni.image,
-          programsCount: Object.values(uni.programs || {}).flat().length
+      if (fetchedUnis.length > 0) {
+        const groupedMap = new Map();
+        fetchedUnis.forEach((uni) => {
+          const key = (uni.name || "").trim().toLowerCase();
+          if (!groupedMap.has(key)) {
+            groupedMap.set(key, {
+              _id: uni._id,
+              name: uni.name,
+              location: uni.location || "Türkiye",
+              image: uni.image,
+              programs: uni.programs
+            });
+          }
         });
+        const displayUnis = Array.from(groupedMap.values());
+        if (displayUnis.length > 0) {
+          renderHomeSliderCards(container, displayUnis);
+        }
       }
-    });
-
-    const displayUnis = Array.from(groupedMap.values());
-    container.innerHTML = "";
-
-    displayUnis.forEach(uni => {
-      const card = document.createElement("div");
-      card.className = "uni-flow-card card-tilt";
-      card.innerHTML = `
-        <div class="uni-card-img-wrap">
-          <img src="${uni.image || 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=600&q=80'}" alt="${uni.name}">
-          <div class="uni-card-badges">
-            <span class="uni-badge discount"><i class="fas fa-tags"></i> Scholarship Available</span>
-          </div>
-        </div>
-        <div class="uni-card-body">
-          <h3 style="font-size:17px; font-weight:700; margin-bottom:6px; color:var(--text-main);">${uni.name}</h3>
-          <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">
-            <i class="fas fa-location-dot" style="color:var(--red);"></i> ${uni.location}
-          </p>
-          <div style="margin-top:auto; display:flex; align-items:center; justify-content:space-between; padding-top:10px; border-top:1px solid var(--border-color);">
-            <span style="font-size:12.5px; font-weight:600; color:var(--blue);">${uni.programsCount} Programs</span>
-            <a href="university.html?id=${uni._id}" class="primary-btn" style="padding:6px 12px; font-size:12.5px;">Visit <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-      `;
-      container.appendChild(card);
-    });
-
-    const prevBtn = document.getElementById("uniFlowPrevBtn");
-    const nextBtn = document.getElementById("uniFlowNextBtn");
-
-    if (prevBtn) {
-      prevBtn.addEventListener("click", () => {
-        container.scrollBy({ left: -340, behavior: "smooth" });
-      });
     }
-    if (nextBtn) {
-      nextBtn.addEventListener("click", () => {
-        container.scrollBy({ left: 340, behavior: "smooth" });
-      });
-    }
-
-    let autoFlowInterval = setInterval(() => {
-      if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
-        container.scrollTo({ left: 0, behavior: "smooth" });
-      } else {
-        container.scrollBy({ left: 340, behavior: "smooth" });
-      }
-    }, 4000);
-
-    container.addEventListener("mouseenter", () => clearInterval(autoFlowInterval));
-
   } catch (err) {
-    console.error("Home University Flow Slider Error:", err);
+    // Keep instant cards rendered
   }
 }
 
