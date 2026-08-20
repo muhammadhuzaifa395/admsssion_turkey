@@ -3706,27 +3706,101 @@ async function initFeeStructureExporter() {
 
     if (rows.length === 0) {
       tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #64748b; padding: 25px;">No program fee structures match the selected filter criteria.</td></tr>`;
-      return;
+    } else {
+      let html = "";
+      rows.forEach(r => {
+        const thesisBadge = (r.catKey === "masters" && r.thesis && r.thesis !== "N/A") ? `<span class="badge-thesis">${r.thesis}</span>` : '<span style="color:#cbd5e1;">-</span>';
+        html += `
+          <tr>
+            <td><strong>${r.name}</strong></td>
+            <td>${r.degree}</td>
+            <td>${thesisBadge}</td>
+            <td>${r.language}</td>
+            <td>${r.duration}</td>
+            <td style="text-decoration: line-through; color: #94a3b8;">$${Number(r.originalFee).toLocaleString()}</td>
+            <td><span class="badge-discount">$${Number(r.discountFee).toLocaleString()}</span></td>
+            <td><strong style="color: #1d5bbf;">$${Number(r.initialDeposit || 0).toLocaleString()}</strong></td>
+          </tr>
+        `;
+      });
+      tableBody.innerHTML = html;
     }
 
-    let html = "";
-    rows.forEach(r => {
-      const thesisBadge = (r.catKey === "masters" && r.thesis && r.thesis !== "N/A") ? `<span class="badge-thesis">${r.thesis}</span>` : '<span style="color:#cbd5e1;">-</span>';
-      html += `
-        <tr>
-          <td><strong>${r.name}</strong></td>
-          <td>${r.degree}</td>
-          <td>${thesisBadge}</td>
-          <td>${r.language}</td>
-          <td>${r.duration}</td>
-          <td style="text-decoration: line-through; color: #94a3b8;">$${Number(r.originalFee).toLocaleString()}</td>
-          <td><span class="badge-discount">$${Number(r.discountFee).toLocaleString()}</span></td>
-          <td><strong style="color: #1d5bbf;">$${Number(r.initialDeposit || 0).toLocaleString()}</strong></td>
-        </tr>
-      `;
-    });
+    // Render Modern Branded Cards Flyer Layout
+    const cardsContainer = document.getElementById("docCardsContainer");
+    const uniImage = selectedUni.image || selectedUni.logo || "../images/logo.png";
+    const uniName = selectedUni.name || "University";
+    const uniLocation = selectedUni.location || "Istanbul, Turkey";
 
-    tableBody.innerHTML = html;
+    if (cardsContainer) {
+      if (rows.length === 0) {
+        cardsContainer.innerHTML = `<div style="text-align: center; color: #64748b; padding: 40px; background: #f8fafc; border-radius: 12px; border: 1px dashed #cbd5e1;">No program fee structures match the selected filter criteria.</div>`;
+      } else {
+        cardsContainer.innerHTML = rows.map(r => {
+          const thesisPill = (r.catKey === "masters" && r.thesis && r.thesis !== "N/A") 
+            ? `<span class="pill-lang" style="background: #e11d48;"><i class="fas fa-scroll"></i> ${r.thesis}</span>` 
+            : '';
+          
+          const depositFormatted = r.initialDeposit > 0 ? `$${r.initialDeposit.toLocaleString()}` : `$0`;
+          const cashPaymentFormatted = `$${Number(r.discountFee).toLocaleString()}`;
+          const prepSchoolFormatted = `$1,500`;
+
+          return `
+            <div class="fee-program-card">
+              <div class="fee-card-header">
+                <div class="fee-card-title-group">
+                  <h3>${r.name}</h3>
+                  <div class="fee-card-pills">
+                    <span class="pill-degree">${r.degree}'s Degree</span>
+                    <span class="pill-lang">${r.language}</span>
+                    <span class="pill-duration"><i class="far fa-clock"></i> ${r.duration}</span>
+                    ${thesisPill}
+                  </div>
+                </div>
+                <div class="card-available-badge">
+                  <span class="dot"></span> Available
+                </div>
+              </div>
+
+              <div class="fee-card-body">
+                <div class="fee-card-uni-box">
+                  <div class="fee-card-logo-wrap">
+                    <img src="${uniImage}" alt="${uniName}" onerror="this.src='../images/logo.png';">
+                  </div>
+                  <div class="fee-card-uni-name">${uniName}</div>
+                  <div class="fee-card-uni-loc">📍 ${uniLocation}</div>
+                </div>
+
+                <div class="fee-card-discount-box">
+                  <span class="fee-orig-tuition">Tuition $${Number(r.originalFee).toLocaleString()}</span>
+                  <div class="fee-disc-amount">$${Number(r.discountFee).toLocaleString()} <span>/ year</span></div>
+                  <span class="fee-disc-label">DISCOUNTED TUITION FEE</span>
+                </div>
+
+                <div class="fee-card-metrics-grid">
+                  <div class="metric-box">
+                    <span class="m-label">DEPOSIT FEE</span>
+                    <span class="m-val">${depositFormatted}</span>
+                  </div>
+                  <div class="metric-box">
+                    <span class="m-label">CASH PAYMENT</span>
+                    <span class="m-val">${cashPaymentFormatted}</span>
+                  </div>
+                  <div class="metric-box">
+                    <span class="m-label">PREP SCHOOL FEE</span>
+                    <span class="m-val">${prepSchoolFormatted}</span>
+                  </div>
+                  <div class="metric-box">
+                    <span class="m-label">CURRENCY</span>
+                    <span class="m-val">USD</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+    }
   }
 
   if (generateBtn) {
@@ -3760,10 +3834,10 @@ async function initFeeStructureExporter() {
 
       if (window.html2pdf && element) {
         const opt = {
-          margin: 0.3,
+          margin: 0.2,
           filename: `${selectedUniName}_Fee_Structure_AdmissionTurkey.pdf`,
           image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2 },
+          html2canvas: { scale: 2, useCORS: true, logging: false },
           jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
         };
         window.html2pdf().set(opt).from(element).save();
