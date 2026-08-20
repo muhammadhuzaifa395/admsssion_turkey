@@ -4018,6 +4018,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initI18nEngine();
   initAnimations();
   initFaqAccordion();
+  initHomeUniversitySlider();
+  initVideoModal();
+  initReviewSystem();
 });
 
 /* =========================================================
@@ -4378,5 +4381,229 @@ function initFaqAccordion() {
     }
   });
 }
+
+/* =========================================================
+   HOME DYNAMIC UNIVERSITY FLOW SLIDER, VIDEO MODAL & REVIEW SYSTEM
+   ========================================================= */
+
+async function initHomeUniversitySlider() {
+  const container = document.getElementById("homeUniversityFlowContainer");
+  if (!container) return;
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/universities`);
+    const data = await response.json();
+    const universities = data.universities || [];
+
+    if (universities.length === 0) {
+      container.innerHTML = `
+        <div style="padding:20px; text-align:center; color:var(--text-muted); width:100%;">
+          <p>No universities found yet. Add universities from the admin panel to display them here.</p>
+        </div>
+      `;
+      return;
+    }
+
+    const groupedMap = new Map();
+    universities.forEach((uni) => {
+      const key = (uni.name || "").trim().toLowerCase();
+      if (!groupedMap.has(key)) {
+        groupedMap.set(key, {
+          _id: uni._id,
+          name: uni.name,
+          location: uni.location || "Turkey",
+          image: uni.image,
+          programsCount: Object.values(uni.programs || {}).flat().length
+        });
+      }
+    });
+
+    const displayUnis = Array.from(groupedMap.values());
+    container.innerHTML = "";
+
+    displayUnis.forEach(uni => {
+      const card = document.createElement("div");
+      card.className = "uni-flow-card card-tilt";
+      card.innerHTML = `
+        <div class="uni-card-img-wrap">
+          <img src="${uni.image || 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=600&q=80'}" alt="${uni.name}">
+          <div class="uni-card-badges">
+            <span class="uni-badge discount"><i class="fas fa-tags"></i> Scholarship Available</span>
+          </div>
+        </div>
+        <div class="uni-card-body">
+          <h3 style="font-size:17px; font-weight:700; margin-bottom:6px; color:var(--text-main);">${uni.name}</h3>
+          <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">
+            <i class="fas fa-location-dot" style="color:var(--red);"></i> ${uni.location}
+          </p>
+          <div style="margin-top:auto; display:flex; align-items:center; justify-content:space-between; padding-top:10px; border-top:1px solid var(--border-color);">
+            <span style="font-size:12.5px; font-weight:600; color:var(--blue);">${uni.programsCount} Programs</span>
+            <a href="university.html?id=${uni._id}" class="primary-btn" style="padding:6px 12px; font-size:12.5px;">Visit <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    const prevBtn = document.getElementById("uniFlowPrevBtn");
+    const nextBtn = document.getElementById("uniFlowNextBtn");
+
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        container.scrollBy({ left: -340, behavior: "smooth" });
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener("click", () => {
+        container.scrollBy({ left: 340, behavior: "smooth" });
+      });
+    }
+
+    let autoFlowInterval = setInterval(() => {
+      if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
+        container.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        container.scrollBy({ left: 340, behavior: "smooth" });
+      }
+    }, 4000);
+
+    container.addEventListener("mouseenter", () => clearInterval(autoFlowInterval));
+
+  } catch (err) {
+    console.error("Home University Flow Slider Error:", err);
+  }
+}
+
+function initVideoModal() {
+  const playBtn = document.querySelector(".hero-video-play-btn");
+  const modalBackdrop = document.getElementById("videoModalBackdrop");
+  const modalClose = document.getElementById("videoModalClose");
+  const iframe = document.getElementById("videoModalIframe");
+
+  if (playBtn && modalBackdrop && iframe) {
+    playBtn.addEventListener("click", () => {
+      iframe.src = "https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1";
+      modalBackdrop.classList.add("active");
+    });
+
+    const closeModal = () => {
+      modalBackdrop.classList.remove("active");
+      iframe.src = "";
+    };
+
+    if (modalClose) modalClose.addEventListener("click", closeModal);
+    modalBackdrop.addEventListener("click", (e) => {
+      if (e.target === modalBackdrop) closeModal();
+    });
+  }
+}
+
+const defaultReviews = [
+  {
+    name: "Amina Al-Mansoor",
+    role: "Medicine • Istanbul Medipol University",
+    rating: 5,
+    comment: "Admission Turkey secured my 50% scholarship at Medipol University for Medicine. Their team handled everything from my offer letter to my student visa smoothly!"
+  },
+  {
+    name: "Tariq Hassan",
+    role: "Computer Eng • Bahçeşehir University",
+    rating: 5,
+    comment: "Extremely professional guidance! I got my acceptance letter in under 3 days for Computer Engineering at Bahçeşehir University."
+  },
+  {
+    name: "Sarah Jenkins",
+    role: "Business Admin • Bilgi University",
+    rating: 5,
+    comment: "They greeted me at Istanbul airport and helped me find dormitory accommodation. Best agency for studying in Türkiye!"
+  }
+];
+
+function initReviewSystem() {
+  const reviewGrid = document.getElementById("reviewGrid");
+  const openModalBtn = document.getElementById("openReviewModalBtn");
+  const modalBackdrop = document.getElementById("reviewModalBackdrop");
+  const closeModalBtn = document.getElementById("reviewModalClose");
+  const reviewForm = document.getElementById("reviewForm");
+  const starSelects = document.querySelectorAll(".star-rating-select .fa-star");
+  let selectedRating = 5;
+
+  function loadAndRenderReviews() {
+    if (!reviewGrid) return;
+    const storedReviews = JSON.parse(localStorage.getItem("site_user_reviews") || "[]");
+    const allReviews = [...storedReviews, ...defaultReviews];
+
+    reviewGrid.innerHTML = allReviews.map(rev => {
+      const stars = Array(rev.rating || 5).fill('<i class="fas fa-star"></i>').join("");
+      return `
+        <div class="testimonial-card card-tilt reveal-fade-up">
+          <div class="star-rating">${stars}</div>
+          <p style="font-size:14px; font-style:italic; margin-bottom:16px; color:var(--text-main);">"${rev.comment}"</p>
+          <div class="student-profile">
+            <img src="${rev.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80'}" alt="${rev.name}" class="student-avatar">
+            <div class="student-info">
+              <h4>${rev.name}</h4>
+              <p>${rev.role}</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  loadAndRenderReviews();
+
+  if (openModalBtn && modalBackdrop) {
+    openModalBtn.addEventListener("click", () => {
+      modalBackdrop.classList.add("active");
+    });
+  }
+
+  if (closeModalBtn && modalBackdrop) {
+    closeModalBtn.addEventListener("click", () => {
+      modalBackdrop.classList.remove("active");
+    });
+  }
+
+  starSelects.forEach((star, idx) => {
+    star.addEventListener("click", () => {
+      selectedRating = idx + 1;
+      starSelects.forEach((s, sIdx) => {
+        if (sIdx <= idx) {
+          s.classList.add("active");
+        } else {
+          s.classList.remove("active");
+        }
+      });
+    });
+  });
+
+  if (reviewForm) {
+    reviewForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const nameInput = document.getElementById("reviewName");
+      const roleInput = document.getElementById("reviewRole");
+      const commentInput = document.getElementById("reviewComment");
+
+      const newReview = {
+        name: nameInput ? nameInput.value.trim() : "Anonymous Student",
+        role: roleInput ? roleInput.value.trim() : "International Student",
+        rating: selectedRating,
+        comment: commentInput ? commentInput.value.trim() : "Great guidance!",
+        avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80"
+      };
+
+      const storedReviews = JSON.parse(localStorage.getItem("site_user_reviews") || "[]");
+      storedReviews.unshift(newReview);
+      localStorage.setItem("site_user_reviews", JSON.stringify(storedReviews));
+
+      alert("Thank you! Your review has been submitted successfully.");
+      if (modalBackdrop) modalBackdrop.classList.remove("active");
+      reviewForm.reset();
+      loadAndRenderReviews();
+    });
+  }
+}
+
 
 

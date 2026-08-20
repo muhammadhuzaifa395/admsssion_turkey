@@ -199,113 +199,24 @@ Apply for Admission
   </div>
 </div>
 
-<!-- FEATURED UNIVERSITIES SHOWCASE -->
+<!-- DYNAMIC UNIVERSITIES FLOW SLIDER -->
 <section class="section">
   <div class="section-heading">
     <span>TOP RANKED UNIVERSITIES</span>
     <h2>Explore Türkiye's Premier Universities</h2>
-    <p>Guaranteed acceptance and partial/full tuition scholarships for international applicants.</p>
+    <p>Discover real universities added in your portal with guaranteed acceptance and tuition discounts.</p>
   </div>
 
-  <div class="uni-preview-grid">
-    
-    <!-- University Card 1 -->
-    <div class="uni-card-rich reveal-fade-up stagger-1">
-      <div class="uni-card-img-wrap">
-        <img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80" alt="Medipol University">
-        <div class="uni-card-badges">
-          <span class="uni-badge discount"><i class="fas fa-tags"></i> 50% Scholarship</span>
-          <span class="uni-badge"><i class="fas fa-globe"></i> English Medium</span>
-        </div>
-      </div>
-      <div class="uni-card-body">
-        <div class="uni-card-header">
-          <img src="images/logo.png" class="uni-logo-small" alt="Logo">
-          <div>
-            <h3 class="uni-card-title">Istanbul Medipol University</h3>
-            <span class="uni-card-location"><i class="fas fa-map-marker-alt" style="color:var(--red);"></i> Istanbul, Türkiye</span>
-          </div>
-        </div>
-        <div class="uni-program-tags">
-          <span class="program-tag">Medicine</span>
-          <span class="program-tag">Dentistry</span>
-          <span class="program-tag">Pharmacy</span>
-          <span class="program-tag">Software Eng</span>
-        </div>
-        <div class="uni-card-footer">
-          <div class="uni-price-box">
-            <span class="p-label">Tuition Starts At</span>
-            <div class="p-amount">$3,200 / yr</div>
-          </div>
-          <a href="universities.html" class="primary-btn" style="padding:8px 14px; font-size:13px;">View Details <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </div>
+  <div class="uni-flow-wrapper">
+    <button id="uniFlowPrevBtn" class="uni-flow-btn prev-btn" aria-label="Previous">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <div id="homeUniversityFlowContainer" class="uni-flow-container">
+      <p style="padding:20px; text-align:center; width:100%;">Loading real universities...</p>
     </div>
-
-    <!-- University Card 2 -->
-    <div class="uni-card-rich reveal-fade-up stagger-2">
-      <div class="uni-card-img-wrap">
-        <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=600&q=80" alt="Bahçeşehir University">
-        <div class="uni-card-badges">
-          <span class="uni-badge discount"><i class="fas fa-tags"></i> 40% Scholarship</span>
-          <span class="uni-badge"><i class="fas fa-award"></i> Global Ranking</span>
-        </div>
-      </div>
-      <div class="uni-card-body">
-        <div class="uni-card-header">
-          <img src="images/logo.png" class="uni-logo-small" alt="Logo">
-          <div>
-            <h3 class="uni-card-title">Bahçeşehir University (BAU)</h3>
-            <span class="uni-card-location"><i class="fas fa-map-marker-alt" style="color:var(--red);"></i> Istanbul (Besiktas), Türkiye</span>
-          </div>
-        </div>
-        <div class="uni-program-tags">
-          <span class="program-tag">Architecture</span>
-          <span class="program-tag">AI Engineering</span>
-          <span class="program-tag">Business Admin</span>
-        </div>
-        <div class="uni-card-footer">
-          <div class="uni-price-box">
-            <span class="p-label">Tuition Starts At</span>
-            <div class="p-amount">$4,500 / yr</div>
-          </div>
-          <a href="universities.html" class="primary-btn" style="padding:8px 14px; font-size:13px;">View Details <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </div>
-    </div>
-
-    <!-- University Card 3 -->
-    <div class="uni-card-rich reveal-fade-up stagger-3">
-      <div class="uni-card-img-wrap">
-        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80" alt="Istinye University">
-        <div class="uni-card-badges">
-          <span class="uni-badge discount"><i class="fas fa-tags"></i> Up to 60% Off</span>
-          <span class="uni-badge"><i class="fas fa-hospital"></i> Medical Hospital</span>
-        </div>
-      </div>
-      <div class="uni-card-body">
-        <div class="uni-card-header">
-          <img src="images/logo.png" class="uni-logo-small" alt="Logo">
-          <div>
-            <h3 class="uni-card-title">Istinye University</h3>
-            <span class="uni-card-location"><i class="fas fa-map-marker-alt" style="color:var(--red);"></i> Istanbul, Türkiye</span>
-          </div>
-        </div>
-        <div class="uni-program-tags">
-          <span class="program-tag">Medicine</span>
-          <span class="program-tag">Computer Eng</span>
-          <span class="program-tag">Nursing</span>
-        </div>
-        <div class="uni-card-footer">
-          <div class="uni-price-box">
-            <span class="p-label">Tuition Starts At</span>
-            <div class="p-amount">$2,800 / yr</div>
-          </div>
-          <a href="universities.html" class="primary-btn" style="padding:8px 14px; font-size:13px;">View Details <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </div>
-    </div>
-
+    <button id="uniFlowNextBtn" class="uni-flow-btn next-btn" aria-label="Next">
+      <i class="fas fa-chevron-right"></i>
+    </button>
   </div>
 </section>
 
@@ -562,56 +473,21 @@ Receive your admission and begin your life in Turkey.
 
 </section>
 
-<!-- TESTIMONIALS -->
+<!-- TESTIMONIALS & REVIEWS -->
 <section class="section">
-  <div class="section-heading">
-    <span>STUDENT SUCCESS STORIES</span>
-    <h2>What Our International Students Say</h2>
-    <p>Real stories from students studying in top Turkish universities.</p>
+  <div class="section-heading review-header-action">
+    <div>
+      <span>STUDENT SUCCESS STORIES & REVIEWS</span>
+      <h2>What Our International Students Say</h2>
+      <p>Real reviews and feedback from students studying in top Turkish universities.</p>
+    </div>
+    <button id="openReviewModalBtn" class="write-review-btn">
+      <i class="fas fa-pen"></i> Write a Review
+    </button>
   </div>
 
-  <div class="testimonial-grid">
-    <div class="testimonial-card reveal-fade-up stagger-1">
-      <div class="star-rating">
-        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-      </div>
-      <p style="font-size:14px; font-style:italic; margin-bottom:16px;">"Admission Turkey secured my 50% scholarship at Medipol University for Medicine. Their team handled everything from my offer letter to my student visa smoothly!"</p>
-      <div class="student-profile">
-        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Student" class="student-avatar">
-        <div class="student-info">
-          <h4>Amina Al-Mansoor</h4>
-          <p>Medicine • Istanbul Medipol University</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="testimonial-card reveal-fade-up stagger-2">
-      <div class="star-rating">
-        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-      </div>
-      <p style="font-size:14px; font-style:italic; margin-bottom:16px;">"Extremely professional guidance! I got my acceptance letter in under 3 days for Computer Engineering at Bahçeşehir University."</p>
-      <div class="student-profile">
-        <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80" alt="Student" class="student-avatar">
-        <div class="student-info">
-          <h4>Tariq Hassan</h4>
-          <p>Computer Eng • Bahçeşehir University</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="testimonial-card reveal-fade-up stagger-3">
-      <div class="star-rating">
-        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-      </div>
-      <p style="font-size:14px; font-style:italic; margin-bottom:16px;">"They greeted me at Istanbul airport and helped me find dormitory accommodation. Best agency for studying in Türkiye!"</p>
-      <div class="student-profile">
-        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80" alt="Student" class="student-avatar">
-        <div class="student-info">
-          <h4>Sarah Jenkins</h4>
-          <p>Business Admin • Bilgi University</p>
-        </div>
-      </div>
-    </div>
+  <div id="reviewGrid" class="testimonial-grid">
+    <!-- Dynamically loaded reviews via script.js -->
   </div>
 </section>
 
@@ -799,6 +675,53 @@ target="_blank">
 
 </a>
 
+
+<!-- VIDEO MODAL BACKDROP -->
+<div id="videoModalBackdrop" class="video-modal-backdrop">
+  <div class="video-modal-container">
+    <button id="videoModalClose" class="video-modal-close" aria-label="Close Video"><i class="fas fa-times"></i></button>
+    <iframe id="videoModalIframe" src="" title="Study in Turkey Video Guide" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</div>
+
+<!-- REVIEW SUBMISSION MODAL -->
+<div id="reviewModalBackdrop" class="review-modal-backdrop">
+  <div class="review-modal-card">
+    <button id="reviewModalClose" class="review-modal-close"><i class="fas fa-times"></i></button>
+    <h3 style="font-size:20px; font-weight:700; margin-bottom:6px; color:var(--text-main);">Share Your Feedback</h3>
+    <p style="font-size:13.5px; color:var(--text-muted); margin-bottom:15px;">How was your experience with Admission Turkey?</p>
+    
+    <form id="reviewForm">
+      <div style="margin-bottom:14px;">
+        <label style="font-size:13px; font-weight:600; display:block; margin-bottom:4px;">Your Full Name *</label>
+        <input type="text" id="reviewName" placeholder="e.g. Ali Ahmed" required style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid var(--border-color);">
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <label style="font-size:13px; font-weight:600; display:block; margin-bottom:4px;">Program / University *</label>
+        <input type="text" id="reviewRole" placeholder="e.g. Medicine • Medipol University" required style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid var(--border-color);">
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <label style="font-size:13px; font-weight:600; display:block; margin-bottom:4px;">Rating *</label>
+        <div class="star-rating-select">
+          <i class="fas fa-star active"></i>
+          <i class="fas fa-star active"></i>
+          <i class="fas fa-star active"></i>
+          <i class="fas fa-star active"></i>
+          <i class="fas fa-star active"></i>
+        </div>
+      </div>
+
+      <div style="margin-bottom:18px;">
+        <label style="font-size:13px; font-weight:600; display:block; margin-bottom:4px;">Your Review *</label>
+        <textarea id="reviewComment" rows="4" placeholder="Write your experience here..." required style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid var(--border-color); resize:vertical;"></textarea>
+      </div>
+
+      <button type="submit" class="primary-btn" style="width:100%; justify-content:center; padding:12px;">Submit Review <i class="fas fa-paper-plane"></i></button>
+    </form>
+  </div>
+</div>
 
 <script src="js/script.js?v=2"></script>
 
