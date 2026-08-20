@@ -1487,7 +1487,7 @@ async function loadUniversities() {
     // Backend offline or timeout -> instant fallback cards already visible!
   }
 }
-}
+
 async function loadUniversityDetails() {
   const detailContainer = document.getElementById("universityDetail");
   const programListContainer = document.getElementById("programListContainer");
