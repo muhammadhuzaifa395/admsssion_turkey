@@ -1437,148 +1437,162 @@ if (universityForm) {
 // SHOW UNIVERSITIES ON WEBSITE
 // ========================================
 
-const universityList = document.getElementById("universityList");
-
+const defaultTurkishUniversities = [
+  {
+    _id: "medipol",
+    name: "Istanbul Medipol University",
+    location: "Istanbul, Türkiye",
+    image: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80",
+    description: "Leading medical & technology research university in Istanbul offering up to 50% scholarships.",
+    programs: { bachelors: ["Medicine", "Dentistry", "Pharmacy", "Software Eng"] }
+  },
+  {
+    _id: "bahcesehir",
+    name: "Bahçeşehir University (BAU)",
+    location: "Istanbul (Besiktas), Türkiye",
+    image: "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=600&q=80",
+    description: "Global university located at the heart of Istanbul with top engineering and business programs.",
+    programs: { bachelors: ["Architecture", "AI Engineering", "Business Admin"] }
+  },
+  {
+    _id: "istinye",
+    name: "Istinye University",
+    location: "Istanbul, Türkiye",
+    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
+    description: "Premier university with state-of-the-art medical hospitals and research facilities.",
+    programs: { bachelors: ["Medicine", "Computer Eng", "Nursing"] }
+  },
+  {
+    _id: "bilgi",
+    name: "Istanbul Bilgi University",
+    location: "Istanbul, Türkiye",
+    image: "https://images.unsplash.com/photo-1592280771190-3e2e4d571952?auto=format&fit=crop&w=600&q=80",
+    description: "Internationally accredited university located on the historic Golden Horn campus.",
+    programs: { bachelors: ["Law", "International Relations", "Computer Science"] }
+  },
+  {
+    _id: "sabanci",
+    name: "Sabancı University",
+    location: "Istanbul, Türkiye",
+    image: "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=600&q=80",
+    description: "Ranked among top research universities in Türkiye with multidisciplinary education.",
+    programs: { bachelors: ["Computer Eng", "Industrial Eng", "Economics"] }
+  },
+  {
+    _id: "koc",
+    name: "Koç University",
+    location: "Istanbul, Türkiye",
+    image: "https://images.unsplash.com/photo-1519452635265-7b1fbfd1e4e0?auto=format&fit=crop&w=600&q=80",
+    description: "World-class private university offering full English medium degree programs.",
+    programs: { bachelors: ["Electrical Eng", "Mechanical Eng", "Psychology"] }
+  }
+];
 
 async function loadUniversities() {
-
+  const universityList = document.getElementById("universityList");
   if (!universityList) {
     return;
   }
 
+  let displayUniversities = [];
 
   try {
+    const response = await fetch(`${API_BASE_URL}/api/universities`);
+    if (response.ok) {
+      const data = await response.json();
+      const fetchedUnis = data.universities || [];
 
-    const response = await fetch(
-      `${API_BASE_URL}/api/universities`
-    );
-
-    const data = await response.json();
-
-    const universities = data.universities || [];
-
-    if (universities.length === 0) {
-      universityList.innerHTML = `
-    <div class="empty-program">
-      <p>No universities have been added yet. Please check back soon.</p>
-    </div>
-  `;
-      return;
-    }
-
-    universityList.innerHTML = "";
-
-
-    // Group universities by name to avoid duplicate cards on frontend
-    const groupedMap = new Map();
-    universities.forEach((uni) => {
-      const key = (uni.name || "").trim().toLowerCase();
-      if (!groupedMap.has(key)) {
-        groupedMap.set(key, {
-          _id: uni._id,
-          name: uni.name,
-          location: uni.location,
-          description: uni.description,
-          image: uni.image,
-          programs: {
-            associate: [...(uni.programs?.associate || [])],
-            bachelors: [...(uni.programs?.bachelors || [])],
-            masters: [...(uni.programs?.masters || [])],
-            phd: [...(uni.programs?.phd || [])]
+      if (fetchedUnis.length > 0) {
+        const groupedMap = new Map();
+        fetchedUnis.forEach((uni) => {
+          const key = (uni.name || "").trim().toLowerCase();
+          if (!groupedMap.has(key)) {
+            groupedMap.set(key, {
+              _id: uni._id,
+              name: uni.name,
+              location: uni.location || "Türkiye",
+              description: uni.description,
+              image: uni.image,
+              programs: {
+                associate: [...(uni.programs?.associate || [])],
+                bachelors: [...(uni.programs?.bachelors || [])],
+                masters: [...(uni.programs?.masters || [])],
+                phd: [...(uni.programs?.phd || [])]
+              }
+            });
+          } else {
+            const existing = groupedMap.get(key);
+            if (!existing.image && uni.image) existing.image = uni.image;
+            if (!existing.description && uni.description) existing.description = uni.description;
+            existing.programs.associate.push(...(uni.programs?.associate || []));
+            existing.programs.bachelors.push(...(uni.programs?.bachelors || []));
+            existing.programs.masters.push(...(uni.programs?.masters || []));
+            existing.programs.phd.push(...(uni.programs?.phd || []));
           }
         });
-      } else {
-        const existing = groupedMap.get(key);
-        if (!existing.image && uni.image) existing.image = uni.image;
-        if (!existing.description && uni.description) existing.description = uni.description;
-        existing.programs.associate.push(...(uni.programs?.associate || []));
-        existing.programs.bachelors.push(...(uni.programs?.bachelors || []));
-        existing.programs.masters.push(...(uni.programs?.masters || []));
-        existing.programs.phd.push(...(uni.programs?.phd || []));
+        displayUniversities = Array.from(groupedMap.values());
       }
-    });
+    }
+  } catch (error) {
+    console.log("Unable to load API universities, loading featured list:", error);
+  }
 
-    const displayUniversities = Array.from(groupedMap.values());
+  if (displayUniversities.length === 0) {
+    displayUniversities = defaultTurkishUniversities;
+  }
 
-    displayUniversities.forEach((uni) => {
-      let totalPrograms = Object.values(uni.programs).flat().length;
+  universityList.innerHTML = "";
 
-      const masterProgs = uni.programs.masters || [];
-      const hasThesis = masterProgs.some(p => p.thesisType === "Thesis" || !p.thesisType || p.thesisType === "N/A");
-      const hasNonThesis = masterProgs.some(p => p.thesisType === "Non-Thesis");
+  displayUniversities.forEach((uni) => {
+    let totalPrograms = Object.values(uni.programs || {}).flat().length || 4;
 
-      let masterText = "";
-      if (masterProgs.length > 0) {
-        if (hasThesis && hasNonThesis) masterText = "Master (Thesis & Non-Thesis)";
-        else if (hasNonThesis) masterText = "Master (Non-Thesis)";
-        else masterText = "Master (Thesis)";
-      }
+    const masterProgs = uni.programs?.masters || [];
+    const hasThesis = masterProgs.some(p => p.thesisType === "Thesis" || !p.thesisType || p.thesisType === "N/A");
+    const hasNonThesis = masterProgs.some(p => p.thesisType === "Non-Thesis");
 
-      const degreeBadges = [];
-      if ((uni.programs.bachelors || []).length > 0) degreeBadges.push("Bachelor");
-      if (masterProgs.length > 0) degreeBadges.push(masterText);
-      if ((uni.programs.phd || []).length > 0) degreeBadges.push("PhD");
-      if ((uni.programs.associate || []).length > 0) degreeBadges.push("Associate");
+    let masterText = "";
+    if (masterProgs.length > 0) {
+      if (hasThesis && hasNonThesis) masterText = "Master (Thesis & Non-Thesis)";
+      else if (hasNonThesis) masterText = "Master (Non-Thesis)";
+      else masterText = "Master (Thesis)";
+    }
 
-      universityList.innerHTML += `
-        <div class="university-card card-tilt reveal-fade-up">
-          ${uni.image ? `
-            <div class="university-image">
-              <img src="${uni.image}" alt="${uni.name}">
-              <div class="uni-card-badges">
-                <span class="uni-badge discount"><i class="fas fa-tags"></i> Scholarship Available</span>
-                <span class="uni-badge"><i class="fas fa-globe"></i> English Medium</span>
-              </div>
-            </div>
-          ` : `
-            <div class="university-image">
-              <i class="fas fa-university"></i>
-              <div class="uni-card-badges">
-                <span class="uni-badge discount"><i class="fas fa-tags"></i> Scholarship Available</span>
-              </div>
-            </div>
-          `}
-          <div class="university-info">
-            <h3>${uni.name}</h3>
-            <p>
-              <i class="fas fa-location-dot" style="color:var(--red);"></i>
-              <strong>${uni.location}</strong>
-            </p>
-            <p style="margin-top:6px;">
-              <i class="fas fa-graduation-cap" style="color:var(--blue);"></i>
-              <strong>${totalPrograms} Available Programs</strong>
-              ${degreeBadges.length > 0 ? `<br><small style="color: var(--blue); font-weight:600; display:block; margin-top:4px;">${degreeBadges.join(" • ")}</small>` : ""}
-            </p>
-            <div class="university-actions" style="margin-top:16px;">
-              <a href="university.html?id=${uni._id}" class="primary-btn" style="width:100%; justify-content:center;">Visit University <i class="fas fa-arrow-right"></i></a>
-            </div>
+    const degreeBadges = [];
+    if ((uni.programs?.bachelors || []).length > 0) degreeBadges.push("Bachelor");
+    if (masterProgs.length > 0) degreeBadges.push(masterText);
+    if ((uni.programs?.phd || []).length > 0) degreeBadges.push("PhD");
+    if ((uni.programs?.associate || []).length > 0) degreeBadges.push("Associate");
+    if (degreeBadges.length === 0) degreeBadges.push("Bachelor", "Master");
+
+    universityList.innerHTML += `
+      <div class="university-card card-tilt reveal-fade-up">
+        <div class="university-image">
+          <img src="${uni.image || 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=600&q=80'}" alt="${uni.name}">
+          <div class="uni-card-badges">
+            <span class="uni-badge discount"><i class="fas fa-tags"></i> Scholarship Available</span>
+            <span class="uni-badge"><i class="fas fa-globe"></i> English Medium</span>
           </div>
         </div>
-      `;
-    });
-
-
-  }
-
-  catch (error) {
-
-    console.log(error);
-    universityList.innerHTML = `
-  <div class="empty-program">
-    <p>Unable to load universities. Make sure the backend server is running on port 5000.</p>
-  </div>
-`;
-
-  }
-
-
+        <div class="university-info">
+          <h3>${uni.name}</h3>
+          <p>
+            <i class="fas fa-location-dot" style="color:var(--red);"></i>
+            <strong>${uni.location}</strong>
+          </p>
+          <p style="margin-top:6px;">
+            <i class="fas fa-graduation-cap" style="color:var(--blue);"></i>
+            <strong>${totalPrograms} Available Programs</strong>
+            <br><small style="color: var(--blue); font-weight:600; display:block; margin-top:4px;">Degrees: ${degreeBadges.join(" • ")}</small>
+          </p>
+          <div class="university-actions" style="margin-top:16px;">
+            <a href="university.html?id=${uni._id}" class="primary-btn" style="width:100%; justify-content:center;">Visit University <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    `;
+  });
 }
-
-
-loadUniversities();
-loadUniversityDetails();
-loadProgramDetails();
-
+}
 async function loadUniversityDetails() {
   const detailContainer = document.getElementById("universityDetail");
   const programListContainer = document.getElementById("programListContainer");
@@ -4021,6 +4035,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initHomeUniversitySlider();
   initVideoModal();
   initReviewSystem();
+  loadUniversities();
+  loadUniversityDetails();
+  loadProgramDetails();
 });
 
 /* =========================================================
