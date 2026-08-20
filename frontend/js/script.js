@@ -3573,6 +3573,35 @@ async function initAdminDashboard() {
 
 document.addEventListener("DOMContentLoaded", initAdminDashboard);
 
+function detectProgramDeposit(p) {
+  if (!p || typeof p !== "object") return 0;
+
+  const knownKeys = [
+    "initialDeposit", "deposit", "depositFee", "initial_deposit", 
+    "deposit_fee", "initialDepositFee", "prepayment", "advanceFee", "advance", "prepDeposit"
+  ];
+  
+  for (const k of knownKeys) {
+    if (p[k] !== undefined && p[k] !== null && p[k] !== "") {
+      const num = typeof p[k] === "number" ? p[k] : Number(String(p[k]).replace(/[^0-9.]/g, ""));
+      if (!isNaN(num) && num > 0) return num;
+    }
+  }
+
+  for (const key of Object.keys(p)) {
+    const kLower = key.toLowerCase();
+    if (kLower.includes("deposit") || kLower.includes("initial") || kLower.includes("advance") || kLower.includes("prepay")) {
+      const val = p[key];
+      if (val !== undefined && val !== null && val !== "") {
+        const num = typeof val === "number" ? val : Number(String(val).replace(/[^0-9.]/g, ""));
+        if (!isNaN(num) && num > 0) return num;
+      }
+    }
+  }
+
+  return 0;
+}
+
 // ========================================
 // OFFICIAL FEE STRUCTURE EXPORTER & PDF GENERATOR
 // ========================================
@@ -3673,19 +3702,14 @@ async function initFeeStructureExporter() {
         if (degreeFilter === "Associate" && cat.key !== "associate") return;
         if (degreeFilter === "Master-Thesis" && (cat.key !== "masters" || thesisVal !== "Thesis")) return;
         if (degreeFilter === "Master-NonThesis" && (cat.key !== "masters" || thesisVal === "Thesis")) return;
-
         if (langFilter !== "ALL" && !langVal.toLowerCase().includes(langFilter.toLowerCase())) return;
 
-        let rawDeposit = p.initialDeposit ?? p.deposit ?? p.depositFee ?? p.initial_deposit ?? p.initialDepositFee ?? p.prepayment ?? 0;
-        if (typeof rawDeposit === "string") {
-          rawDeposit = Number(rawDeposit.replace(/[^0-9.]/g, "")) || 0;
-        }
-
-        let calculatedDeposit = Number(rawDeposit) || 0;
+        let detectedDep = detectProgramDeposit(p);
+        let calculatedDeposit = detectedDep;
 
         if (overrideDepositVal !== "") {
           const customDep = Number(overrideDepositVal.replace(/[^0-9.]/g, ""));
-          if (!isNaN(customDep)) {
+          if (!isNaN(customDep) && customDep > 0) {
             calculatedDeposit = customDep;
           }
         }
