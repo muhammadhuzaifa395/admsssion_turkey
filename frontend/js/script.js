@@ -4558,22 +4558,56 @@ const defaultReviews = [
   }
 ];
 
-function initReviewSystem() {
+async function initReviewSystem() {
   const reviewGrid = document.getElementById("reviewGrid");
   const openModalBtn = document.getElementById("openReviewModalBtn");
   const modalBackdrop = document.getElementById("reviewModalBackdrop");
   const closeModalBtn = document.getElementById("reviewModalClose");
   const reviewForm = document.getElementById("reviewForm");
   const starSelects = document.querySelectorAll(".star-rating-select .fa-star");
+  const prevBtn = document.getElementById("reviewFlowPrevBtn");
+  const nextBtn = document.getElementById("reviewFlowNextBtn");
   let selectedRating = 5;
 
-  function loadAndRenderReviews() {
+  async function fetchAndRenderReviews() {
     if (!reviewGrid) return;
-    const storedReviews = JSON.parse(localStorage.getItem("site_user_reviews") || "[]");
-    const allReviews = [...storedReviews, ...defaultReviews];
 
-    reviewGrid.innerHTML = allReviews.map(rev => {
-      const stars = Array(rev.rating || 5).fill('<i class="fas fa-star"></i>').join("");
+    let apiReviews = [];
+    try {
+      const res = await fetchWithTimeout(`${API_BASE_URL}/api/reviews`, {}, 2500);
+      if (res && res.ok) {
+        const data = await res.json();
+        apiReviews = data.reviews || [];
+      }
+    } catch (err) {
+      console.warn("Could not fetch remote reviews, using local fallback:", err);
+    }
+
+    const storedReviews = JSON.parse(localStorage.getItem("site_user_reviews") || "[]");
+    const combined = [...apiReviews, ...storedReviews];
+
+    // Deduplicate reviews by comment text
+    const uniqueReviews = [];
+    const seenComments = new Set();
+
+    combined.forEach(r => {
+      const key = (r.comment || "").trim().toLowerCase();
+      if (key && !seenComments.has(key)) {
+        seenComments.add(key);
+        uniqueReviews.push(r);
+      }
+    });
+
+    defaultReviews.forEach(r => {
+      const key = (r.comment || "").trim().toLowerCase();
+      if (key && !seenComments.has(key)) {
+        seenComments.add(key);
+        uniqueReviews.push(r);
+      }
+    });
+
+    reviewGrid.innerHTML = uniqueReviews.map(rev => {
+      const stars = Array(Number(rev.rating) || 5).fill('<i class="fas fa-star"></i>').join("");
       return `
         <div class="testimonial-card card-tilt reveal-fade-up">
           <div class="star-rating">${stars}</div>
@@ -4582,15 +4616,39 @@ function initReviewSystem() {
             <img src="${rev.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80'}" alt="${rev.name}" class="student-avatar">
             <div class="student-info">
               <h4>${rev.name}</h4>
-              <p>${rev.role}</p>
+              <p>${rev.role || 'International Student'}</p>
             </div>
           </div>
         </div>
       `;
     }).join("");
+
+    if (typeof observeReveals === "function") {
+      observeReveals(reviewGrid);
+    }
   }
 
-  loadAndRenderReviews();
+  fetchAndRenderReviews();
+
+  // Slider controls and smooth auto-flow
+  if (reviewGrid) {
+    if (prevBtn) {
+      prevBtn.onclick = () => reviewGrid.scrollBy({ left: -340, behavior: "smooth" });
+    }
+    if (nextBtn) {
+      nextBtn.onclick = () => reviewGrid.scrollBy({ left: 340, behavior: "smooth" });
+    }
+
+    let reviewAutoInterval = setInterval(() => {
+      if (reviewGrid.scrollLeft + reviewGrid.clientWidth >= reviewGrid.scrollWidth - 10) {
+        reviewGrid.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        reviewGrid.scrollBy({ left: 340, behavior: "smooth" });
+      }
+    }, 3800);
+
+    reviewGrid.addEventListener("mouseenter", () => clearInterval(reviewAutoInterval));
+  }
 
   if (openModalBtn && modalBackdrop) {
     openModalBtn.addEventListener("click", () => {
@@ -4618,7 +4676,7 @@ function initReviewSystem() {
   });
 
   if (reviewForm) {
-    reviewForm.addEventListener("submit", (e) => {
+    reviewForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const nameInput = document.getElementById("reviewName");
       const roleInput = document.getElementById("reviewRole");
@@ -4632,14 +4690,26 @@ function initReviewSystem() {
         avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80"
       };
 
+      // Save locally instantly
       const storedReviews = JSON.parse(localStorage.getItem("site_user_reviews") || "[]");
       storedReviews.unshift(newReview);
       localStorage.setItem("site_user_reviews", JSON.stringify(storedReviews));
 
-      alert("Thank you! Your review has been submitted successfully.");
+      // Post to backend database so it syncs across mobile & desktop devices
+      try {
+        await fetch(`${API_BASE_URL}/api/reviews`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newReview)
+        });
+      } catch (err) {
+        console.warn("Could not post review to backend database:", err);
+      }
+
+      alert("Thank you! Your review has been published successfully.");
       if (modalBackdrop) modalBackdrop.classList.remove("active");
       reviewForm.reset();
-      loadAndRenderReviews();
+      fetchAndRenderReviews();
     });
   }
 }
