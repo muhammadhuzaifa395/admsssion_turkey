@@ -14,7 +14,6 @@ const universityRoutes = require("./routes/universityRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
-const reviewRoutes = require("./routes/reviewRoutes");
 
 const app = express();
 const uploadsDir = path.join(__dirname, "uploads");
@@ -94,7 +93,6 @@ app.use("/api/universities", universityRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/contact", contactRoutes);
-app.use("/api/reviews", reviewRoutes);
 
 app.get("/api", (req, res) => {
   res.send("Admission Turkey Backend is Running!");

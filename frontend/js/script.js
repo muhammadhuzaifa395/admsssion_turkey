@@ -1377,7 +1377,6 @@ if (universityForm) {
 const defaultTurkishUniversities = [
   {
     _id: "medipol",
-    isDummy: true,
     name: "Istanbul Medipol University",
     location: "Istanbul, Türkiye",
     image: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80",
@@ -1386,7 +1385,6 @@ const defaultTurkishUniversities = [
   },
   {
     _id: "bahcesehir",
-    isDummy: true,
     name: "Bahçeşehir University (BAU)",
     location: "Istanbul (Besiktas), Türkiye",
     image: "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=600&q=80",
@@ -1395,7 +1393,6 @@ const defaultTurkishUniversities = [
   },
   {
     _id: "istinye",
-    isDummy: true,
     name: "Istinye University",
     location: "Istanbul, Türkiye",
     image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
@@ -1404,7 +1401,6 @@ const defaultTurkishUniversities = [
   },
   {
     _id: "bilgi",
-    isDummy: true,
     name: "Istanbul Bilgi University",
     location: "Istanbul, Türkiye",
     image: "https://images.unsplash.com/photo-1592280771190-3e2e4d571952?auto=format&fit=crop&w=600&q=80",
@@ -1413,7 +1409,6 @@ const defaultTurkishUniversities = [
   },
   {
     _id: "sabanci",
-    isDummy: true,
     name: "Sabancı University",
     location: "Istanbul, Türkiye",
     image: "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=600&q=80",
@@ -1422,7 +1417,6 @@ const defaultTurkishUniversities = [
   },
   {
     _id: "koc",
-    isDummy: true,
     name: "Koç University",
     location: "Istanbul, Türkiye",
     image: "https://images.unsplash.com/photo-1519452635265-7b1fbfd1e4e0?auto=format&fit=crop&w=600&q=80",
@@ -1482,10 +1476,6 @@ function renderUniversityGridCards(container, universitiesList) {
       </div>
     `;
   });
-
-  if (typeof observeReveals === "function") {
-    observeReveals(container);
-  }
 }
 
 async function loadUniversities() {
@@ -1494,20 +1484,18 @@ async function loadUniversities() {
     return;
   }
 
-  // 1. INSTANT RENDER (0ms delay): Show featured university cards right away so page is never empty or broken
+  // 1. INSTANT RENDER (0ms delay): Show default featured cards right away!
   renderUniversityGridCards(universityList, defaultTurkishUniversities);
 
-  // 2. BACKGROUND FETCH: Check if backend DB has custom added universities
+  // 2. FAST BACKGROUND FETCH (1.5s max timeout) to check for backend DB items
   try {
-    const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities`, {}, 2500);
+    const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities`, {}, 1500);
     if (response && response.ok) {
       const data = await response.json();
       const fetchedUnis = data.universities || [];
 
       if (fetchedUnis.length > 0) {
         const groupedMap = new Map();
-        const getArray = val => (Array.isArray(val) ? val : []);
-
         fetchedUnis.forEach((uni) => {
           const key = (uni.name || "").trim().toLowerCase();
           if (!groupedMap.has(key)) {
@@ -1518,20 +1506,20 @@ async function loadUniversities() {
               description: uni.description,
               image: uni.image,
               programs: {
-                associate: [...getArray(uni.programs?.associate)],
-                bachelors: [...getArray(uni.programs?.bachelors)],
-                masters: [...getArray(uni.programs?.masters)],
-                phd: [...getArray(uni.programs?.phd)]
+                associate: [...(uni.programs?.associate || [])],
+                bachelors: [...(uni.programs?.bachelors || [])],
+                masters: [...(uni.programs?.masters || [])],
+                phd: [...(uni.programs?.phd || [])]
               }
             });
           } else {
             const existing = groupedMap.get(key);
             if (!existing.image && uni.image) existing.image = uni.image;
             if (!existing.description && uni.description) existing.description = uni.description;
-            existing.programs.associate.push(...getArray(uni.programs?.associate));
-            existing.programs.bachelors.push(...getArray(uni.programs?.bachelors));
-            existing.programs.masters.push(...getArray(uni.programs?.masters));
-            existing.programs.phd.push(...getArray(uni.programs?.phd));
+            existing.programs.associate.push(...(uni.programs?.associate || []));
+            existing.programs.bachelors.push(...(uni.programs?.bachelors || []));
+            existing.programs.masters.push(...(uni.programs?.masters || []));
+            existing.programs.phd.push(...(uni.programs?.phd || []));
           }
         });
         const displayUnis = Array.from(groupedMap.values());
@@ -1541,7 +1529,7 @@ async function loadUniversities() {
       }
     }
   } catch (error) {
-    // Backend offline or Vercel cold-starting -> instant fallback cards already visible!
+    // Backend offline or timeout -> instant fallback cards already visible!
   }
 }
 
@@ -1559,56 +1547,50 @@ async function loadUniversityDetails() {
     return;
   }
 
-  let university = null;
   try {
-    const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities/${universityId}`, {}, 2500);
-    if (response && response.ok) {
-      const data = await response.json();
-      university = data.university;
+    const response = await fetch(`${API_BASE_URL}/api/universities/${universityId}`);
+    const data = await response.json();
+    const university = data.university;
+
+    if (!university) {
+      detailContainer.innerHTML = `<p class="empty-program">University not found.</p>`;
+      return;
+    }
+
+    detailContainer.innerHTML = `
+      <div class="university-detail-card">
+        <div class="university-image">
+          ${university.image ? `<img src="${university.image}" alt="${university.name}">` : `<i class="fas fa-university"></i>`}
+        </div>
+        <div class="university-detail-info">
+          <h2>${university.name}</h2>
+          <p><i class="fas fa-location-dot"></i> ${university.location}</p>
+          <p>${university.description || "No description available."}</p>
+        </div>
+      </div>
+    `;
+
+    const programs = Object.entries(university.programs)
+      .flatMap(([degreeType, list]) =>
+        list.map((program) => ({ degreeType, program }))
+      );
+
+    if (programs.length === 0) {
+      programListContainer.innerHTML = `<p class="empty-program">No programs available for this university.</p>`;
+      return;
+    }
+
+    const activeLanguage = renderLanguageTabs(university);
+    const activeDegree = renderDegreeTabs(university);
+    if (activeDegree && activeLanguage) {
+      renderProgramList(university, activeDegree, activeLanguage);
+    } else {
+      const fallbackDegree = Object.keys(university.programs).find((type) => (university.programs[type] || []).length > 0) || "bachelors";
+      renderProgramList(university, fallbackDegree, activeLanguage || "English");
     }
   } catch (error) {
-    console.warn("API fetch single university failed:", error);
-  }
-
-  if (!university && typeof defaultTurkishUniversities !== "undefined") {
-    university = defaultTurkishUniversities.find(u => u._id === universityId || (u.name && u.name.toLowerCase().includes(universityId.toLowerCase())));
-  }
-
-  if (!university) {
-    detailContainer.innerHTML = `<p class="empty-program">University details not found.</p>`;
-    return;
-  }
-
-  detailContainer.innerHTML = `
-    <div class="university-detail-card">
-      <div class="university-image">
-        ${university.image ? `<img src="${university.image}" alt="${university.name}">` : `<i class="fas fa-university"></i>`}
-      </div>
-      <div class="university-detail-info">
-        <h2>${university.name}</h2>
-        <p><i class="fas fa-location-dot"></i> ${university.location}</p>
-        <p>${university.description || "No description available."}</p>
-      </div>
-    </div>
-  `;
-
-  const programs = Object.entries(university.programs || {})
-    .flatMap(([degreeType, list]) =>
-      (Array.isArray(list) ? list : []).map((program) => ({ degreeType, program }))
-    );
-
-  if (programs.length === 0) {
-    programListContainer.innerHTML = `<p class="empty-program">No programs available for this university.</p>`;
-    return;
-  }
-
-  const activeLanguage = renderLanguageTabs(university);
-  const activeDegree = renderDegreeTabs(university);
-  if (activeDegree && activeLanguage) {
-    renderProgramList(university, activeDegree, activeLanguage);
-  } else {
-    const fallbackDegree = Object.keys(university.programs || {}).find((type) => (university.programs[type] || []).length > 0) || "bachelors";
-    renderProgramList(university, fallbackDegree, activeLanguage || "English");
+    console.error("Load university details error:", error);
+    detailContainer.innerHTML = `<p class="empty-program">Unable to load university details.</p>`;
   }
 }
 
@@ -4201,50 +4183,33 @@ function setLanguage(lang) {
   });
 }
 
-let revealObserver = null;
-
-function observeReveals(parent = document) {
-  const rootNode = parent || document;
-  const targets = rootNode.querySelectorAll(".reveal-on-scroll, .reveal-fade-up, .reveal-slide-left, .reveal-slide-right, .reveal-scale");
-
-  if (typeof IntersectionObserver === "undefined") {
-    targets.forEach(el => el.classList.add("reveal-visible"));
-    return;
-  }
-
-  if (!revealObserver) {
-    const observerOptions = {
-      threshold: 0.05,
-      rootMargin: "0px 0px -20px 0px"
-    };
-
-    revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("reveal-visible");
-          
-          const countElements = entry.target.querySelectorAll("[data-count]");
-          countElements.forEach(c => animateCounter(c));
-          if (entry.target.hasAttribute("data-count")) {
-            animateCounter(entry.target);
-          }
-
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-  }
-
-  targets.forEach(el => {
-    if (!el.classList.contains("reveal-visible")) {
-      el.classList.add("reveal-on-scroll");
-      revealObserver.observe(el);
-    }
-  });
-}
-
 function initAnimations() {
-  observeReveals();
+  const observerOptions = {
+    threshold: 0.12,
+    rootMargin: "0px 0px -40px 0px"
+  };
+
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("reveal-visible");
+        
+        const countElements = entry.target.querySelectorAll("[data-count]");
+        countElements.forEach(c => animateCounter(c));
+        if (entry.target.hasAttribute("data-count")) {
+          animateCounter(entry.target);
+        }
+
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll(".reveal-on-scroll, .reveal-fade-up, .reveal-slide-left, .reveal-slide-right, .reveal-scale").forEach(el => {
+    el.classList.add("reveal-on-scroll");
+    revealObserver.observe(el);
+  });
+
   initHeroParticles();
   initCardTilt();
   initButtonRipples();
@@ -4388,34 +4353,21 @@ function renderHomeSliderCards(container, unisList) {
     const card = document.createElement("div");
     card.className = "uni-flow-card card-tilt";
     const pCount = Object.values(uni.programs || {}).flat().length || 4;
-
-    const isDummyUni = uni.isDummy || ["medipol", "bahcesehir", "istinye", "bilgi", "sabanci", "koc"].includes(uni._id);
-    const waText = encodeURIComponent(`Hello! I am interested in applying to ${uni.name}. Please provide details.`);
-    const waUrl = `https://wa.me/905514840804?text=${waText}`;
-
-    const actionBtn = isDummyUni
-      ? `<a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="primary-btn" style="padding:6px 12px; font-size:12.5px; background:#25D366; border-color:#25D366; color:#fff;">Apply <i class="fab fa-whatsapp"></i></a>`
-      : `<a href="university.html?id=${uni._id}" class="primary-btn" style="padding:6px 12px; font-size:12.5px;">Visit <i class="fas fa-arrow-right"></i></a>`;
-
-    const titleClickAttr = isDummyUni
-      ? `onclick="window.open('${waUrl}', '_blank')"`
-      : `onclick="window.location.href='university.html?id=${uni._id}'"`;
-
     card.innerHTML = `
-      <div class="uni-card-img-wrap" style="cursor:pointer;" ${titleClickAttr}>
+      <div class="uni-card-img-wrap">
         <img src="${uni.image || 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=600&q=80'}" alt="${uni.name}" loading="lazy" decoding="async">
         <div class="uni-card-badges">
           <span class="uni-badge discount"><i class="fas fa-tags"></i> Scholarship Available</span>
         </div>
       </div>
       <div class="uni-card-body">
-        <h3 style="font-size:17px; font-weight:700; margin-bottom:6px; color:var(--text-main); cursor:pointer;" ${titleClickAttr}>${uni.name}</h3>
+        <h3 style="font-size:17px; font-weight:700; margin-bottom:6px; color:var(--text-main);">${uni.name}</h3>
         <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">
           <i class="fas fa-location-dot" style="color:var(--red);"></i> ${uni.location || 'Türkiye'}
         </p>
         <div style="margin-top:auto; display:flex; align-items:center; justify-content:space-between; padding-top:10px; border-top:1px solid var(--border-color);">
           <span style="font-size:12.5px; font-weight:600; color:var(--blue);">${pCount} Programs</span>
-          ${actionBtn}
+          <a href="university.html?id=${uni._id}" class="primary-btn" style="padding:6px 12px; font-size:12.5px;">Visit <i class="fas fa-arrow-right"></i></a>
         </div>
       </div>
     `;
@@ -4534,82 +4486,32 @@ function initReviewSystem() {
   const closeModalBtn = document.getElementById("reviewModalClose");
   const reviewForm = document.getElementById("reviewForm");
   const starSelects = document.querySelectorAll(".star-rating-select .fa-star");
-  const ratingLabel = document.getElementById("selectedRatingLabel");
-  const prevBtn = document.getElementById("reviewFlowPrevBtn");
-  const nextBtn = document.getElementById("reviewFlowNextBtn");
   let selectedRating = 5;
-
-  const ratingDescriptions = [
-    "1 Star - Poor",
-    "2 Stars - Fair",
-    "3 Stars - Good",
-    "4 Stars - Very Good",
-    "5 Stars - Excellent"
-  ];
 
   function loadAndRenderReviews() {
     if (!reviewGrid) return;
-
     const storedReviews = JSON.parse(localStorage.getItem("site_user_reviews") || "[]");
-    const combined = [...storedReviews, ...defaultReviews];
+    const allReviews = [...storedReviews, ...defaultReviews];
 
-    const uniqueReviews = [];
-    const seenComments = new Set();
-
-    combined.forEach(r => {
-      const key = (r.comment || "").trim().toLowerCase();
-      if (key && !seenComments.has(key)) {
-        seenComments.add(key);
-        uniqueReviews.push(r);
-      }
-    });
-
-    reviewGrid.innerHTML = uniqueReviews.map(rev => {
-      const numStars = Math.max(1, Math.min(5, Number(rev.rating) || 5));
-      const starsHtml = Array(numStars).fill('<i class="fas fa-star" style="color:#f59e0b;"></i>').join("") +
-        Array(5 - numStars).fill('<i class="far fa-star" style="color:#d1d5db;"></i>').join("");
-
+    reviewGrid.innerHTML = allReviews.map(rev => {
+      const stars = Array(rev.rating || 5).fill('<i class="fas fa-star"></i>').join("");
       return `
         <div class="testimonial-card card-tilt reveal-fade-up">
-          <div class="star-rating" style="margin-bottom:10px;">${starsHtml}</div>
+          <div class="star-rating">${stars}</div>
           <p style="font-size:14px; font-style:italic; margin-bottom:16px; color:var(--text-main);">"${rev.comment}"</p>
           <div class="student-profile">
             <img src="${rev.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80'}" alt="${rev.name}" class="student-avatar">
             <div class="student-info">
               <h4>${rev.name}</h4>
-              <p>${rev.role || 'International Student'}</p>
+              <p>${rev.role}</p>
             </div>
           </div>
         </div>
       `;
     }).join("");
-
-    if (typeof observeReveals === "function") {
-      observeReveals(reviewGrid);
-    }
   }
 
   loadAndRenderReviews();
-
-  // Horizontal Slider Navigation & Auto Flow
-  if (reviewGrid) {
-    if (prevBtn) {
-      prevBtn.onclick = () => reviewGrid.scrollBy({ left: -340, behavior: "smooth" });
-    }
-    if (nextBtn) {
-      nextBtn.onclick = () => reviewGrid.scrollBy({ left: 340, behavior: "smooth" });
-    }
-
-    let reviewAutoInterval = setInterval(() => {
-      if (reviewGrid.scrollLeft + reviewGrid.clientWidth >= reviewGrid.scrollWidth - 10) {
-        reviewGrid.scrollTo({ left: 0, behavior: "smooth" });
-      } else {
-        reviewGrid.scrollBy({ left: 340, behavior: "smooth" });
-      }
-    }, 3800);
-
-    reviewGrid.addEventListener("mouseenter", () => clearInterval(reviewAutoInterval));
-  }
 
   if (openModalBtn && modalBackdrop) {
     openModalBtn.addEventListener("click", () => {
@@ -4623,41 +4525,13 @@ function initReviewSystem() {
     });
   }
 
-  // Interactive Star Selection (User clicks on stars to pick 1-5 rating)
   starSelects.forEach((star, idx) => {
     star.addEventListener("click", () => {
       selectedRating = idx + 1;
       starSelects.forEach((s, sIdx) => {
         if (sIdx <= idx) {
           s.classList.add("active");
-          s.style.color = "#f59e0b";
         } else {
-          s.classList.remove("active");
-          s.style.color = "#d1d5db";
-        }
-      });
-      if (ratingLabel) {
-        ratingLabel.textContent = `(${ratingDescriptions[selectedRating - 1]})`;
-      }
-    });
-
-    star.addEventListener("mouseenter", () => {
-      starSelects.forEach((s, sIdx) => {
-        if (sIdx <= idx) {
-          s.style.color = "#f59e0b";
-        } else {
-          s.style.color = "#d1d5db";
-        }
-      });
-    });
-
-    star.parentElement?.addEventListener("mouseleave", () => {
-      starSelects.forEach((s, sIdx) => {
-        if (sIdx < selectedRating) {
-          s.style.color = "#f59e0b";
-          s.classList.add("active");
-        } else {
-          s.style.color = "#d1d5db";
           s.classList.remove("active");
         }
       });
@@ -4683,7 +4557,7 @@ function initReviewSystem() {
       storedReviews.unshift(newReview);
       localStorage.setItem("site_user_reviews", JSON.stringify(storedReviews));
 
-      alert(`Thank you! Your ${selectedRating}-star review has been published.`);
+      alert("Thank you! Your review has been submitted successfully.");
       if (modalBackdrop) modalBackdrop.classList.remove("active");
       reviewForm.reset();
       loadAndRenderReviews();
