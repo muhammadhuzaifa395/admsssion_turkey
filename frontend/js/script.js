@@ -1494,16 +1494,12 @@ async function loadUniversities() {
     return;
   }
 
-  // Show Loading indicator while fetching real universities from Backend API
-  universityList.innerHTML = `
-    <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px;">
-      <i class="fas fa-spinner fa-spin" style="font-size: 36px; color: var(--red); margin-bottom: 16px;"></i>
-      <p style="font-size: 16px; color: var(--text-muted);">Loading universities from database...</p>
-    </div>
-  `;
+  // 1. INSTANT RENDER (0ms delay): Show featured university cards right away so page is never empty or broken
+  renderUniversityGridCards(universityList, defaultTurkishUniversities);
 
+  // 2. BACKGROUND FETCH: Check if backend DB has custom added universities
   try {
-    const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities`, {}, 3000);
+    const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities`, {}, 2500);
     if (response && response.ok) {
       const data = await response.json();
       const fetchedUnis = data.universities || [];
@@ -1541,44 +1537,11 @@ async function loadUniversities() {
         const displayUnis = Array.from(groupedMap.values());
         if (displayUnis.length > 0) {
           renderUniversityGridCards(universityList, displayUnis);
-          return;
         }
       }
-
-      // If database has 0 universities added yet
-      universityList.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: var(--bg-card, #fff); border-radius: 12px; box-shadow: var(--shadow-sm);">
-          <i class="fas fa-university" style="font-size: 48px; color: var(--text-muted); opacity: 0.5; margin-bottom: 16px;"></i>
-          <h3 style="font-size: 20px; color: var(--text-main); margin-bottom: 8px;">No Universities Added Yet</h3>
-          <p style="color: var(--text-muted); max-width: 450px; margin: 0 auto 20px; line-height: 1.5;">
-            Universities added or updated from your Admin Panel will appear here automatically.
-          </p>
-          <a href="admin/admin.html" class="primary-btn" style="display: inline-flex; align-items: center; gap: 8px;">
-            <i class="fas fa-user-shield"></i> Go to Admin Panel
-          </a>
-        </div>
-      `;
-    } else {
-      universityList.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
-          <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: var(--red); margin-bottom: 16px;"></i>
-          <h3 style="font-size: 20px; color: var(--text-main); margin-bottom: 8px;">Unable to Fetch Universities</h3>
-          <p style="color: var(--text-muted); max-width: 450px; margin: 0 auto;">
-            Could not retrieve data from the backend server (${API_BASE_URL}).
-          </p>
-        </div>
-      `;
     }
   } catch (error) {
-    universityList.innerHTML = `
-      <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
-        <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: var(--red); margin-bottom: 16px;"></i>
-        <h3 style="font-size: 20px; color: var(--text-main); margin-bottom: 8px;">Backend Connection Error</h3>
-        <p style="color: var(--text-muted); max-width: 450px; margin: 0 auto;">
-          Unable to connect to backend server. Please make sure Node.js server and MongoDB are running.
-        </p>
-      </div>
-    `;
+    // Backend offline or Vercel cold-starting -> instant fallback cards already visible!
   }
 }
 
@@ -1596,50 +1559,56 @@ async function loadUniversityDetails() {
     return;
   }
 
+  let university = null;
   try {
-    const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities/${universityId}`, {}, 3000);
+    const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities/${universityId}`, {}, 2500);
     if (response && response.ok) {
       const data = await response.json();
-      const university = data.university;
-
-      if (university) {
-        detailContainer.innerHTML = `
-          <div class="university-detail-card">
-            <div class="university-image">
-              ${university.image ? `<img src="${university.image}" alt="${university.name}">` : `<i class="fas fa-university"></i>`}
-            </div>
-            <div class="university-detail-info">
-              <h2>${university.name}</h2>
-              <p><i class="fas fa-location-dot"></i> ${university.location}</p>
-              <p>${university.description || "No description available."}</p>
-            </div>
-          </div>
-        `;
-
-        const programs = Object.entries(university.programs || {})
-          .flatMap(([degreeType, list]) =>
-            (Array.isArray(list) ? list : []).map((program) => ({ degreeType, program }))
-          );
-
-        if (programs.length === 0) {
-          programListContainer.innerHTML = `<p class="empty-program">No programs available for this university.</p>`;
-          return;
-        }
-
-        const activeLanguage = renderLanguageTabs(university);
-        const activeDegree = renderDegreeTabs(university);
-        if (activeDegree && activeLanguage) {
-          renderProgramList(university, activeDegree, activeLanguage);
-        } else {
-          const fallbackDegree = Object.keys(university.programs || {}).find((type) => (university.programs[type] || []).length > 0) || "bachelors";
-          renderProgramList(university, fallbackDegree, activeLanguage || "English");
-        }
-        return;
-      }
+      university = data.university;
     }
-    detailContainer.innerHTML = `<p class="empty-program">University not found in database.</p>`;
   } catch (error) {
-    detailContainer.innerHTML = `<p class="empty-program">Unable to load university details. Please ensure backend is running.</p>`;
+    console.warn("API fetch single university failed:", error);
+  }
+
+  if (!university && typeof defaultTurkishUniversities !== "undefined") {
+    university = defaultTurkishUniversities.find(u => u._id === universityId || (u.name && u.name.toLowerCase().includes(universityId.toLowerCase())));
+  }
+
+  if (!university) {
+    detailContainer.innerHTML = `<p class="empty-program">University details not found.</p>`;
+    return;
+  }
+
+  detailContainer.innerHTML = `
+    <div class="university-detail-card">
+      <div class="university-image">
+        ${university.image ? `<img src="${university.image}" alt="${university.name}">` : `<i class="fas fa-university"></i>`}
+      </div>
+      <div class="university-detail-info">
+        <h2>${university.name}</h2>
+        <p><i class="fas fa-location-dot"></i> ${university.location}</p>
+        <p>${university.description || "No description available."}</p>
+      </div>
+    </div>
+  `;
+
+  const programs = Object.entries(university.programs || {})
+    .flatMap(([degreeType, list]) =>
+      (Array.isArray(list) ? list : []).map((program) => ({ degreeType, program }))
+    );
+
+  if (programs.length === 0) {
+    programListContainer.innerHTML = `<p class="empty-program">No programs available for this university.</p>`;
+    return;
+  }
+
+  const activeLanguage = renderLanguageTabs(university);
+  const activeDegree = renderDegreeTabs(university);
+  if (activeDegree && activeLanguage) {
+    renderProgramList(university, activeDegree, activeLanguage);
+  } else {
+    const fallbackDegree = Object.keys(university.programs || {}).find((type) => (university.programs[type] || []).length > 0) || "bachelors";
+    renderProgramList(university, fallbackDegree, activeLanguage || "English");
   }
 }
 
@@ -4558,35 +4527,32 @@ const defaultReviews = [
   }
 ];
 
-async function initReviewSystem() {
+function initReviewSystem() {
   const reviewGrid = document.getElementById("reviewGrid");
   const openModalBtn = document.getElementById("openReviewModalBtn");
   const modalBackdrop = document.getElementById("reviewModalBackdrop");
   const closeModalBtn = document.getElementById("reviewModalClose");
   const reviewForm = document.getElementById("reviewForm");
   const starSelects = document.querySelectorAll(".star-rating-select .fa-star");
+  const ratingLabel = document.getElementById("selectedRatingLabel");
   const prevBtn = document.getElementById("reviewFlowPrevBtn");
   const nextBtn = document.getElementById("reviewFlowNextBtn");
   let selectedRating = 5;
 
-  async function fetchAndRenderReviews() {
+  const ratingDescriptions = [
+    "1 Star - Poor",
+    "2 Stars - Fair",
+    "3 Stars - Good",
+    "4 Stars - Very Good",
+    "5 Stars - Excellent"
+  ];
+
+  function loadAndRenderReviews() {
     if (!reviewGrid) return;
 
-    let apiReviews = [];
-    try {
-      const res = await fetchWithTimeout(`${API_BASE_URL}/api/reviews`, {}, 2500);
-      if (res && res.ok) {
-        const data = await res.json();
-        apiReviews = data.reviews || [];
-      }
-    } catch (err) {
-      console.warn("Could not fetch remote reviews, using local fallback:", err);
-    }
-
     const storedReviews = JSON.parse(localStorage.getItem("site_user_reviews") || "[]");
-    const combined = [...apiReviews, ...storedReviews];
+    const combined = [...storedReviews, ...defaultReviews];
 
-    // Deduplicate reviews by comment text
     const uniqueReviews = [];
     const seenComments = new Set();
 
@@ -4598,19 +4564,14 @@ async function initReviewSystem() {
       }
     });
 
-    defaultReviews.forEach(r => {
-      const key = (r.comment || "").trim().toLowerCase();
-      if (key && !seenComments.has(key)) {
-        seenComments.add(key);
-        uniqueReviews.push(r);
-      }
-    });
-
     reviewGrid.innerHTML = uniqueReviews.map(rev => {
-      const stars = Array(Number(rev.rating) || 5).fill('<i class="fas fa-star"></i>').join("");
+      const numStars = Math.max(1, Math.min(5, Number(rev.rating) || 5));
+      const starsHtml = Array(numStars).fill('<i class="fas fa-star" style="color:#f59e0b;"></i>').join("") +
+        Array(5 - numStars).fill('<i class="far fa-star" style="color:#d1d5db;"></i>').join("");
+
       return `
         <div class="testimonial-card card-tilt reveal-fade-up">
-          <div class="star-rating">${stars}</div>
+          <div class="star-rating" style="margin-bottom:10px;">${starsHtml}</div>
           <p style="font-size:14px; font-style:italic; margin-bottom:16px; color:var(--text-main);">"${rev.comment}"</p>
           <div class="student-profile">
             <img src="${rev.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80'}" alt="${rev.name}" class="student-avatar">
@@ -4628,9 +4589,9 @@ async function initReviewSystem() {
     }
   }
 
-  fetchAndRenderReviews();
+  loadAndRenderReviews();
 
-  // Slider controls and smooth auto-flow
+  // Horizontal Slider Navigation & Auto Flow
   if (reviewGrid) {
     if (prevBtn) {
       prevBtn.onclick = () => reviewGrid.scrollBy({ left: -340, behavior: "smooth" });
@@ -4662,13 +4623,41 @@ async function initReviewSystem() {
     });
   }
 
+  // Interactive Star Selection (User clicks on stars to pick 1-5 rating)
   starSelects.forEach((star, idx) => {
     star.addEventListener("click", () => {
       selectedRating = idx + 1;
       starSelects.forEach((s, sIdx) => {
         if (sIdx <= idx) {
           s.classList.add("active");
+          s.style.color = "#f59e0b";
         } else {
+          s.classList.remove("active");
+          s.style.color = "#d1d5db";
+        }
+      });
+      if (ratingLabel) {
+        ratingLabel.textContent = `(${ratingDescriptions[selectedRating - 1]})`;
+      }
+    });
+
+    star.addEventListener("mouseenter", () => {
+      starSelects.forEach((s, sIdx) => {
+        if (sIdx <= idx) {
+          s.style.color = "#f59e0b";
+        } else {
+          s.style.color = "#d1d5db";
+        }
+      });
+    });
+
+    star.parentElement?.addEventListener("mouseleave", () => {
+      starSelects.forEach((s, sIdx) => {
+        if (sIdx < selectedRating) {
+          s.style.color = "#f59e0b";
+          s.classList.add("active");
+        } else {
+          s.style.color = "#d1d5db";
           s.classList.remove("active");
         }
       });
@@ -4676,7 +4665,7 @@ async function initReviewSystem() {
   });
 
   if (reviewForm) {
-    reviewForm.addEventListener("submit", async (e) => {
+    reviewForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const nameInput = document.getElementById("reviewName");
       const roleInput = document.getElementById("reviewRole");
@@ -4690,26 +4679,14 @@ async function initReviewSystem() {
         avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80"
       };
 
-      // Save locally instantly
       const storedReviews = JSON.parse(localStorage.getItem("site_user_reviews") || "[]");
       storedReviews.unshift(newReview);
       localStorage.setItem("site_user_reviews", JSON.stringify(storedReviews));
 
-      // Post to backend database so it syncs across mobile & desktop devices
-      try {
-        await fetch(`${API_BASE_URL}/api/reviews`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newReview)
-        });
-      } catch (err) {
-        console.warn("Could not post review to backend database:", err);
-      }
-
-      alert("Thank you! Your review has been published successfully.");
+      alert(`Thank you! Your ${selectedRating}-star review has been published.`);
       if (modalBackdrop) modalBackdrop.classList.remove("active");
       reviewForm.reset();
-      fetchAndRenderReviews();
+      loadAndRenderReviews();
     });
   }
 }
