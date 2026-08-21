@@ -1476,6 +1476,10 @@ function renderUniversityGridCards(container, universitiesList) {
       </div>
     `;
   });
+
+  if (typeof observeReveals === "function") {
+    observeReveals(container);
+  }
 }
 
 async function loadUniversities() {
@@ -1496,6 +1500,8 @@ async function loadUniversities() {
 
       if (fetchedUnis.length > 0) {
         const groupedMap = new Map();
+        const getArray = val => (Array.isArray(val) ? val : []);
+
         fetchedUnis.forEach((uni) => {
           const key = (uni.name || "").trim().toLowerCase();
           if (!groupedMap.has(key)) {
@@ -1506,20 +1512,20 @@ async function loadUniversities() {
               description: uni.description,
               image: uni.image,
               programs: {
-                associate: [...(uni.programs?.associate || [])],
-                bachelors: [...(uni.programs?.bachelors || [])],
-                masters: [...(uni.programs?.masters || [])],
-                phd: [...(uni.programs?.phd || [])]
+                associate: [...getArray(uni.programs?.associate)],
+                bachelors: [...getArray(uni.programs?.bachelors)],
+                masters: [...getArray(uni.programs?.masters)],
+                phd: [...getArray(uni.programs?.phd)]
               }
             });
           } else {
             const existing = groupedMap.get(key);
             if (!existing.image && uni.image) existing.image = uni.image;
             if (!existing.description && uni.description) existing.description = uni.description;
-            existing.programs.associate.push(...(uni.programs?.associate || []));
-            existing.programs.bachelors.push(...(uni.programs?.bachelors || []));
-            existing.programs.masters.push(...(uni.programs?.masters || []));
-            existing.programs.phd.push(...(uni.programs?.phd || []));
+            existing.programs.associate.push(...getArray(uni.programs?.associate));
+            existing.programs.bachelors.push(...getArray(uni.programs?.bachelors));
+            existing.programs.masters.push(...getArray(uni.programs?.masters));
+            existing.programs.phd.push(...getArray(uni.programs?.phd));
           }
         });
         const displayUnis = Array.from(groupedMap.values());
@@ -1547,15 +1553,25 @@ async function loadUniversityDetails() {
     return;
   }
 
+  let university = null;
   try {
-    const response = await fetch(`${API_BASE_URL}/api/universities/${universityId}`);
-    const data = await response.json();
-    const university = data.university;
-
-    if (!university) {
-      detailContainer.innerHTML = `<p class="empty-program">University not found.</p>`;
-      return;
+    const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities/${universityId}`, {}, 1500);
+    if (response && response.ok) {
+      const data = await response.json();
+      university = data.university;
     }
+  } catch (error) {
+    console.warn("API fetch single university failed:", error);
+  }
+
+  if (!university && typeof defaultTurkishUniversities !== "undefined") {
+    university = defaultTurkishUniversities.find(u => u._id === universityId || (u.name && u.name.toLowerCase().includes(universityId.toLowerCase())));
+  }
+
+  if (!university) {
+    detailContainer.innerHTML = `<p class="empty-program">University not found.</p>`;
+    return;
+  }
 
     detailContainer.innerHTML = `
       <div class="university-detail-card">
@@ -1588,10 +1604,6 @@ async function loadUniversityDetails() {
       const fallbackDegree = Object.keys(university.programs).find((type) => (university.programs[type] || []).length > 0) || "bachelors";
       renderProgramList(university, fallbackDegree, activeLanguage || "English");
     }
-  } catch (error) {
-    console.error("Load university details error:", error);
-    detailContainer.innerHTML = `<p class="empty-program">Unable to load university details.</p>`;
-  }
 }
 
 function renderDegreeTabs(university) {
@@ -4183,33 +4195,50 @@ function setLanguage(lang) {
   });
 }
 
-function initAnimations() {
-  const observerOptions = {
-    threshold: 0.12,
-    rootMargin: "0px 0px -40px 0px"
-  };
+let revealObserver = null;
 
-  const revealObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("reveal-visible");
-        
-        const countElements = entry.target.querySelectorAll("[data-count]");
-        countElements.forEach(c => animateCounter(c));
-        if (entry.target.hasAttribute("data-count")) {
-          animateCounter(entry.target);
+function observeReveals(parent = document) {
+  const rootNode = parent || document;
+  const targets = rootNode.querySelectorAll(".reveal-on-scroll, .reveal-fade-up, .reveal-slide-left, .reveal-slide-right, .reveal-scale");
+
+  if (typeof IntersectionObserver === "undefined") {
+    targets.forEach(el => el.classList.add("reveal-visible"));
+    return;
+  }
+
+  if (!revealObserver) {
+    const observerOptions = {
+      threshold: 0.05,
+      rootMargin: "0px 0px -20px 0px"
+    };
+
+    revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("reveal-visible");
+          
+          const countElements = entry.target.querySelectorAll("[data-count]");
+          countElements.forEach(c => animateCounter(c));
+          if (entry.target.hasAttribute("data-count")) {
+            animateCounter(entry.target);
+          }
+
+          observer.unobserve(entry.target);
         }
+      });
+    }, observerOptions);
+  }
 
-        observer.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
-
-  document.querySelectorAll(".reveal-on-scroll, .reveal-fade-up, .reveal-slide-left, .reveal-slide-right, .reveal-scale").forEach(el => {
-    el.classList.add("reveal-on-scroll");
-    revealObserver.observe(el);
+  targets.forEach(el => {
+    if (!el.classList.contains("reveal-visible")) {
+      el.classList.add("reveal-on-scroll");
+      revealObserver.observe(el);
+    }
   });
+}
 
+function initAnimations() {
+  observeReveals();
   initHeroParticles();
   initCardTilt();
   initButtonRipples();
