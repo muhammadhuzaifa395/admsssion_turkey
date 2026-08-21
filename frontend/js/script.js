@@ -1450,7 +1450,7 @@ function renderUniversityGridCards(container, universitiesList) {
     if (degreeBadges.length === 0) degreeBadges.push("Bachelor", "Master");
 
     container.innerHTML += `
-      <div class="university-card card-tilt reveal-fade-up">
+      <div class="university-card card-tilt reveal-visible" style="opacity:1 !important; transform:none !important; visibility:visible !important;">
         <div class="university-image">
           <img src="${uni.image || 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=600&q=80'}" alt="${uni.name}" loading="lazy" decoding="async">
           <div class="uni-card-badges">
@@ -1484,18 +1484,17 @@ async function loadUniversities() {
     return;
   }
 
-  // 1. INSTANT RENDER (0ms delay): Show default featured cards right away!
-  renderUniversityGridCards(universityList, defaultTurkishUniversities);
-
-  // 2. FAST BACKGROUND FETCH (1.5s max timeout) to check for backend DB items
+  // 1. FAST BACKGROUND FETCH for real backend DB universities added via Admin Panel
   try {
-    const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities`, {}, 1500);
+    const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities`, {}, 2500);
     if (response && response.ok) {
       const data = await response.json();
       const fetchedUnis = data.universities || [];
 
       if (fetchedUnis.length > 0) {
         const groupedMap = new Map();
+        const getArray = val => (Array.isArray(val) ? val : []);
+
         fetchedUnis.forEach((uni) => {
           const key = (uni.name || "").trim().toLowerCase();
           if (!groupedMap.has(key)) {
@@ -1506,30 +1505,36 @@ async function loadUniversities() {
               description: uni.description,
               image: uni.image,
               programs: {
-                associate: [...(uni.programs?.associate || [])],
-                bachelors: [...(uni.programs?.bachelors || [])],
-                masters: [...(uni.programs?.masters || [])],
-                phd: [...(uni.programs?.phd || [])]
+                associate: [...getArray(uni.programs?.associate)],
+                bachelors: [...getArray(uni.programs?.bachelors)],
+                masters: [...getArray(uni.programs?.masters)],
+                phd: [...getArray(uni.programs?.phd)]
               }
             });
           } else {
             const existing = groupedMap.get(key);
             if (!existing.image && uni.image) existing.image = uni.image;
             if (!existing.description && uni.description) existing.description = uni.description;
-            existing.programs.associate.push(...(uni.programs?.associate || []));
-            existing.programs.bachelors.push(...(uni.programs?.bachelors || []));
-            existing.programs.masters.push(...(uni.programs?.masters || []));
-            existing.programs.phd.push(...(uni.programs?.phd || []));
+            existing.programs.associate.push(...getArray(uni.programs?.associate));
+            existing.programs.bachelors.push(...getArray(uni.programs?.bachelors));
+            existing.programs.masters.push(...getArray(uni.programs?.masters));
+            existing.programs.phd.push(...getArray(uni.programs?.phd));
           }
         });
         const displayUnis = Array.from(groupedMap.values());
         if (displayUnis.length > 0) {
           renderUniversityGridCards(universityList, displayUnis);
+          return;
         }
       }
     }
   } catch (error) {
-    // Backend offline or timeout -> instant fallback cards already visible!
+    console.warn("Fetch universities error:", error);
+  }
+
+  // Render default universities if database is empty
+  if (typeof defaultTurkishUniversities !== "undefined") {
+    renderUniversityGridCards(universityList, defaultTurkishUniversities);
   }
 }
 
@@ -3977,7 +3982,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initHomeUniversitySlider();
   initMindmapSection();
   initVideoModal();
-  initReviewSystem();
+  // initReviewSystem(); -- Review system eliminated as requested
   loadUniversities();
   loadUniversityDetails();
   loadProgramDetails();
