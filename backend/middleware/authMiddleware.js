@@ -60,33 +60,35 @@ const verifyToken = (
 
 
 // ========================================
-// ADMIN ONLY
+// ADMIN OR SUB-ADMIN ONLY
 // ========================================
 
-const isAdmin = (
-  req,
-  res,
-  next
-) => {
-
-  if (
-    !req.user ||
-    req.user.role !== "admin"
-  ) {
-
+const isAdmin = (req, res, next) => {
+  if (!req.user || (req.user.role !== "admin" && req.user.role !== "subadmin")) {
     return res.status(403).json({
-      message:
-        "Access denied. Admins only."
+      message: "Access denied. Admins only."
     });
-
   }
-
   next();
+};
 
+
+// ========================================
+// SUPER ADMIN ONLY
+// ========================================
+
+const isSuperAdmin = (req, res, next) => {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({
+      message: "Access denied. Super Admin privileges required."
+    });
+  }
+  next();
 };
 
 
 module.exports = {
   verifyToken,
-  isAdmin
+  isAdmin,
+  isSuperAdmin
 };

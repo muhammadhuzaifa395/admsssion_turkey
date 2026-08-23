@@ -1,206 +1,38 @@
 const express = require("express");
-
-const router =
-  express.Router();
+const router = express.Router();
 
 const {
-
   getAllUniversities,
-
   getUniversityById,
-
   createUniversity,
-
   updateUniversity,
-
   deleteUniversity,
-
   addProgram,
-
   deleteProgram,
-
   parseUniversityData,
-
   checkDuplicateUniversity,
-
   importUniversity,
-
   updateProgram
+} = require("../controllers/universityController");
 
-} =
-  require(
-    "../controllers/universityController"
-  );
+const { verifyToken, isSuperAdmin } = require("../middleware/authMiddleware");
 
-
-const {
-
-  verifyToken,
-
-  isAdmin
-
-} =
-  require(
-    "../middleware/authMiddleware"
-  );
-
-
-// ========================================
 // PUBLIC ROUTES
-// ========================================
-
-// Get all universities
-
-router.get(
-  "/",
-  getAllUniversities
-);
-
-
-// Get single university
-
-router.get(
-  "/:id",
-  getUniversityById
-);
-
-
-
-// ========================================
-// ADMIN ONLY ROUTES
-// ========================================
-
-// Parse raw university & program data
-
-router.post(
-  "/parse",
-
-  verifyToken,
-
-  isAdmin,
-
-  parseUniversityData
-);
-
-
-// Check duplicate university by name
-
-router.post(
-  "/check-duplicate",
-
-  verifyToken,
-
-  isAdmin,
-
-  checkDuplicateUniversity
-);
-
-
-// Import structured university with programs
-
-router.post(
-  "/import",
-
-  verifyToken,
-
-  isAdmin,
-
-  importUniversity
-);
-
-
-// Add university
-
-router.post(
-
-  "/",
-
-  verifyToken,
-
-  isAdmin,
-
-  createUniversity
-
-);
-
-
-// Update university
-
-router.put(
-
-  "/:id",
-
-  verifyToken,
-
-  isAdmin,
-
-  updateUniversity
-
-);
-
-
-// Delete university
-
-router.delete(
-
-  "/:id",
-
-  verifyToken,
-
-  isAdmin,
-
-  deleteUniversity
-
-);
-
-
-// Add program
-
-router.post(
-
-  "/:id/programs",
-
-  verifyToken,
-
-  isAdmin,
-
-  addProgram
-
-);
-
-
-// Update single program
-
-router.put(
-
-  "/:universityId/programs/:programId",
-
-  verifyToken,
-
-  isAdmin,
-
-  updateProgram
-
-);
-
-
-// Delete program
-
-router.delete(
-
-  "/:universityId/programs/:degreeType/:programId",
-
-  verifyToken,
-
-  isAdmin,
-
-  deleteProgram
-
-);
-
-
-module.exports =
-  router;
+router.get("/", getAllUniversities);
+router.get("/:id", getUniversityById);
+
+// SUPER ADMIN ONLY ROUTES (University & Program Management)
+router.post("/parse", verifyToken, isSuperAdmin, parseUniversityData);
+router.post("/check-duplicate", verifyToken, isSuperAdmin, checkDuplicateUniversity);
+router.post("/import", verifyToken, isSuperAdmin, importUniversity);
+router.post("/", verifyToken, isSuperAdmin, createUniversity);
+router.put("/:id", verifyToken, isSuperAdmin, updateUniversity);
+router.delete("/:id", verifyToken, isSuperAdmin, deleteUniversity);
+router.post("/:id/programs", verifyToken, isSuperAdmin, addProgram);
+router.put("/:universityId/programs/:programId", verifyToken, isSuperAdmin, updateProgram);
+router.delete("/:universityId/programs/:degreeType/:programId", verifyToken, isSuperAdmin, deleteProgram);
+
+module.exports = router;
 
 
 

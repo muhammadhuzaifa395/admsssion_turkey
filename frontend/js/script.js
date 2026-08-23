@@ -5466,15 +5466,266 @@ window.confirmUpdateExistingUniversity = confirmUpdateExistingUniversity;
 window.loadDuplicateIntoEditor = loadDuplicateIntoEditor;
 window.confirmAndExecuteSave = confirmAndExecuteSave;
 
+// ========================================
+// SUB-PORTAL SYSTEM & NAVIGATION PROTECTION
+// ========================================
+
+function enforceSubPortalNavigation() {
+  const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
+  const path = window.location.pathname.toLowerCase();
+
+  if (user && user.role === "subadmin") {
+    const restrictedPages = ["add-university.html", "import-university.html", "manage-universities.html"];
+    const isRestricted = restrictedPages.some(p => path.includes(p));
+
+    if (isRestricted) {
+      alert("Access Restricted: Sub-Portal users only have access to Manage Applications and Fee Structure Downloads.");
+      window.location.href = "sub-portal.html";
+      return;
+    }
+
+    if (path.includes("admin.html") && !path.includes("sub-portal.html")) {
+      window.location.href = "sub-portal.html";
+      return;
+    }
+
+    const sidebars = document.querySelectorAll(".admin-sidebar");
+    sidebars.forEach(sidebar => {
+      sidebar.innerHTML = `
+        <h3>Sub-Portal Menu</h3>
+        <a href="sub-portal.html" class="${path.includes('sub-portal.html') ? 'active' : ''}"><i class="fas fa-chart-line"></i> Sub-Portal Dashboard</a>
+        <a href="manage-applications.html" class="${path.includes('manage-applications.html') ? 'active' : ''}"><i class="fas fa-id-card"></i> Manage Applications</a>
+        <a href="export-fee-structure.html" class="${path.includes('export-fee-structure.html') ? 'active' : ''}"><i class="fas fa-file-pdf"></i> Download Fee Structure</a>
+        <a href="../index.html"><i class="fas fa-arrow-left"></i> Back to Website</a>
+      `;
+    });
+  }
+}
+
+async function initSubPortalDashboard() {
+  const totalEl = document.getElementById("subTotalApps");
+  const pendingEl = document.getElementById("subPendingApps");
+  const approvedEl = document.getElementById("subApprovedApps");
+  const rejectedEl = document.getElementById("subRejectedApps");
+  const progressPercentEl = document.getElementById("subProgressPercent");
+  const progressBarFill = document.getElementById("subProgressBar");
+  const processedCountEl = document.getElementById("processedAppsCount");
+  const totalAppsTextEl = document.getElementById("totalAppsText");
+  const recentTbody = document.getElementById("subRecentAppsBody");
+
+  if (!totalEl) return;
+
+  try {
+    const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
+    const headers = {};
+    if (user && user.token) headers["Authorization"] = `Bearer ${user.token}`;
+
+    const res = await fetch(`${API_BASE_URL}/api/applications`, { headers });
+    const data = await res.json();
+    const apps = data.applications || (Array.isArray(data) ? data : []);
+
+    const total = apps.length;
+    let pending = 0;
+    let approved = 0;
+    let rejected = 0;
+
+    apps.forEach(app => {
+      const st = (app.status || "Pending").toLowerCase();
+      if (st.includes("approve") || st.includes("complete") || st.includes("accept")) {
+        approved++;
+      } else if (st.includes("reject") || st.includes("cancel")) {
+        rejected++;
+      } else {
+        pending++;
+      }
+    });
+
+    const processed = approved + rejected;
+    const progressPct = total > 0 ? Math.round((processed / total) * 100) : 0;
+
+    if (totalEl) totalEl.innerText = total;
+    if (pendingEl) pendingEl.innerText = pending;
+    if (approvedEl) approvedEl.innerText = approved;
+    if (rejectedEl) rejectedEl.innerText = rejected;
+    if (progressPercentEl) progressPercentEl.innerText = progressPct;
+    if (progressBarFill) progressBarFill.style.width = `${progressPct}%`;
+    if (processedCountEl) processedCountEl.innerText = processed;
+    if (totalAppsTextEl) totalAppsTextEl.innerText = total;
+
+    if (recentTbody) {
+      if (apps.length === 0) {
+        recentTbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 20px; color: #64748b;">No applications submitted yet.</td></tr>`;
+        return;
+      }
+
+      recentTbody.innerHTML = apps.slice(0, 5).map(app => {
+        const statusClass = (app.status || "Pending").replace(/\s+/g, ".");
+        return `
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 12px; font-weight: 600; color: #0f172a;">${escapeHtml(app.fullName || app.name || "N/A")}</td>
+            <td style="padding: 12px; color: #334155;">${escapeHtml(app.universityName || app.university || "N/A")}</td>
+            <td style="padding: 12px; color: #475569;">${escapeHtml(app.programName || app.program || "N/A")}</td>
+            <td style="padding: 12px; color: #64748b;">${escapeHtml(app.degreeType || app.degreeLevel || "Bachelor")}</td>
+            <td style="padding: 12px;"><span class="status-pill ${statusClass}">${escapeHtml(app.status || "Pending")}</span></td>
+            <td style="padding: 12px;">
+              <a href="manage-applications.html" class="secondary-btn" style="padding: 4px 10px; font-size: 12px;">Process &rarr;</a>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+  } catch (err) {
+    console.error("Sub-Portal Dashboard Error:", err);
+    if (recentTbody) {
+      recentTbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 20px; color: #ef4444;">Failed to load data. ${err.message}</td></tr>`;
+    }
+  }
+}
+
+function openCreateSubAdminModal() {
+  const modal = document.getElementById("createSubAdminModal");
+  if (modal) modal.style.display = "flex";
+}
+
+function closeCreateSubAdminModal() {
+  const modal = document.getElementById("createSubAdminModal");
+  if (modal) modal.style.display = "none";
+}
+
+function showSubAdminAlert(msg, type = "info") {
+  const box = document.getElementById("subAdminAlertBox");
+  if (!box) return;
+  box.style.display = "block";
+  box.style.background = type === "success" ? "#dcfce7" : type === "error" ? "#fee2e2" : "#e0f2fe";
+  box.style.color = type === "success" ? "#166534" : type === "error" ? "#991b1b" : "#075985";
+  box.style.border = `1px solid ${type === "success" ? "#86efac" : type === "error" ? "#fca5a5" : "#7dd3fc"}`;
+  box.innerHTML = msg;
+}
+
+async function handleCreateSubAdmin(e) {
+  e.preventDefault();
+  const name = document.getElementById("subAdminName")?.value.trim();
+  const email = document.getElementById("subAdminEmail")?.value.trim();
+  const password = document.getElementById("subAdminPassword")?.value.trim();
+
+  if (!name || !email || !password) return alert("Please fill all fields.");
+
+  try {
+    const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
+    if (!user || !user.token) return alert("Admin login required.");
+
+    const res = await fetch(`${API_BASE_URL}/api/auth/create-subadmin`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${user.token}`
+      },
+      body: JSON.stringify({ name, email, password })
+    });
+
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.message || "Failed to create sub-portal account.");
+
+    closeCreateSubAdminModal();
+    showSubAdminAlert(`Success! Created Sub-Portal account for ${email}.`, "success");
+    loadSubAdminsList();
+  } catch (err) {
+    console.error("Create SubAdmin Error:", err);
+    alert(err.message || "Failed to create sub-portal account.");
+  }
+}
+
+async function loadSubAdminsList() {
+  const tbody = document.getElementById("subAdminListTable");
+  if (!tbody) return;
+
+  try {
+    const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
+    const headers = {};
+    if (user && user.token) headers["Authorization"] = `Bearer ${user.token}`;
+
+    const res = await fetch(`${API_BASE_URL}/api/auth/subadmins`, { headers });
+    const data = await res.json();
+
+    if (!res.ok || !data.success) throw new Error(data.message || "Failed to load sub-portal accounts.");
+
+    const subadmins = data.subadmins || [];
+
+    if (subadmins.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px; color: #64748b;">No Sub-Portal accounts created yet. Click "Create Sub-Portal User" above to grant access.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = subadmins.map(s => `
+      <tr style="border-bottom: 1px solid #f1f5f9;">
+        <td style="padding: 12px; font-weight: 600; color: #0f172a;">${escapeHtml(s.name)}</td>
+        <td style="padding: 12px; color: #334155;">${escapeHtml(s.email)}</td>
+        <td style="padding: 12px;"><span style="background: #dcfce7; color: #166534; padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: 700;">Sub-Portal User</span></td>
+        <td style="padding: 12px; color: #64748b; font-size: 13px;">Manage Applications & Fee Structure Downloads Only</td>
+        <td style="padding: 12px;">
+          <button type="button" onclick="deleteSubAdmin('${s._id}', '${escapeHtml(s.email)}')" class="remove-program-btn" style="padding: 4px 8px; font-size: 12px;">
+            <i class="fas fa-trash"></i> Revoke Access
+          </button>
+        </td>
+      </tr>
+    `).join("");
+  } catch (err) {
+    console.error("Load SubAdmins Error:", err);
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px; color: #ef4444;">${err.message}</td></tr>`;
+  }
+}
+
+async function deleteSubAdmin(id, email) {
+  if (!confirm(`Are you sure you want to revoke Sub-Portal access for ${email}?`)) return;
+
+  try {
+    const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
+    const headers = {};
+    if (user && user.token) headers["Authorization"] = `Bearer ${user.token}`;
+
+    const res = await fetch(`${API_BASE_URL}/api/auth/subadmins/${id}`, {
+      method: "DELETE",
+      headers
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.message || "Failed to delete sub-portal account.");
+
+    showSubAdminAlert(`Revoked access for ${email}.`, "info");
+    loadSubAdminsList();
+  } catch (err) {
+    console.error("Delete SubAdmin Error:", err);
+    alert(err.message || "Failed to revoke access.");
+  }
+}
+
+window.openCreateSubAdminModal = openCreateSubAdminModal;
+window.closeCreateSubAdminModal = closeCreateSubAdminModal;
+window.handleCreateSubAdmin = handleCreateSubAdmin;
+window.deleteSubAdmin = deleteSubAdmin;
+
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
+    enforceSubPortalNavigation();
     if (document.getElementById("existingUniSelect")) {
       initImportUniversityPage();
     }
+    if (document.getElementById("subTotalApps")) {
+      initSubPortalDashboard();
+    }
+    if (document.getElementById("subAdminListTable")) {
+      loadSubAdminsList();
+    }
   });
 } else {
+  enforceSubPortalNavigation();
   if (document.getElementById("existingUniSelect")) {
     initImportUniversityPage();
+  }
+  if (document.getElementById("subTotalApps")) {
+    initSubPortalDashboard();
+  }
+  if (document.getElementById("subAdminListTable")) {
+    loadSubAdminsList();
   }
 }
 

@@ -321,6 +321,78 @@ View student applications.
 
 </div>
 
+</div>
+
+<!-- SUB-PORTAL USER MANAGEMENT (SUPER ADMIN ONLY) -->
+<div class="admin-section" style="margin-top: 40px; background: white; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.04);">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+    <div>
+      <h2 style="margin: 0; color: #1e293b; display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-user-shield" style="color: #10b981;"></i> Sub-Portal Access Manager
+      </h2>
+      <p style="margin: 4px 0 0 0; color: #64748b; font-size: 14px;">
+        Create and manage sub-portal accounts. Sub-portal users can only access Manage Applications & Fee Structure Downloads.
+      </p>
+    </div>
+    <button type="button" class="primary-btn" onclick="openCreateSubAdminModal()" style="background: #10b981; border-color: #10b981;">
+      <i class="fas fa-user-plus"></i> Create Sub-Portal User
+    </button>
+  </div>
+
+  <div id="subAdminAlertBox" style="display: none; margin-bottom: 15px; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 14px;"></div>
+
+  <div style="overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+      <thead>
+        <tr style="background: #f8fafc; border-bottom: 2px solid #cbd5e1; color: #334155;">
+          <th style="padding: 12px;">Name</th>
+          <th style="padding: 12px;">Email</th>
+          <th style="padding: 12px;">Role</th>
+          <th style="padding: 12px;">Access Scope</th>
+          <th style="padding: 12px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="subAdminListTable">
+        <tr>
+          <td colspan="5" style="text-align: center; padding: 20px; color: #64748b;">
+            <i class="fas fa-spinner fa-spin"></i> Loading sub-portal accounts...
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- CREATE SUB-ADMIN MODAL -->
+<div id="createSubAdminModal" class="doc-modal" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 9999;">
+  <div class="doc-modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 480px; width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px;">
+      <h3 style="margin: 0; color: #1e293b; display: flex; align-items: center; gap: 8px;"><i class="fas fa-user-plus" style="color: #10b981;"></i> Create Sub-Portal Account</h3>
+      <span onclick="closeCreateSubAdminModal()" style="cursor: pointer; font-size: 24px; color: #64748b;">&times;</span>
+    </div>
+    <form id="createSubAdminForm" onsubmit="handleCreateSubAdmin(event)">
+      <div class="form-group" style="margin-bottom: 15px;">
+        <label style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 5px;">User Full Name *</label>
+        <input type="text" id="subAdminName" placeholder="e.g. Agent John Doe" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1;">
+      </div>
+      <div class="form-group" style="margin-bottom: 15px;">
+        <label style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 5px;">Login Email *</label>
+        <input type="email" id="subAdminEmail" placeholder="agent@admissionturkey.com" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1;">
+      </div>
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 5px;">Password *</label>
+        <input type="password" id="subAdminPassword" placeholder="Minimum 6 characters" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1;">
+      </div>
+      <div style="background: #ecfdf5; border: 1px solid #a7f3d0; padding: 10px; border-radius: 6px; color: #065f46; font-size: 12px; margin-bottom: 20px;">
+        <i class="fas fa-info-circle"></i> Sub-portal users will automatically be restricted to <strong>Manage Applications</strong> & <strong>Fee Structure Downloads</strong>.
+      </div>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button type="button" class="secondary-btn" onclick="closeCreateSubAdminModal()">Cancel</button>
+        <button type="submit" class="primary-btn" style="background: #10b981; border-color: #10b981;"><i class="fas fa-check"></i> Create Account</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 </main>
 

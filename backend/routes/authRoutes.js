@@ -224,5 +224,85 @@ router.post("/login", async (req, res) => {
 });
 
 
+// ========================================
+// SUB-PORTAL MANAGEMENT (SUPER ADMIN ONLY)
+// ========================================
+
+const { verifyToken, isSuperAdmin } = require("../middleware/authMiddleware");
+
+// Create Sub-Portal Account
+router.post("/create-subadmin", verifyToken, isSuperAdmin, async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ success: false, message: "Name, email, and password are required." });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    const existing = await User.findOne({ email: normalizedEmail });
+
+    if (existing) {
+      if (existing.role === "subadmin") {
+        return res.status(400).json({ success: false, message: "A sub-portal user with this email already exists." });
+      }
+      existing.role = "subadmin";
+      existing.name = name.trim();
+      existing.password = await bcrypt.hash(password, 10);
+      await existing.save();
+      return res.status(200).json({
+        success: true,
+        message: `Updated "${existing.email}" to Sub-Portal access successfully!`,
+        user: { id: existing._id, name: existing.name, email: existing.email, role: existing.role }
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newSubAdmin = new User({
+      name: name.trim(),
+      email: normalizedEmail,
+      password: hashedPassword,
+      role: "subadmin"
+    });
+
+    await newSubAdmin.save();
+
+    res.status(201).json({
+      success: true,
+      message: `Sub-Portal user "${newSubAdmin.name}" created successfully!`,
+      user: { id: newSubAdmin._id, name: newSubAdmin.name, email: newSubAdmin.email, role: newSubAdmin.role }
+    });
+  } catch (err) {
+    console.error("Create SubAdmin Error:", err);
+    res.status(500).json({ success: false, message: err.message || "Failed to create sub-portal account." });
+  }
+});
+
+// Get All Sub-Portal Users
+router.get("/subadmins", verifyToken, isSuperAdmin, async (req, res) => {
+  try {
+    const subadmins = await User.find({ role: "subadmin" }).select("-password").sort({ createdAt: -1 });
+    res.status(200).json({ success: true, subadmins });
+  } catch (err) {
+    console.error("Get SubAdmins Error:", err);
+    res.status(500).json({ success: false, message: "Failed to load sub-portal accounts." });
+  }
+});
+
+// Delete Sub-Portal User
+router.delete("/subadmins/:id", verifyToken, isSuperAdmin, async (req, res) => {
+  try {
+    const deleted = await User.findByIdAndDelete(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ success: false, message: "Sub-portal account not found." });
+    }
+    res.status(200).json({ success: true, message: "Sub-portal account removed successfully." });
+  } catch (err) {
+    console.error("Delete SubAdmin Error:", err);
+    res.status(500).json({ success: false, message: "Failed to delete sub-portal account." });
+  }
+});
+
+
 router.ensureDefaultAdmin = ensureDefaultAdmin;
 module.exports = router;
