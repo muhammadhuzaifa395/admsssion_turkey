@@ -1916,12 +1916,30 @@ async function loadProgramDetails() {
         </div>
 
         <div class="program-detail-body">
+          ${selectedProgram.faculty ? `<p><strong>Faculty/Department:</strong> ${selectedProgram.faculty}</p>` : ""}
           <p><strong>Language:</strong> ${selectedProgram.language || "English"}</p>
           <p><strong>Duration:</strong> ${selectedProgram.duration || "N/A"}</p>
-          <p><strong>Original Fee:</strong> $${Number(selectedProgram.originalFee).toLocaleString()}</p>
-          <p><strong>Discount Fee:</strong> $${Number(selectedProgram.discountFee).toLocaleString()}</p>
-          <p><strong>Initial Deposit:</strong> <span style="color: #0b3f7e; font-weight: 700;">$${Number(detectProgramDeposit(selectedProgram) || 0).toLocaleString()}</span></p>
-          <p>${selectedProgram.description || "This program is available for international students through Admission Turkey."}</p>
+          <p><strong>Tuition / Original Fee:</strong> ${selectedProgram.currency || "$"}${Number(selectedProgram.originalFee || 0).toLocaleString()}</p>
+          <p><strong>Discount Fee:</strong> ${selectedProgram.currency || "$"}${Number(selectedProgram.discountFee || 0).toLocaleString()}</p>
+          ${selectedProgram.applicationFee ? `<p><strong>Application Fee:</strong> ${selectedProgram.applicationFee}</p>` : ""}
+          ${selectedProgram.intake ? `<p><strong>Intake Period:</strong> ${selectedProgram.intake}</p>` : ""}
+          <p><strong>Initial Deposit:</strong> <span style="color: #0b3f7e; font-weight: 700;">${selectedProgram.currency || "$"}${Number(detectProgramDeposit(selectedProgram) || 0).toLocaleString()}</span></p>
+
+          ${selectedProgram.requirements ? `
+            <div style="margin-top: 15px; background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid #1d5bbf;">
+              <strong>Admission Requirements:</strong>
+              <p style="margin-top: 4px; margin-bottom: 0;">${selectedProgram.requirements}</p>
+            </div>
+          ` : ""}
+
+          ${selectedProgram.documents ? `
+            <div style="margin-top: 12px; background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid #10b981;">
+              <strong>Required Documents:</strong>
+              <p style="margin-top: 4px; margin-bottom: 0;">${selectedProgram.documents}</p>
+            </div>
+          ` : ""}
+
+          <p style="margin-top: 15px;">${selectedProgram.description || "This program is available for international students through Admission Turkey."}</p>
         </div>
 
         <div class="apply-banner">
@@ -2201,6 +2219,7 @@ No Universities Added Yet.
 let currentEditingUni = null;
 
 async function openEditUniModal(id) {
+  if (!id) return alert("Invalid university ID.");
   const modal = document.getElementById("editUniversityModal");
   if (!modal) {
     // If on add-university page, redirect to add-university.html with edit parameter
@@ -2209,14 +2228,27 @@ async function openEditUniModal(id) {
   }
 
   try {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const res = await fetch(`${API_BASE_URL}/api/universities/${id}`);
-    const data = await res.json();
-    const uni = data.university;
+    const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
+    const headers = {};
+    if (user && user.token) {
+      headers["Authorization"] = `Bearer ${user.token}`;
+    }
 
-    if (!uni) return alert("University not found.");
+    const res = await fetch(`${API_BASE_URL}/api/universities/${id}`, { headers });
+    const data = await res.json();
+    const uni = data.university || data;
+
+    if (!uni || (!uni._id && !uni.name)) return alert("University details not found.");
 
     currentEditingUni = JSON.parse(JSON.stringify(uni));
+    if (!currentEditingUni.programs || typeof currentEditingUni.programs !== "object") {
+      currentEditingUni.programs = { associate: [], bachelors: [], masters: [], phd: [] };
+    } else {
+      currentEditingUni.programs.associate = currentEditingUni.programs.associate || [];
+      currentEditingUni.programs.bachelors = currentEditingUni.programs.bachelors || [];
+      currentEditingUni.programs.masters = currentEditingUni.programs.masters || [];
+      currentEditingUni.programs.phd = currentEditingUni.programs.phd || [];
+    }
 
     document.getElementById("editUniId").value = uni._id;
     document.getElementById("editUniName").value = uni.name || "";
@@ -2225,6 +2257,7 @@ async function openEditUniModal(id) {
     document.getElementById("editUniImage").value = uni.image || "";
 
     renderEditModalPrograms();
+    initEditUniversityForm();
     modal.style.display = "flex";
   } catch (err) {
     console.error("Open edit modal error:", err);
@@ -2263,13 +2296,13 @@ function renderEditModalPrograms() {
   }
 
   container.innerHTML = allProgs.map((item) => {
-    const p = item.program;
+    const p = item.program || {};
     const thesisText = (item.degree === "masters" && p.thesisType && p.thesisType !== "N/A") ? ` (${p.thesisType})` : "";
     const depositVal = p.initialDeposit ?? p.depositFee ?? p.deposit ?? 0;
     return `
       <div style="background: white; padding: 12px; border-radius: 6px; border: 1px solid #e0e0e0; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
         <div>
-          <strong>${p.name}</strong> - <span>${degreeNames[item.degree]}${thesisText} (${p.language || "English"})</span><br>
+          <strong>${p.name || 'Unnamed Program'}</strong> - <span>${degreeNames[item.degree] || item.degree}${thesisText} (${p.language || "English"})</span><br>
           <small>Duration: ${p.duration || "N/A"} | Orig: $${p.originalFee || 0} | Disc: $${p.discountFee || 0}</small>
         </div>
         <div style="display: flex; gap: 8px; align-items: center;">
@@ -2309,6 +2342,9 @@ function addProgramInEditModal() {
   const degreeMap = { "Bachelor": "bachelors", "Associate": "associate", "Master": "masters", "PhD": "phd" };
   const degreeType = degreeMap[level];
 
+  if (!currentEditingUni.programs) {
+    currentEditingUni.programs = { associate: [], bachelors: [], masters: [], phd: [] };
+  }
   if (!currentEditingUni.programs[degreeType]) {
     currentEditingUni.programs[degreeType] = [];
   }
@@ -2339,59 +2375,81 @@ function addProgramInEditModal() {
 }
 
 function removeProgramInEditModal(degree, index) {
-  if (!currentEditingUni || !currentEditingUni.programs[degree]) return;
+  if (!currentEditingUni || !currentEditingUni.programs || !currentEditingUni.programs[degree]) return;
   currentEditingUni.programs[degree].splice(index, 1);
   renderEditModalPrograms();
 }
 
-// Edit University Form Submit
-document.addEventListener("DOMContentLoaded", () => {
+// Edit University Form Submit Handler Initializer
+function initEditUniversityForm() {
   const editForm = document.getElementById("editUniversityForm");
-  if (editForm) {
-    editForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (!user || !user.token) return alert("Admin login required.");
+  if (!editForm) return;
 
-      const id = document.getElementById("editUniId").value;
-      const name = document.getElementById("editUniName").value.trim();
-      const location = document.getElementById("editUniLocation").value.trim();
-      const description = document.getElementById("editUniDescription").value.trim();
-      const image = document.getElementById("editUniImage").value.trim();
+  if (editForm.dataset.listenerAttached) return;
+  editForm.dataset.listenerAttached = "true";
 
-      try {
-        const res = await fetch(`${API_BASE_URL}/api/universities/${id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`
-          },
-          body: JSON.stringify({
-            name,
-            location,
-            description,
-            image,
-            programs: currentEditingUni.programs
-          })
-        });
+  editForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
+    if (!user || !user.token) return alert("Admin login required. Please log in.");
 
-        const data = await res.json();
-        if (res.ok) {
-          alert("University updated successfully!");
-          closeEditUniModal();
-          loadManageUniversities();
-        } else {
-          alert(data.message || "Failed to update university.");
-        }
-      } catch (err) {
-        console.error("Save edit university error:", err);
-        alert("Server error updating university.");
+    const id = document.getElementById("editUniId").value;
+    const name = document.getElementById("editUniName").value.trim();
+    const location = document.getElementById("editUniLocation").value.trim();
+    const description = document.getElementById("editUniDescription").value.trim();
+    const image = document.getElementById("editUniImage").value.trim();
+
+    if (!name || !location) {
+      return alert("Please fill in University Name and Location.");
+    }
+
+    const saveBtn = editForm.querySelector('button[type="submit"]');
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving Changes...`;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/universities/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`
+        },
+        body: JSON.stringify({
+          name,
+          location,
+          description,
+          image,
+          programs: currentEditingUni ? currentEditingUni.programs : undefined
+        })
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success !== false) {
+        alert("University updated successfully!");
+        closeEditUniModal();
+        loadManageUniversities();
+      } else {
+        alert(data.message || "Failed to update university.");
       }
-    });
-  }
-});
+    } catch (err) {
+      console.error("Save edit university error:", err);
+      alert("Server error updating university.");
+    } finally {
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = `<i class="fas fa-save"></i> Save University Changes`;
+      }
+    }
+  });
+}
 
-
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initEditUniversityForm);
+} else {
+  initEditUniversityForm();
+}
 
 loadManageUniversities();
 
@@ -4622,6 +4680,567 @@ function initMindmapSection() {
     });
   });
 }
+
+
+// ========================================
+// ADMIN UNIVERSITY IMPORT TOOL ENGINE
+// ========================================
+
+let parsedProgramsState = [];
+let pendingSaveImportPayload = null;
+
+function showImportAlert(message, type = "info") {
+  const alertBox = document.getElementById("importAlertBox");
+  if (!alertBox) return;
+
+  alertBox.style.display = "block";
+  if (type === "success") {
+    alertBox.style.background = "#dcfce7";
+    alertBox.style.border = "1px solid #86efac";
+    alertBox.style.color = "#166534";
+    alertBox.innerHTML = `<i class="fas fa-circle-check"></i> ${message}`;
+  } else if (type === "error") {
+    alertBox.style.background = "#fee2e2";
+    alertBox.style.border = "1px solid #fca5a5";
+    alertBox.style.color = "#991b1b";
+    alertBox.innerHTML = `<i class="fas fa-triangle-exclamation"></i> ${message}`;
+  } else {
+    alertBox.style.background = "#e0f2fe";
+    alertBox.style.border = "1px solid #7dd3fc";
+    alertBox.style.color = "#075985";
+    alertBox.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
+  }
+}
+
+function clearImportForm() {
+  const rawTextarea = document.getElementById("rawImportText");
+  if (rawTextarea) rawTextarea.value = "";
+  parsedProgramsState = [];
+  const previewSection = document.getElementById("importPreviewSection");
+  if (previewSection) previewSection.style.display = "none";
+  const alertBox = document.getElementById("importAlertBox");
+  if (alertBox) alertBox.style.display = "none";
+}
+
+async function handleParseData() {
+  const rawTextarea = document.getElementById("rawImportText");
+  const rawText = rawTextarea ? rawTextarea.value : "";
+  const nameInput = document.getElementById("importUniName");
+  const uniName = nameInput ? nameInput.value.trim() : "";
+
+  if (!rawText || !rawText.trim()) {
+    showImportAlert("Please paste university and program text in Step 2 before clicking Generate.", "error");
+    return;
+  }
+
+  const parseBtn = document.getElementById("parseDataBtn");
+  if (parseBtn) {
+    parseBtn.disabled = true;
+    parseBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Parsing Data...`;
+  }
+
+  showImportAlert("Parsing university and program data...", "info");
+
+  try {
+    const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
+    const headers = { "Content-Type": "application/json" };
+    if (user && user.token) {
+      headers["Authorization"] = `Bearer ${user.token}`;
+    }
+
+    let data = null;
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/universities/parse`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          rawText,
+          universityInfo: {
+            name: uniName,
+            country: document.getElementById("importUniCountry")?.value || "Turkey",
+            city: document.getElementById("importUniCity")?.value || "",
+            type: document.getElementById("importUniType")?.value || "Public",
+            website: document.getElementById("importUniWebsite")?.value || "",
+            image: document.getElementById("importUniImage")?.value || "",
+            description: document.getElementById("importUniDescription")?.value || ""
+          }
+        })
+      });
+      data = await response.json();
+    } catch (netErr) {
+      console.warn("Backend parse fetch error, using client-side parser fallback:", netErr);
+    }
+
+    if (data && data.success && Array.isArray(data.parsedPrograms) && data.parsedPrograms.length > 0) {
+      parsedProgramsState = data.parsedPrograms;
+    } else {
+      // Client-side parser fallback
+      parsedProgramsState = parseRawUniversityTextClient(rawText, uniName);
+    }
+
+    if (parsedProgramsState.length === 0) {
+      throw new Error("Could not parse any valid programs from the provided text. Please check format.");
+    }
+
+    showImportAlert(`Successfully parsed ${parsedProgramsState.length} separate program card(s)! You can now review and edit below.`, "success");
+    renderImportPreview();
+
+    const previewSection = document.getElementById("importPreviewSection");
+    if (previewSection) {
+      previewSection.style.display = "block";
+      previewSection.scrollIntoView({ behavior: "smooth" });
+    }
+  } catch (error) {
+    console.error("Parse Error:", error);
+    showImportAlert(error.message || "An error occurred while parsing data.", "error");
+  } finally {
+    if (parseBtn) {
+      parseBtn.disabled = false;
+      parseBtn.innerHTML = `<i class="fas fa-wand-magic-sparkles"></i> Generate / Parse Data`;
+    }
+  }
+}
+
+function parseRawUniversityTextClient(rawText, uniName = "") {
+  if (!rawText || typeof rawText !== "string") return [];
+
+  const normalized = rawText.replace(/\r\n/g, "\n").trim();
+  if (!normalized) return [];
+
+  let blocks = [];
+  const degreeMatches = [...normalized.matchAll(/\b(?:Bachelor|Master|PhD|Associate|Önlisans)\b/gi)];
+
+  if (degreeMatches.length > 1) {
+    blocks = normalized.split(/(?=\b(?:Bachelor|Master|PhD|Associate|Önlisans)\b)/i);
+  } else {
+    const linesAll = normalized.split("\n").map(l => l.trim()).filter(Boolean);
+    if (linesAll.length > 1) {
+      blocks = linesAll;
+    } else {
+      blocks = [normalized];
+    }
+  }
+
+  const parsedPrograms = [];
+
+  blocks.forEach((block, index) => {
+    const cleanBlock = block.trim();
+    if (!cleanBlock) return;
+
+    if (!/\b(bachelor|master|phd|doctorate|associate|önlisans)\b|\$[\d\.,]+|[\d\.,]+\$|\bfee\b/i.test(cleanBlock)) {
+      return;
+    }
+
+    let degreeLevel = "Bachelor's";
+    let faculty = "";
+    let language = "English";
+    let duration = "4 Years";
+    let originalFee = 0;
+    let discountFee = 0;
+    let currency = "$";
+    let applicationFee = "";
+    let requirements = "";
+    let documents = "";
+    let additionalRequirements = "";
+    let intake = "";
+    let thesisType = "N/A";
+
+    if (/\b(masters?|graduate|ms\b|msc\b|ma\b)\b/i.test(cleanBlock)) {
+      degreeLevel = "Master's";
+      duration = "2 Years";
+    } else if (/\b(phd|doctorate|doctor)\b/i.test(cleanBlock)) {
+      degreeLevel = "PhD";
+      duration = "4 Years";
+    } else if (/\b(associate|önlisans|diploma)\b/i.test(cleanBlock)) {
+      degreeLevel = "Associate";
+      duration = "2 Years";
+    } else if (/\b(bachelors?|undergraduate|licence|ba\b|bsc\b)\b/i.test(cleanBlock)) {
+      degreeLevel = "Bachelor's";
+      duration = "4 Years";
+    }
+
+    if (/with thesis|\bthesis\b/i.test(cleanBlock) && !/non-thesis|without thesis/i.test(cleanBlock)) {
+      thesisType = "Thesis";
+    } else if (/without thesis|non-thesis/i.test(cleanBlock)) {
+      thesisType = "Non-Thesis";
+    }
+
+    if (/€|EUR/i.test(cleanBlock)) currency = "€";
+    else if (/₺|TRY|TL/i.test(cleanBlock)) currency = "₺";
+    else currency = "$";
+
+    if (/turkish\s*&\s*english|english\s*&\s*turkish/i.test(cleanBlock)) {
+      language = "Turkish & English";
+    } else if (/turkish|türkçe/i.test(cleanBlock) && !/english/i.test(cleanBlock)) {
+      language = "Turkish";
+    } else {
+      language = "English";
+    }
+
+    const feeMatches = [...cleanBlock.matchAll(/(?:[\$€₺]\s*([\d\.,]+)|([\d\.,]+)\s*[\$€₺])/g)];
+    if (feeMatches.length >= 1) {
+      const val1 = parseFloat((feeMatches[0][1] || feeMatches[0][2]).replace(/,/g, ""));
+      if (!isNaN(val1) && val1 > 0) originalFee = val1;
+    }
+    if (feeMatches.length >= 2) {
+      const val2 = parseFloat((feeMatches[1][1] || feeMatches[1][2]).replace(/,/g, ""));
+      if (!isNaN(val2) && val2 > 0) discountFee = val2;
+    } else {
+      discountFee = originalFee;
+    }
+
+    const durMatch = cleanBlock.match(/(\d+)\s*(years?|yıl|semesters?)/i);
+    if (durMatch) {
+      duration = `${durMatch[1]} Years`;
+    }
+
+    let rawName = cleanBlock;
+
+    if (uniName && uniName.trim()) {
+      const safeUniName = uniName.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      rawName = rawName.replace(new RegExp(safeUniName, "gi"), "");
+    }
+    rawName = rawName.replace(/[\w\s\.\-&']+\b(UNIVERSITY|UNIVERSITESI|UNIV|INSTITUTE|COLLEGE)\b/gi, "");
+    rawName = rawName.replace(/^(bachelor's|bachelor|master's|master|phd|doctorate|associate)\s+/i, "");
+
+    let progName = rawName
+      .replace(/\((English|Turkish|English & Turkish)\)/gi, "")
+      .replace(/\b(English|Turkish|English & Turkish)\b(?=\s*(?:[\$€₺]|[\d\.,]+\$|\d{3,5}|null))/gi, "")
+      .replace(/[\$€₺]\s*[\d\.,]+/g, "")
+      .replace(/[\d\.,]+\s*[\$€₺]/g, "")
+      .replace(/[\$€₺]/g, "")
+      .replace(/\bnull\b/gi, "")
+      .replace(/\b\d{3,5}\b/g, "")
+      .replace(/\b\d\b$/, "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    if (!progName || progName.length < 2) {
+      progName = cleanBlock.split("\n")[0].trim();
+    }
+
+    if (progName && progName.length >= 2) {
+      parsedPrograms.push({
+        id: `prog_${Date.now()}_${index}_${Math.random().toString(36).substr(2, 4)}`,
+        name: progName,
+        degreeLevel,
+        faculty,
+        language,
+        duration,
+        originalFee: originalFee || 0,
+        discountFee: discountFee || originalFee || 0,
+        currency,
+        applicationFee,
+        requirements,
+        documents,
+        additionalRequirements,
+        intake,
+        description: "",
+        thesisType
+      });
+    }
+  });
+
+  return parsedPrograms;
+}
+
+function renderImportPreview() {
+  const container = document.getElementById("previewProgramsList");
+  const countEl = document.getElementById("previewProgramCount");
+  if (!container) return;
+
+  if (countEl) countEl.innerText = parsedProgramsState.length;
+
+  if (parsedProgramsState.length === 0) {
+    container.innerHTML = `<p style="text-align: center; color: #64748b; padding: 20px;">No programs found. Click "Add Program Manually" above to add one.</p>`;
+    return;
+  }
+
+  container.innerHTML = parsedProgramsState.map((prog, index) => {
+    return `
+      <div class="preview-program-card" id="preview_prog_card_${index}">
+        <button type="button" class="remove-btn" onclick="removePreviewProgram(${index})">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+          <span style="background: #1d5bbf; color: white; border-radius: 4px; padding: 2px 8px; font-weight: 700; font-size: 12px;">
+            Program #${index + 1}
+          </span>
+          <h4 style="margin: 0; color: #0f172a;">${escapeHtml(prog.name || "Untitled Program")}</h4>
+        </div>
+
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label>Program Name *</label>
+            <input type="text" value="${escapeHtml(prog.name || "")}" onchange="updatePreviewProgramField(${index}, 'name', this.value)" required>
+          </div>
+
+          <div class="form-group">
+            <label>Degree Level *</label>
+            <select onchange="updatePreviewProgramField(${index}, 'degreeLevel', this.value)">
+              <option value="Bachelor's" ${prog.degreeLevel === "Bachelor's" ? "selected" : ""}>Bachelor's</option>
+              <option value="Master's" ${prog.degreeLevel === "Master's" ? "selected" : ""}>Master's</option>
+              <option value="PhD" ${prog.degreeLevel === "PhD" ? "selected" : ""}>PhD</option>
+              <option value="Associate" ${prog.degreeLevel === "Associate" ? "selected" : ""}>Associate</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Faculty / Department</label>
+            <input type="text" value="${escapeHtml(prog.faculty || "")}" placeholder="e.g. Faculty of Engineering" onchange="updatePreviewProgramField(${index}, 'faculty', this.value)">
+          </div>
+
+          <div class="form-group">
+            <label>Language</label>
+            <select onchange="updatePreviewProgramField(${index}, 'language', this.value)">
+              <option value="English" ${prog.language === "English" ? "selected" : ""}>English</option>
+              <option value="Turkish" ${prog.language === "Turkish" ? "selected" : ""}>Turkish</option>
+              <option value="Turkish & English" ${prog.language === "Turkish & English" ? "selected" : ""}>Turkish & English</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Duration</label>
+            <input type="text" value="${escapeHtml(prog.duration || "4 Years")}" placeholder="e.g. 4 Years" onchange="updatePreviewProgramField(${index}, 'duration', this.value)">
+          </div>
+
+          <div class="form-group">
+            <label>Currency</label>
+            <select onchange="updatePreviewProgramField(${index}, 'currency', this.value)">
+              <option value="$" ${prog.currency === "$" ? "selected" : ""}>USD ($)</option>
+              <option value="€" ${prog.currency === "€" ? "selected" : ""}>EUR (€)</option>
+              <option value="₺" ${prog.currency === "₺" ? "selected" : ""}>TRY (₺)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Original Fee</label>
+            <input type="number" value="${prog.originalFee || 0}" placeholder="5000" onchange="updatePreviewProgramField(${index}, 'originalFee', Number(this.value))">
+          </div>
+
+          <div class="form-group">
+            <label>Discount Fee</label>
+            <input type="number" value="${prog.discountFee || 0}" placeholder="4000" onchange="updatePreviewProgramField(${index}, 'discountFee', Number(this.value))">
+          </div>
+
+          <div class="form-group">
+            <label>Thesis Type</label>
+            <select onchange="updatePreviewProgramField(${index}, 'thesisType', this.value)">
+              <option value="N/A" ${prog.thesisType === "N/A" ? "selected" : ""}>N/A</option>
+              <option value="Thesis" ${prog.thesisType === "Thesis" ? "selected" : ""}>Thesis</option>
+              <option value="Non-Thesis" ${prog.thesisType === "Non-Thesis" ? "selected" : ""}>Non-Thesis</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Application Fee</label>
+            <input type="text" value="${escapeHtml(prog.applicationFee || "")}" placeholder="e.g. $50" onchange="updatePreviewProgramField(${index}, 'applicationFee', this.value)">
+          </div>
+
+          <div class="form-group">
+            <label>Intake / Application Period</label>
+            <input type="text" value="${escapeHtml(prog.intake || "")}" placeholder="e.g. Fall / Spring" onchange="updatePreviewProgramField(${index}, 'intake', this.value)">
+          </div>
+
+          <div class="form-group">
+            <label>Admission Requirements</label>
+            <input type="text" value="${escapeHtml(prog.requirements || "")}" placeholder="High School Diploma, SAT..." onchange="updatePreviewProgramField(${index}, 'requirements', this.value)">
+          </div>
+
+          <div class="form-group full-width">
+            <label>Required Documents</label>
+            <input type="text" value="${escapeHtml(prog.documents || "")}" placeholder="Passport, Transcript, Photo..." onchange="updatePreviewProgramField(${index}, 'documents', this.value)">
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function updatePreviewProgramField(index, field, value) {
+  if (parsedProgramsState[index]) {
+    parsedProgramsState[index][field] = value;
+  }
+}
+
+function removePreviewProgram(index) {
+  parsedProgramsState.splice(index, 1);
+  renderImportPreview();
+}
+
+function addManualPreviewProgram() {
+  parsedProgramsState.push({
+    id: `prog_manual_${Date.now()}`,
+    name: "New Program",
+    degreeLevel: "Bachelor's",
+    faculty: "",
+    language: "English",
+    duration: "4 Years",
+    originalFee: 5000,
+    discountFee: 4000,
+    currency: "$",
+    applicationFee: "",
+    requirements: "",
+    documents: "",
+    additionalRequirements: "",
+    intake: "Fall",
+    description: "",
+    thesisType: "N/A"
+  });
+  renderImportPreview();
+}
+
+async function handleSaveImportedUniversity() {
+  const uniName = document.getElementById("importUniName")?.value.trim();
+  const country = document.getElementById("importUniCountry")?.value.trim() || "Turkey";
+  const city = document.getElementById("importUniCity")?.value.trim() || "";
+  const type = document.getElementById("importUniType")?.value || "Public";
+  const website = document.getElementById("importUniWebsite")?.value.trim() || "";
+  const image = document.getElementById("importUniImage")?.value.trim() || "";
+  const description = document.getElementById("importUniDescription")?.value.trim() || "";
+
+  if (!uniName) {
+    showImportAlert("University Name is required.", "error");
+    document.getElementById("importUniName")?.focus();
+    return;
+  }
+
+  if (parsedProgramsState.length === 0) {
+    showImportAlert("At least one program is required before saving.", "error");
+    return;
+  }
+
+  // Validate that every program has a valid name
+  for (let i = 0; i < parsedProgramsState.length; i++) {
+    if (!parsedProgramsState[i].name || !parsedProgramsState[i].name.trim()) {
+      showImportAlert(`Program #${i + 1} is missing a program name. Please specify name.`, "error");
+      return;
+    }
+  }
+
+  pendingSaveImportPayload = {
+    name: uniName,
+    country,
+    city,
+    type,
+    location: [city, country].filter(Boolean).join(", "),
+    website,
+    image,
+    description,
+    programs: parsedProgramsState
+  };
+
+  const saveBtn = document.getElementById("saveImportUniBtn");
+  if (saveBtn) {
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Checking Duplicate...`;
+  }
+
+  try {
+    const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
+    const headers = { "Content-Type": "application/json" };
+    if (user && user.token) {
+      headers["Authorization"] = `Bearer ${user.token}`;
+    }
+
+    const checkRes = await fetch(`${API_BASE_URL}/api/universities/check-duplicate`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ name: uniName })
+    });
+
+    const checkData = await checkRes.json();
+
+    if (checkData.exists) {
+      // Show duplicate warning modal
+      const modal = document.getElementById("duplicateWarningModal");
+      const msg = document.getElementById("duplicateModalMessage");
+      if (msg) {
+        msg.innerText = `A university named "${uniName}" already exists in the database. Do you want to continue and publish anyway?`;
+      }
+      if (modal) modal.style.display = "flex";
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = `<i class="fas fa-cloud-arrow-up"></i> Save & Publish University`;
+      }
+      return;
+    }
+
+    await confirmAndExecuteSave();
+  } catch (error) {
+    console.error("Save Error:", error);
+    showImportAlert(error.message || "Failed to save university.", "error");
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = `<i class="fas fa-cloud-arrow-up"></i> Save & Publish University`;
+    }
+  }
+}
+
+function closeDuplicateModal() {
+  const modal = document.getElementById("duplicateWarningModal");
+  if (modal) modal.style.display = "none";
+}
+
+async function confirmAndExecuteSave() {
+  closeDuplicateModal();
+
+  if (!pendingSaveImportPayload) {
+    showImportAlert("No data to save.", "error");
+    return;
+  }
+
+  const saveBtn = document.getElementById("saveImportUniBtn");
+  if (saveBtn) {
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving University...`;
+  }
+
+  try {
+    const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
+    const headers = { "Content-Type": "application/json" };
+    if (user && user.token) {
+      headers["Authorization"] = `Bearer ${user.token}`;
+    }
+
+    const response = await fetch(`${API_BASE_URL}/api/universities/import`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(pendingSaveImportPayload)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Failed to save university into MongoDB.");
+    }
+
+    showImportAlert(`Success! "${pendingSaveImportPayload.name}" with ${pendingSaveImportPayload.programs.length} program(s) saved into MongoDB.`, "success");
+
+    setTimeout(() => {
+      window.location.href = "manage-universities.html";
+    }, 1500);
+  } catch (error) {
+    console.error("Execute Save Error:", error);
+    showImportAlert(error.message || "Failed to save university.", "error");
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = `<i class="fas fa-cloud-arrow-up"></i> Save & Publish University`;
+    }
+  }
+}
+
+function escapeHtml(str) {
+  if (typeof str !== "string") return str;
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 
 
 

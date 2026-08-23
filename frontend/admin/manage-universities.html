@@ -77,6 +77,15 @@ Add University
 </a>
 
 
+<a href="import-university.html">
+
+<i class="fas fa-file-import"></i>
+
+Import University
+
+</a>
+
+
 <a href="manage-universities.html" class="active">
 
 <i class="fas fa-building-columns"></i>
@@ -160,6 +169,15 @@ Select All
 <i class="fas fa-trash-alt"></i> Delete All Universities
 </button>
 
+<a href="import-university.html"
+class="secondary-btn" style="padding: 10px 16px; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; border: 1px solid #1d5bbf; color: #1d5bbf;">
+
+<i class="fas fa-file-import"></i>
+
+Import Tool
+
+</a>
+
 <a href="add-university.html"
 class="primary-btn">
 
@@ -190,11 +208,11 @@ Loading Universities...
 </div>
 
 <!-- EDIT UNIVERSITY MODAL -->
-<div id="editUniversityModal" class="doc-modal" style="display:none;">
-  <div class="doc-modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
-    <div class="doc-modal-header">
-      <h3><i class="fas fa-edit"></i> Edit University & Programs</h3>
-      <span class="doc-modal-close" onclick="closeEditUniModal()">&times;</span>
+<div id="editUniversityModal" class="doc-modal" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 9999; padding: 20px; overflow-y: auto;">
+  <div class="doc-modal-content" style="background: white; border-radius: 12px; width: 100%; max-width: 800px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+    <div class="doc-modal-header" style="padding: 15px 20px; background: #1d5bbf; color: white; display: flex; justify-content: space-between; align-items: center; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+      <h3 style="margin: 0; font-size: 18px; color: white; display: flex; align-items: center; gap: 8px;"><i class="fas fa-edit"></i> Edit University & Programs</h3>
+      <span class="doc-modal-close" onclick="closeEditUniModal()" style="cursor: pointer; font-size: 24px; color: white; line-height: 1;">&times;</span>
     </div>
     <div class="doc-modal-body" style="padding: 20px;">
       <form id="editUniversityForm">
