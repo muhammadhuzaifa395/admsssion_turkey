@@ -4947,111 +4947,141 @@ function renderImportPreview() {
   if (countEl) countEl.innerText = parsedProgramsState.length;
 
   if (parsedProgramsState.length === 0) {
+    container.className = "";
     container.innerHTML = `<p style="text-align: center; color: #64748b; padding: 20px;">No programs found. Click "Add Program Manually" above to add one.</p>`;
     return;
   }
 
+  container.className = "import-program-grid";
+
   container.innerHTML = parsedProgramsState.map((prog, index) => {
+    const levelClass = (prog.degreeLevel || "").toLowerCase().includes("master") ? "master" :
+                       (prog.degreeLevel || "").toLowerCase().includes("phd") ? "phd" :
+                       (prog.degreeLevel || "").toLowerCase().includes("associate") ? "associate" : "";
+
+    const originalFeeStr = `${prog.currency || "$"}${Number(prog.originalFee || 0).toLocaleString()}`;
+    const discountFeeStr = `${prog.currency || "$"}${Number(prog.discountFee || 0).toLocaleString()}`;
+    const depositStr = `${prog.currency || "$"}${Number(prog.initialDeposit || prog.depositFee || prog.deposit || 1000).toLocaleString()}`;
+
     return `
       <div class="preview-program-card" id="preview_prog_card_${index}">
-        <button type="button" class="remove-btn" onclick="removePreviewProgram(${index})">
-          <i class="fas fa-trash"></i> Delete
-        </button>
+        <div>
+          <div class="preview-card-header">
+            <div>
+              <span class="preview-card-subtitle">Program #${index + 1}</span>
+              <h4 class="preview-card-title">${escapeHtml(prog.name || "Untitled Program")}</h4>
+              <p class="preview-card-subtitle">${escapeHtml(prog.faculty || "General Department")}</p>
+            </div>
+            <span class="preview-card-badge ${levelClass}">${escapeHtml(prog.degreeLevel || "Bachelor's")}</span>
+          </div>
 
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-          <span style="background: #1d5bbf; color: white; border-radius: 4px; padding: 2px 8px; font-weight: 700; font-size: 12px;">
-            Program #${index + 1}
-          </span>
-          <h4 style="margin: 0; color: #0f172a;">${escapeHtml(prog.name || "Untitled Program")}</h4>
+          <div class="preview-card-pills">
+            <span class="preview-pill"><i class="fas fa-globe"></i> ${escapeHtml(prog.language || "English")}</span>
+            <span class="preview-pill"><i class="fas fa-clock"></i> ${escapeHtml(prog.duration || "4 Years")}</span>
+            ${prog.thesisType && prog.thesisType !== "N/A" ? `<span class="preview-pill"><i class="fas fa-book-bookmark"></i> ${escapeHtml(prog.thesisType)}</span>` : ""}
+            <span class="preview-pill price"><i class="fas fa-tag"></i> Orig: ${originalFeeStr}</span>
+            <span class="preview-pill discount"><i class="fas fa-percent"></i> Disc: ${discountFeeStr}</span>
+            <span class="preview-pill deposit"><i class="fas fa-hand-holding-dollar"></i> Deposit: ${depositStr}</span>
+          </div>
         </div>
 
-        <div class="form-grid-3">
-          <div class="form-group">
-            <label>Program Name *</label>
-            <input type="text" value="${escapeHtml(prog.name || "")}" onchange="updatePreviewProgramField(${index}, 'name', this.value)" required>
+        <div>
+          <div class="preview-card-actions">
+            <button type="button" class="btn-toggle-edit" onclick="togglePreviewDrawer(${index})">
+              <i class="fas fa-pen-to-square"></i> Edit Details
+            </button>
+            <button type="button" class="btn-delete-card" onclick="removePreviewProgram(${index})">
+              <i class="fas fa-trash"></i> Delete Card
+            </button>
           </div>
 
-          <div class="form-group">
-            <label>Degree Level *</label>
-            <select onchange="updatePreviewProgramField(${index}, 'degreeLevel', this.value)">
-              <option value="Bachelor's" ${prog.degreeLevel === "Bachelor's" ? "selected" : ""}>Bachelor's</option>
-              <option value="Master's" ${prog.degreeLevel === "Master's" ? "selected" : ""}>Master's</option>
-              <option value="PhD" ${prog.degreeLevel === "PhD" ? "selected" : ""}>PhD</option>
-              <option value="Associate" ${prog.degreeLevel === "Associate" ? "selected" : ""}>Associate</option>
-            </select>
-          </div>
+          <div class="preview-edit-drawer" id="preview_drawer_${index}" style="display: none;">
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label style="font-weight: 600; font-size: 13px;">Program Name *</label>
+              <input type="text" value="${escapeHtml(prog.name || "")}" oninput="updatePreviewProgramField(${index}, 'name', this.value); updateCardTitle(${index}, this.value);" required>
+            </div>
 
-          <div class="form-group">
-            <label>Faculty / Department</label>
-            <input type="text" value="${escapeHtml(prog.faculty || "")}" placeholder="e.g. Faculty of Engineering" onchange="updatePreviewProgramField(${index}, 'faculty', this.value)">
-          </div>
+            <div class="form-group">
+              <label style="font-weight: 600; font-size: 13px;">Degree Level *</label>
+              <select onchange="updatePreviewProgramField(${index}, 'degreeLevel', this.value); renderImportPreview();">
+                <option value="Bachelor's" ${prog.degreeLevel === "Bachelor's" ? "selected" : ""}>Bachelor's</option>
+                <option value="Master's" ${prog.degreeLevel === "Master's" ? "selected" : ""}>Master's</option>
+                <option value="PhD" ${prog.degreeLevel === "PhD" ? "selected" : ""}>PhD</option>
+                <option value="Associate" ${prog.degreeLevel === "Associate" ? "selected" : ""}>Associate</option>
+              </select>
+            </div>
 
-          <div class="form-group">
-            <label>Language</label>
-            <select onchange="updatePreviewProgramField(${index}, 'language', this.value)">
-              <option value="English" ${prog.language === "English" ? "selected" : ""}>English</option>
-              <option value="Turkish" ${prog.language === "Turkish" ? "selected" : ""}>Turkish</option>
-              <option value="Turkish & English" ${prog.language === "Turkish & English" ? "selected" : ""}>Turkish & English</option>
-            </select>
-          </div>
+            <div class="form-group">
+              <label style="font-weight: 600; font-size: 13px;">Faculty / Dept</label>
+              <input type="text" value="${escapeHtml(prog.faculty || "")}" placeholder="Faculty..." oninput="updatePreviewProgramField(${index}, 'faculty', this.value)">
+            </div>
 
-          <div class="form-group">
-            <label>Duration</label>
-            <input type="text" value="${escapeHtml(prog.duration || "4 Years")}" placeholder="e.g. 4 Years" onchange="updatePreviewProgramField(${index}, 'duration', this.value)">
-          </div>
+            <div class="form-group">
+              <label style="font-weight: 600; font-size: 13px;">Language</label>
+              <select onchange="updatePreviewProgramField(${index}, 'language', this.value)">
+                <option value="English" ${prog.language === "English" ? "selected" : ""}>English</option>
+                <option value="Turkish" ${prog.language === "Turkish" ? "selected" : ""}>Turkish</option>
+                <option value="Turkish & English" ${prog.language === "Turkish & English" ? "selected" : ""}>Turkish & English</option>
+              </select>
+            </div>
 
-          <div class="form-group">
-            <label>Currency</label>
-            <select onchange="updatePreviewProgramField(${index}, 'currency', this.value)">
-              <option value="$" ${prog.currency === "$" ? "selected" : ""}>USD ($)</option>
-              <option value="€" ${prog.currency === "€" ? "selected" : ""}>EUR (€)</option>
-              <option value="₺" ${prog.currency === "₺" ? "selected" : ""}>TRY (₺)</option>
-            </select>
-          </div>
+            <div class="form-group">
+              <label style="font-weight: 600; font-size: 13px;">Duration</label>
+              <input type="text" value="${escapeHtml(prog.duration || "4 Years")}" placeholder="e.g. 4 Years" oninput="updatePreviewProgramField(${index}, 'duration', this.value)">
+            </div>
 
-          <div class="form-group">
-            <label>Original Fee</label>
-            <input type="number" value="${prog.originalFee || 0}" placeholder="5000" onchange="updatePreviewProgramField(${index}, 'originalFee', Number(this.value))">
-          </div>
+            <div class="form-group">
+              <label style="font-weight: 600; font-size: 13px;">Original Fee ($)</label>
+              <input type="number" value="${prog.originalFee || 0}" placeholder="5000" oninput="updatePreviewProgramField(${index}, 'originalFee', Number(this.value))">
+            </div>
 
-          <div class="form-group">
-            <label>Discount Fee</label>
-            <input type="number" value="${prog.discountFee || 0}" placeholder="4000" onchange="updatePreviewProgramField(${index}, 'discountFee', Number(this.value))">
-          </div>
+            <div class="form-group">
+              <label style="font-weight: 600; font-size: 13px;">Discount Fee ($)</label>
+              <input type="number" value="${prog.discountFee || 0}" placeholder="4000" oninput="updatePreviewProgramField(${index}, 'discountFee', Number(this.value))">
+            </div>
 
-          <div class="form-group">
-            <label>Thesis Type</label>
-            <select onchange="updatePreviewProgramField(${index}, 'thesisType', this.value)">
-              <option value="N/A" ${prog.thesisType === "N/A" ? "selected" : ""}>N/A</option>
-              <option value="Thesis" ${prog.thesisType === "Thesis" ? "selected" : ""}>Thesis</option>
-              <option value="Non-Thesis" ${prog.thesisType === "Non-Thesis" ? "selected" : ""}>Non-Thesis</option>
-            </select>
-          </div>
+            <div class="form-group">
+              <label style="font-weight: 600; font-size: 13px;">Initial Deposit ($)</label>
+              <input type="number" value="${prog.initialDeposit || prog.depositFee || prog.deposit || 1000}" placeholder="1000" oninput="updatePreviewProgramField(${index}, 'initialDeposit', Number(this.value)); updatePreviewProgramField(${index}, 'depositFee', Number(this.value));">
+            </div>
 
-          <div class="form-group">
-            <label>Application Fee</label>
-            <input type="text" value="${escapeHtml(prog.applicationFee || "")}" placeholder="e.g. $50" onchange="updatePreviewProgramField(${index}, 'applicationFee', this.value)">
-          </div>
+            <div class="form-group">
+              <label style="font-weight: 600; font-size: 13px;">Thesis Type</label>
+              <select onchange="updatePreviewProgramField(${index}, 'thesisType', this.value)">
+                <option value="N/A" ${prog.thesisType === "N/A" ? "selected" : ""}>N/A</option>
+                <option value="Thesis" ${prog.thesisType === "Thesis" ? "selected" : ""}>Thesis</option>
+                <option value="Non-Thesis" ${prog.thesisType === "Non-Thesis" ? "selected" : ""}>Non-Thesis</option>
+              </select>
+            </div>
 
-          <div class="form-group">
-            <label>Intake / Application Period</label>
-            <input type="text" value="${escapeHtml(prog.intake || "")}" placeholder="e.g. Fall / Spring" onchange="updatePreviewProgramField(${index}, 'intake', this.value)">
-          </div>
-
-          <div class="form-group">
-            <label>Admission Requirements</label>
-            <input type="text" value="${escapeHtml(prog.requirements || "")}" placeholder="High School Diploma, SAT..." onchange="updatePreviewProgramField(${index}, 'requirements', this.value)">
-          </div>
-
-          <div class="form-group full-width">
-            <label>Required Documents</label>
-            <input type="text" value="${escapeHtml(prog.documents || "")}" placeholder="Passport, Transcript, Photo..." onchange="updatePreviewProgramField(${index}, 'documents', this.value)">
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label style="font-weight: 600; font-size: 13px;">Admission Requirements</label>
+              <input type="text" value="${escapeHtml(prog.requirements || "")}" placeholder="High School Diploma, SAT..." oninput="updatePreviewProgramField(${index}, 'requirements', this.value)">
+            </div>
           </div>
         </div>
       </div>
     `;
   }).join("");
 }
+
+function togglePreviewDrawer(index) {
+  const drawer = document.getElementById(`preview_drawer_${index}`);
+  if (drawer) {
+    drawer.style.display = drawer.style.display === "none" ? "grid" : "none";
+  }
+}
+
+function updateCardTitle(index, val) {
+  const card = document.getElementById(`preview_prog_card_${index}`);
+  if (card) {
+    const titleEl = card.querySelector(".preview-card-title");
+    if (titleEl) titleEl.innerText = val || "Untitled Program";
+  }
+}
+
+window.togglePreviewDrawer = togglePreviewDrawer;
+window.updateCardTitle = updateCardTitle;
 
 function updatePreviewProgramField(index, field, value) {
   if (parsedProgramsState[index]) {
