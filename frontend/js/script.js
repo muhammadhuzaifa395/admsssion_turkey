@@ -4952,18 +4952,28 @@ function parseRawUniversityTextClient(rawText, uniName = "") {
   const normalized = rawText.replace(/\r\n/g, "\n").trim();
   if (!normalized) return [];
 
+  // Split logic:
+  // 1. First try splitting by double linebreaks (blank lines)
   let blocks = [];
-  const degreeRegex = /\b(?:Bachelor(?:'s)?|Master(?:'s)?|PhD|Ph\.D\.?|Doctorate|Doktora|Doctor|Associate|Önlisans|Yüksek\s*Lisans)\b/gi;
-  const degreeMatches = [...normalized.matchAll(degreeRegex)];
+  const paragraphBlocks = normalized.split(/\n\s*\n+/).map(b => b.trim()).filter(Boolean);
 
-  if (degreeMatches.length > 1) {
-    blocks = normalized.split(/(?=\b(?:Bachelor(?:'s)?|Master(?:'s)?|PhD|Ph\.D\.?|Doctorate|Doktora|Doctor|Associate|Önlisans|Yüksek\s*Lisans)\b)/i);
+  if (paragraphBlocks.length > 1) {
+    blocks = paragraphBlocks;
   } else {
-    const linesAll = normalized.split("\n").map(l => l.trim()).filter(Boolean);
-    if (linesAll.length > 1) {
-      blocks = linesAll;
+    // 2. If no blank lines, split by degree keywords that appear at the START OF A LINE
+    const lineStartDegreeRegex = /(?=(?:^|\n)\s*(?:Bachelor(?:'s)?|Master(?:'s)?|PhD|Ph\.D\.?|Doctorate|Doktora|Doctor|Associate|Önlisans|Yüksek\s*Lisans)\b)/gi;
+    const matches = [...normalized.matchAll(lineStartDegreeRegex)];
+
+    if (matches.length > 1) {
+      blocks = normalized.split(lineStartDegreeRegex);
     } else {
-      blocks = [normalized];
+      // 3. Fallback line-by-line
+      const linesAll = normalized.split("\n").map(l => l.trim()).filter(Boolean);
+      if (linesAll.length > 1) {
+        blocks = linesAll;
+      } else {
+        blocks = [normalized];
+      }
     }
   }
 
@@ -5007,9 +5017,9 @@ function parseRawUniversityTextClient(rawText, uniName = "") {
     }
 
     // 2. Detect Thesis Type
-    if (/with thesis|\bthesis\b/i.test(cleanBlock) && !/non-thesis|without thesis/i.test(cleanBlock)) {
+    if (/with thesis|\btezli\b|\bthesis\b/i.test(cleanBlock) && !/non-thesis|without thesis|\btezsiz\b/i.test(cleanBlock)) {
       thesisType = "Thesis";
-    } else if (/without thesis|non-thesis/i.test(cleanBlock)) {
+    } else if (/without thesis|non-thesis|\btezsiz\b/i.test(cleanBlock)) {
       thesisType = "Non-Thesis";
     }
 
@@ -5019,9 +5029,9 @@ function parseRawUniversityTextClient(rawText, uniName = "") {
     else currency = "$";
 
     // 4. Detect Language
-    if (/turkish\s*&\s*english|english\s*&\s*turkish/i.test(cleanBlock)) {
+    if (/turkish\s*&\s*english|english\s*&\s*turkish|türkçe\s*&\s*ingilizce/i.test(cleanBlock)) {
       language = "Turkish & English";
-    } else if (/turkish|türkçe/i.test(cleanBlock) && !/english/i.test(cleanBlock)) {
+    } else if (/turkish|türkçe/i.test(cleanBlock) && !/english|ingilizce/i.test(cleanBlock)) {
       language = "Turkish";
     } else {
       language = "English";
@@ -5047,21 +5057,23 @@ function parseRawUniversityTextClient(rawText, uniName = "") {
     }
 
     // 7. Extract Program Name
-    let rawName = cleanBlock;
+    const lines = cleanBlock.split("\n").map(l => l.trim()).filter(Boolean);
+    let firstLine = lines[0] || cleanBlock;
 
     if (uniName && uniName.trim()) {
       const safeUniName = uniName.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      rawName = rawName.replace(new RegExp(safeUniName, "gi"), "");
+      firstLine = firstLine.replace(new RegExp(safeUniName, "gi"), "");
     }
-    rawName = rawName.replace(/[\w\s\.\-&']+\b(UNIVERSITY|UNIVERSITESI|UNIV|INSTITUTE|COLLEGE)\b/gi, "");
-    rawName = rawName.replace(/^(ph\.?d\.?|doctorate|doktora|doctor|bachelor's|bachelor|master's|master|associate)\s+/i, "");
+    firstLine = firstLine.replace(/[\w\s\.\-&']+\b(UNIVERSITY|UNIVERSITESI|ÜNİVERSİTESİ|UNIV|INSTITUTE|COLLEGE)\b/gi, "");
+    firstLine = firstLine.replace(/^(ph\.?d\.?|doctorate|doktora|doctor|bachelor's|bachelor|master's|master|associate|önlisans|lisans|yüksek\s*lisans)\s+/i, "");
 
-    let progName = rawName
-      .replace(/\((English|Turkish|English & Turkish|PhD|Ph\.D\.?|Doctorate|Doktora)\)/gi, "")
-      .replace(/\b(English|Turkish|English & Turkish)\b(?=\s*(?:[\$€₺]|[\d\.,]+\$|\d{3,5}|null))/gi, "")
+    let progName = firstLine
+      .replace(/\((English|Turkish|Türkçe|İngilizce|English & Turkish|PhD|Ph\.D\.?|Doctorate|Doktora|Thesis|Tezli|Tezsiz)\)/gi, "")
+      .replace(/\b(English|Turkish|Türkçe|İngilizce|English & Turkish)\b(?=\s*(?:[\$€₺]|[\d\.,]+\$|\d{3,5}|null))/gi, "")
       .replace(/[\$€₺]\s*[\d\.,]+/g, "")
       .replace(/[\d\.,]+\s*[\$€₺]/g, "")
       .replace(/[\$€₺]/g, "")
+      .replace(/\b(PhD|Ph\.D\.?|Doctorate|Doktora)\b/gi, "")
       .replace(/\bnull\b/gi, "")
       .replace(/\b\d{3,5}\b/g, "")
       .replace(/\b\d\b$/, "")
@@ -5069,7 +5081,7 @@ function parseRawUniversityTextClient(rawText, uniName = "") {
       .trim();
 
     if (!progName || progName.length < 2) {
-      progName = cleanBlock.split("\n")[0].trim();
+      progName = lines[0].trim();
     }
 
     if (progName && progName.length >= 2) {
