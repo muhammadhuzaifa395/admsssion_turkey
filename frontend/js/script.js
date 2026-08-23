@@ -4953,10 +4953,11 @@ function parseRawUniversityTextClient(rawText, uniName = "") {
   if (!normalized) return [];
 
   let blocks = [];
-  const degreeMatches = [...normalized.matchAll(/\b(?:Bachelor|Master|PhD|Associate|Önlisans)\b/gi)];
+  const degreeRegex = /\b(?:Bachelor(?:'s)?|Master(?:'s)?|PhD|Ph\.D\.?|Doctorate|Doktora|Doctor|Associate|Önlisans|Yüksek\s*Lisans)\b/gi;
+  const degreeMatches = [...normalized.matchAll(degreeRegex)];
 
   if (degreeMatches.length > 1) {
-    blocks = normalized.split(/(?=\b(?:Bachelor|Master|PhD|Associate|Önlisans)\b)/i);
+    blocks = normalized.split(/(?=\b(?:Bachelor(?:'s)?|Master(?:'s)?|PhD|Ph\.D\.?|Doctorate|Doktora|Doctor|Associate|Önlisans|Yüksek\s*Lisans)\b)/i);
   } else {
     const linesAll = normalized.split("\n").map(l => l.trim()).filter(Boolean);
     if (linesAll.length > 1) {
@@ -4972,7 +4973,7 @@ function parseRawUniversityTextClient(rawText, uniName = "") {
     const cleanBlock = block.trim();
     if (!cleanBlock) return;
 
-    if (!/\b(bachelor|master|phd|doctorate|associate|önlisans)\b|\$[\d\.,]+|[\d\.,]+\$|\bfee\b/i.test(cleanBlock)) {
+    if (!/\b(bachelor|master|phd|ph\.d\.?|doctorate|doktora|doctor|associate|önlisans|yüksek\s*lisans)\b|\$[\d\.,]+|[\d\.,]+\$|\bfee\b/i.test(cleanBlock)) {
       return;
     }
 
@@ -4990,30 +4991,34 @@ function parseRawUniversityTextClient(rawText, uniName = "") {
     let intake = "";
     let thesisType = "N/A";
 
-    if (/\b(masters?|graduate|ms\b|msc\b|ma\b)\b/i.test(cleanBlock)) {
-      degreeLevel = "Master's";
-      duration = "2 Years";
-    } else if (/\b(phd|doctorate|doctor)\b/i.test(cleanBlock)) {
+    // 1. Detect Degree Level (Check PhD/Doctorate FIRST)
+    if (/\b(phd|ph\.d\.?|doctorate|doctor|doktora|dr\.)\b/i.test(cleanBlock)) {
       degreeLevel = "PhD";
       duration = "4 Years";
+    } else if (/\b(masters?|msc\b|ma\b|ms\b|yüksek\s*lisans)\b/i.test(cleanBlock)) {
+      degreeLevel = "Master's";
+      duration = "2 Years";
     } else if (/\b(associate|önlisans|diploma)\b/i.test(cleanBlock)) {
       degreeLevel = "Associate";
       duration = "2 Years";
-    } else if (/\b(bachelors?|undergraduate|licence|ba\b|bsc\b)\b/i.test(cleanBlock)) {
+    } else if (/\b(bachelors?|undergraduate|licence|ba\b|bsc\b|lisans)\b/i.test(cleanBlock)) {
       degreeLevel = "Bachelor's";
       duration = "4 Years";
     }
 
+    // 2. Detect Thesis Type
     if (/with thesis|\bthesis\b/i.test(cleanBlock) && !/non-thesis|without thesis/i.test(cleanBlock)) {
       thesisType = "Thesis";
     } else if (/without thesis|non-thesis/i.test(cleanBlock)) {
       thesisType = "Non-Thesis";
     }
 
+    // 3. Detect Currency
     if (/€|EUR/i.test(cleanBlock)) currency = "€";
     else if (/₺|TRY|TL/i.test(cleanBlock)) currency = "₺";
     else currency = "$";
 
+    // 4. Detect Language
     if (/turkish\s*&\s*english|english\s*&\s*turkish/i.test(cleanBlock)) {
       language = "Turkish & English";
     } else if (/turkish|türkçe/i.test(cleanBlock) && !/english/i.test(cleanBlock)) {
@@ -5022,6 +5027,7 @@ function parseRawUniversityTextClient(rawText, uniName = "") {
       language = "English";
     }
 
+    // 5. Extract Fees
     const feeMatches = [...cleanBlock.matchAll(/(?:[\$€₺]\s*([\d\.,]+)|([\d\.,]+)\s*[\$€₺])/g)];
     if (feeMatches.length >= 1) {
       const val1 = parseFloat((feeMatches[0][1] || feeMatches[0][2]).replace(/,/g, ""));
@@ -5034,11 +5040,13 @@ function parseRawUniversityTextClient(rawText, uniName = "") {
       discountFee = originalFee;
     }
 
+    // 6. Detect Duration
     const durMatch = cleanBlock.match(/(\d+)\s*(years?|yıl|semesters?)/i);
     if (durMatch) {
       duration = `${durMatch[1]} Years`;
     }
 
+    // 7. Extract Program Name
     let rawName = cleanBlock;
 
     if (uniName && uniName.trim()) {
@@ -5046,10 +5054,10 @@ function parseRawUniversityTextClient(rawText, uniName = "") {
       rawName = rawName.replace(new RegExp(safeUniName, "gi"), "");
     }
     rawName = rawName.replace(/[\w\s\.\-&']+\b(UNIVERSITY|UNIVERSITESI|UNIV|INSTITUTE|COLLEGE)\b/gi, "");
-    rawName = rawName.replace(/^(bachelor's|bachelor|master's|master|phd|doctorate|associate)\s+/i, "");
+    rawName = rawName.replace(/^(ph\.?d\.?|doctorate|doktora|doctor|bachelor's|bachelor|master's|master|associate)\s+/i, "");
 
     let progName = rawName
-      .replace(/\((English|Turkish|English & Turkish)\)/gi, "")
+      .replace(/\((English|Turkish|English & Turkish|PhD|Ph\.D\.?|Doctorate|Doktora)\)/gi, "")
       .replace(/\b(English|Turkish|English & Turkish)\b(?=\s*(?:[\$€₺]|[\d\.,]+\$|\d{3,5}|null))/gi, "")
       .replace(/[\$€₺]\s*[\d\.,]+/g, "")
       .replace(/[\d\.,]+\s*[\$€₺]/g, "")
@@ -5105,8 +5113,8 @@ function renderImportPreview() {
   container.className = "import-program-grid";
 
   container.innerHTML = parsedProgramsState.map((prog, index) => {
-    const levelClass = (prog.degreeLevel || "").toLowerCase().includes("master") ? "master" :
-                       (prog.degreeLevel || "").toLowerCase().includes("phd") ? "phd" :
+    const levelClass = (prog.degreeLevel || "").toLowerCase().match(/phd|doctor|doktora/) ? "phd" :
+                       (prog.degreeLevel || "").toLowerCase().includes("master") ? "master" :
                        (prog.degreeLevel || "").toLowerCase().includes("associate") ? "associate" : "";
 
     const originalFeeStr = `${prog.currency || "$"}${Number(prog.originalFee || 0).toLocaleString()}`;

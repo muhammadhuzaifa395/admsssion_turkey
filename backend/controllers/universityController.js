@@ -570,15 +570,14 @@ function parseRawUniversityText(rawText, uniName = "") {
   const normalized = rawText.replace(/\r\n/g, "\n").trim();
   if (!normalized) return [];
 
-  // Split logic:
-  // First try splitting by degree keywords lookahead (Bachelor|Master|PhD|Associate) if multiple degree entries exist
+  // Split logic: Look for degree level keywords lookahead
   let blocks = [];
-  const degreeMatches = [...normalized.matchAll(/\b(?:Bachelor|Master|PhD|Associate|Önlisans)\b/gi)];
+  const degreeRegex = /\b(?:Bachelor(?:'s)?|Master(?:'s)?|PhD|Ph\.D\.?|Doctorate|Doktora|Doctor|Associate|Önlisans|Yüksek\s*Lisans)\b/gi;
+  const degreeMatches = [...normalized.matchAll(degreeRegex)];
 
   if (degreeMatches.length > 1) {
-    blocks = normalized.split(/(?=\b(?:Bachelor|Master|PhD|Associate|Önlisans)\b)/i);
+    blocks = normalized.split(/(?=\b(?:Bachelor(?:'s)?|Master(?:'s)?|PhD|Ph\.D\.?|Doctorate|Doktora|Doctor|Associate|Önlisans|Yüksek\s*Lisans)\b)/i);
   } else {
-    // Check if line by line
     const linesAll = normalized.split("\n").map(l => l.trim()).filter(Boolean);
     if (linesAll.length > 1) {
       blocks = linesAll;
@@ -593,8 +592,8 @@ function parseRawUniversityText(rawText, uniName = "") {
     const cleanBlock = block.trim();
     if (!cleanBlock) return;
 
-    // Skip block if it's just the university name without degree/fees
-    if (!/\b(bachelor|master|phd|doctorate|associate|önlisans)\b|\$[\d\.,]+|[\d\.,]+\$|\bfee\b/i.test(cleanBlock)) {
+    // Skip block if it doesn't look like program data
+    if (!/\b(bachelor|master|phd|ph\.d\.?|doctorate|doktora|doctor|associate|önlisans|yüksek\s*lisans)\b|\$[\d\.,]+|[\d\.,]+\$|\bfee\b/i.test(cleanBlock)) {
       return;
     }
 
@@ -614,17 +613,17 @@ function parseRawUniversityText(rawText, uniName = "") {
     let description = "";
     let thesisType = "N/A";
 
-    // 1. Detect Degree Level
-    if (/\b(masters?|graduate|ms\b|msc\b|ma\b)\b/i.test(cleanBlock)) {
-      degreeLevel = "Master's";
-      duration = "2 Years";
-    } else if (/\b(phd|doctorate|doctor)\b/i.test(cleanBlock)) {
+    // 1. Detect Degree Level (Check PhD/Doctorate FIRST so Master's in requirements won't override PhD)
+    if (/\b(phd|ph\.d\.?|doctorate|doctor|doktora|dr\.)\b/i.test(cleanBlock)) {
       degreeLevel = "PhD";
       duration = "4 Years";
+    } else if (/\b(masters?|msc\b|ma\b|ms\b|yüksek\s*lisans)\b/i.test(cleanBlock)) {
+      degreeLevel = "Master's";
+      duration = "2 Years";
     } else if (/\b(associate|önlisans|diploma)\b/i.test(cleanBlock)) {
       degreeLevel = "Associate";
       duration = "2 Years";
-    } else if (/\b(bachelors?|undergraduate|licence|ba\b|bsc\b)\b/i.test(cleanBlock)) {
+    } else if (/\b(bachelors?|undergraduate|licence|ba\b|bsc\b|lisans)\b/i.test(cleanBlock)) {
       degreeLevel = "Bachelor's";
       duration = "4 Years";
     }
@@ -681,11 +680,11 @@ function parseRawUniversityText(rawText, uniName = "") {
     rawName = rawName.replace(/[\w\s\.\-&']+\b(UNIVERSITY|UNIVERSITESI|UNIV|INSTITUTE|COLLEGE)\b/gi, "");
 
     // Remove degree label prefix
-    rawName = rawName.replace(/^(bachelor's|bachelor|master's|master|phd|doctorate|associate)\s+/i, "");
+    rawName = rawName.replace(/^(ph\.?d\.?|doctorate|doktora|doctor|bachelor's|bachelor|master's|master|associate)\s+/i, "");
 
     // Clean up language, fees, numbers, nulls
     let progName = rawName
-      .replace(/\((English|Turkish|English & Turkish)\)/gi, "")
+      .replace(/\((English|Turkish|English & Turkish|PhD|Ph\.D\.?|Doctorate|Doktora)\)/gi, "")
       .replace(/\b(English|Turkish|English & Turkish)\b(?=\s*(?:[\$€₺]|[\d\.,]+\$|\d{3,5}|null))/gi, "")
       .replace(/[\$€₺]\s*[\d\.,]+/g, "")
       .replace(/[\d\.,]+\s*[\$€₺]/g, "")
@@ -889,12 +888,12 @@ exports.importUniversity = async (req, res) => {
         thesisType: prog.thesisType || "N/A"
       };
 
-      if (level.includes("associate")) {
+      if (level.includes("phd") || level.includes("doctor") || level.includes("doktora")) {
+        categorizedPrograms.phd.push(formattedProg);
+      } else if (level.includes("associate") || level.includes("önlisans")) {
         categorizedPrograms.associate.push(formattedProg);
       } else if (level.includes("master")) {
         categorizedPrograms.masters.push(formattedProg);
-      } else if (level.includes("phd") || level.includes("doctor")) {
-        categorizedPrograms.phd.push(formattedProg);
       } else {
         categorizedPrograms.bachelors.push(formattedProg);
       }
