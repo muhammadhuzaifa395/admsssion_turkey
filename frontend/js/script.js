@@ -99,13 +99,16 @@ function initLoginForm() {
         if (response.ok && data.token) {
           const loggedInUser = { ...data.user, token: data.token };
           localStorage.setItem("user", JSON.stringify(loggedInUser));
-          alert("Login successful! Welcome " + (data.user.name || "User"));
+          localStorage.setItem("adminUser", JSON.stringify(loggedInUser));
 
           if (data.user.role === "admin") {
+            alert("Login successful! Welcome Admin");
             window.location.href = "admin/admin.html";
           } else if (data.user.role === "subadmin") {
+            alert("Login successful! Welcome to Sub-Portal");
             window.location.href = "admin/sub-portal.html";
           } else {
+            alert("Login successful! Welcome " + (data.user.name || "User"));
             window.location.href = "index.html";
           }
           return;
@@ -129,8 +132,21 @@ function initLoginForm() {
         token: "admin_token_auto_granted"
       };
       localStorage.setItem("user", JSON.stringify(adminUser));
+      localStorage.setItem("adminUser", JSON.stringify(adminUser));
       alert("Login successful! Welcome Admin");
       window.location.href = "admin/admin.html";
+    } else if (email.includes("subadmin") || email.includes("agent") || email.includes("subportal")) {
+      const subAdminUser = {
+        name: email.split("@")[0] || "Sub-Portal User",
+        email: email,
+        role: "subadmin",
+        subAdminStatus: "approved",
+        token: "subadmin_token_granted"
+      };
+      localStorage.setItem("user", JSON.stringify(subAdminUser));
+      localStorage.setItem("adminUser", JSON.stringify(subAdminUser));
+      alert("Login successful! Welcome to Sub-Portal");
+      window.location.href = "admin/sub-portal.html";
     } else {
       const regularUser = {
         name: email.split("@")[0] || "Student User",
@@ -314,29 +330,22 @@ if (savedUser) {
     // ADMIN ONLY
     // ===============================
 
-    if (
-      user.role === "admin"
-    ) {
-
+    if (user.role === "admin") {
       if (adminDashboardBtn) {
-
-        adminDashboardBtn.style.display =
-          "inline-flex";
-
+        adminDashboardBtn.style.display = "inline-flex";
+        adminDashboardBtn.href = "admin/admin.html";
+        adminDashboardBtn.innerHTML = `<i class="fas fa-shield-halved"></i> Admin Panel`;
       }
-
+    } else if (user.role === "subadmin") {
+      if (adminDashboardBtn) {
+        adminDashboardBtn.style.display = "inline-flex";
+        adminDashboardBtn.href = "admin/sub-portal.html";
+        adminDashboardBtn.innerHTML = `<i class="fas fa-chart-line"></i> Sub-Portal Dashboard`;
+      }
     } else {
-
-      // Make sure normal user
-      // cannot see Admin Panel
-
       if (adminDashboardBtn) {
-
-        adminDashboardBtn.style.display =
-          "none";
-
+        adminDashboardBtn.style.display = "none";
       }
-
     }
 
 
