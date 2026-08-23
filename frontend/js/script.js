@@ -32,12 +32,12 @@ if (window.location.pathname.toLowerCase().includes("/admin")) {
 
   if (!adminUserRaw) {
     window.location.href = loginRedirectPath;
-  } else {
     try {
       const adminUser = JSON.parse(adminUserRaw);
+      const userRole = adminUser ? adminUser.role : "";
 
-      if (adminUser.role !== "admin" || !adminUser.token) {
-        alert("Access denied. Please login with an admin account.");
+      if (!adminUser || !adminUser.token || (userRole !== "admin" && userRole !== "subadmin")) {
+        alert("Access denied. Please login with an authorized admin account.");
         window.location.href = loginRedirectPath;
       }
     } catch (error) {
@@ -5485,7 +5485,7 @@ function enforceSubPortalNavigation() {
   const path = window.location.pathname.toLowerCase();
 
   if (user && user.role === "subadmin") {
-    const restrictedPages = ["add-university.html", "import-university.html", "manage-universities.html"];
+    const restrictedPages = ["add-university.html", "import-university.html", "manage-universities.html", "sub-portal-manager.html"];
     const isRestricted = restrictedPages.some(p => path.includes(p));
 
     if (isRestricted) {
