@@ -17,7 +17,15 @@ const {
 
   addProgram,
 
-  deleteProgram
+  deleteProgram,
+
+  parseUniversityData,
+
+  checkDuplicateUniversity,
+
+  importUniversity,
+
+  updateProgram
 
 } =
   require(
@@ -61,6 +69,45 @@ router.get(
 // ========================================
 // ADMIN ONLY ROUTES
 // ========================================
+
+// Parse raw university & program data
+
+router.post(
+  "/parse",
+
+  verifyToken,
+
+  isAdmin,
+
+  parseUniversityData
+);
+
+
+// Check duplicate university by name
+
+router.post(
+  "/check-duplicate",
+
+  verifyToken,
+
+  isAdmin,
+
+  checkDuplicateUniversity
+);
+
+
+// Import structured university with programs
+
+router.post(
+  "/import",
+
+  verifyToken,
+
+  isAdmin,
+
+  importUniversity
+);
+
 
 // Add university
 
@@ -122,6 +169,21 @@ router.post(
 );
 
 
+// Update single program
+
+router.put(
+
+  "/:universityId/programs/:programId",
+
+  verifyToken,
+
+  isAdmin,
+
+  updateProgram
+
+);
+
+
 // Delete program
 
 router.delete(
@@ -139,6 +201,7 @@ router.delete(
 
 module.exports =
   router;
+
 
 
 

@@ -13,6 +13,16 @@ const programSchema = new mongoose.Schema(
       trim: true
     },
 
+    degreeLevel: {
+      type: String,
+      default: ""
+    },
+
+    faculty: {
+      type: String,
+      default: ""
+    },
+
     language: {
       type: String,
       default: "English"
@@ -31,6 +41,36 @@ const programSchema = new mongoose.Schema(
     discountFee: {
       type: Number,
       default: 0
+    },
+
+    currency: {
+      type: String,
+      default: "$"
+    },
+
+    applicationFee: {
+      type: String,
+      default: ""
+    },
+
+    requirements: {
+      type: String,
+      default: ""
+    },
+
+    documents: {
+      type: String,
+      default: ""
+    },
+
+    additionalRequirements: {
+      type: String,
+      default: ""
+    },
+
+    intake: {
+      type: String,
+      default: ""
     },
 
     description: {
@@ -66,6 +106,26 @@ const universitySchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true
+    },
+
+    country: {
+      type: String,
+      default: "Turkey"
+    },
+
+    city: {
+      type: String,
+      default: ""
+    },
+
+    type: {
+      type: String,
+      default: "Public"
+    },
+
+    website: {
+      type: String,
+      default: ""
     },
 
     description: {
@@ -124,4 +184,4 @@ module.exports =
   mongoose.model(
     "University",
     universitySchema
-  );
+  );

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Import University | Admin Panel</title>
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    .import-step-card {
+      background: var(--card-bg, #ffffff);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      border: 1px solid var(--border-color, #e2e8f0);
+    }
+    .import-step-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 12px;
+    }
+    .import-step-header .badge {
+      background: var(--primary, #1d5bbf);
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .import-step-header h3 {
+      margin: 0;
+      font-size: 20px;
+      color: var(--text-color, #1e293b);
+    }
+    .raw-paste-box {
+      width: 100%;
+      font-family: monospace;
+      font-size: 14px;
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #0f172a;
+      resize: vertical;
+    }
+    .preview-program-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 5px solid var(--primary, #1d5bbf);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .preview-program-card .remove-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #fee2e2;
+      color: #dc2626;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .preview-program-card .remove-btn:hover {
+      background: #fca5a5;
+    }
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+    }
+  </style>
+</head>
+
+<body class="admin-body">
+
+  <!-- ADMIN HEADER -->
+  <header class="admin-header">
+    <div class="admin-logo">
+      <img src="../images/logo.png" alt="Admission Turkey">
+      <div class="admin-title">
+        <h2><i class="fas fa-shield-halved"></i> Admin Panel</h2>
+      </div>
+    </div>
+    <a href="../index.html" class="admin-home-btn">
+      <i class="fas fa-globe"></i> View Website
+    </a>
+  </header>
+
+  <!-- ADMIN CONTAINER -->
+  <div class="admin-container">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <h3>Navigation</h3>
+      <a href="admin.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+      <a href="add-university.html"><i class="fas fa-plus-circle"></i> Add University</a>
+      <a href="import-university.html" class="active"><i class="fas fa-file-import"></i> Import Tool</a>
+      <a href="manage-universities.html"><i class="fas fa-building-columns"></i> Manage Universities</a>
+      <a href="manage-applications.html"><i class="fas fa-id-card"></i> Manage Applications</a>
+      <a href="../index.html"><i class="fas fa-arrow-left"></i> Back to Website</a>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+
+      <div class="admin-welcome">
+        <h1><i class="fas fa-magic"></i> University Data Import & Auto-Generator</h1>
+        <p>Enter basic university info, paste all program data at once, generate structured preview, edit, and publish to database.</p>
+      </div>
+
+      <!-- STATUS NOTIFICATION BOX -->
+      <div id="importAlertBox" style="display: none; margin-bottom: 20px; padding: 16px; border-radius: 8px; font-weight: 600;"></div>
+
+      <form id="importUniversityForm" onsubmit="event.preventDefault();">
+
+        <!-- STEP 1: BASIC INFORMATION -->
+        <div class="import-step-card">
+          <div class="import-step-header">
+            <span class="badge">1</span>
+            <h3>Enter University Basic Information</h3>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="importUniName">University Name *</label>
+              <input type="text" id="importUniName" placeholder="e.g. Istanbul University" required>
+            </div>
+
+            <div class="form-group">
+              <label for="importUniCountry">Country *</label>
+              <input type="text" id="importUniCountry" value="Turkey" required>
+            </div>
+
+            <div class="form-group">
+              <label for="importUniCity">City *</label>
+              <input type="text" id="importUniCity" placeholder="e.g. Istanbul" required>
+            </div>
+
+            <div class="form-group">
+              <label for="importUniType">University Type</label>
+              <select id="importUniType">
+                <option value="Public">Public University</option>
+                <option value="Private">Private University</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="importUniWebsite">Official Website</label>
+              <input type="url" id="importUniWebsite" placeholder="https://istanbul.edu.tr">
+            </div>
+
+            <div class="form-group">
+              <label for="importUniImage">Logo / Image URL</label>
+              <input type="url" id="importUniImage" placeholder="https://example.com/logo.png">
+            </div>
+
+            <div class="form-group full-width">
+              <label for="importUniDescription">University Description</label>
+              <textarea id="importUniDescription" rows="3" placeholder="Brief overview of the university..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: PASTE DATA & PARSE -->
+        <div class="import-step-card">
+          <div class="import-step-header">
+            <span class="badge">2</span>
+            <h3>Paste University & Program Data</h3>
+          </div>
+
+          <p style="color: #64748b; font-size: 14px; margin-bottom: 12px;">
+            Paste all raw program information below. The parser automatically detects Program Names, Degree Levels, Fees, Durations, Requirements, Language, Application Fees, Intake periods, etc.
+          </p>
+
+          <textarea id="rawImportText" class="raw-paste-box" rows="12" placeholder="Paste ALL university + program data here...
+
+Example:
+Computer Engineering
+Bachelor's
+Duration: 4 years
+Tuition Fee: $5,000
+Language: English
+Requirements: High school diploma, SAT or YÖS
+
+Business Administration
+Bachelor's
+Duration: 4 years
+Tuition Fee: $4,000
+Language: English
+
+Software Engineering
+Master's
+Duration: 2 years
+Tuition Fee: $6,000
+Language: English
+Thesis: Thesis
+Requirements: Bachelor's degree in related field"></textarea>
+
+          <div style="margin-top: 16px; display: flex; gap: 12px; align-items: center;">
+            <button type="button" id="parseDataBtn" onclick="handleParseData()" class="primary-btn" style="padding: 12px 24px;">
+              <i class="fas fa-wand-magic-sparkles"></i> Generate / Parse Data
+            </button>
+            <button type="button" onclick="clearImportForm()" class="secondary-btn">
+              <i class="fas fa-eraser"></i> Clear Text
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3: PREVIEW & EDIT SYSTEM -->
+        <div id="importPreviewSection" class="import-step-card" style="display: none;">
+          <div class="import-step-header" style="justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span class="badge" style="background: #10b981;">3</span>
+              <h3>Structured Data Preview & Edit</h3>
+            </div>
+            <button type="button" onclick="addManualPreviewProgram()" class="secondary-btn" style="font-size: 13px;">
+              <i class="fas fa-plus"></i> Add Program Manually
+            </button>
+          </div>
+
+          <div style="background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-size: 14px;">
+            <i class="fas fa-info-circle"></i> Review the auto-parsed programs below. You can edit any field, add missing info, delete unwanted programs, or add new ones before publishing to MongoDB.
+          </div>
+
+          <!-- PARSED PROGRAMS CONTAINER -->
+          <div id="previewProgramsList"></div>
+
+          <!-- SAVE ACTION -->
+          <div style="margin-top: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; border-top: 2px solid #f1f5f9; padding-top: 20px;">
+            <div>
+              <span style="font-size: 15px; font-weight: 600; color: #334155;">
+                Total Programs: <span id="previewProgramCount" style="color: #1d5bbf; font-weight: 700;">0</span>
+              </span>
+            </div>
+            <div style="display: flex; gap: 12px;">
+              <button type="button" onclick="addManualPreviewProgram()" class="secondary-btn">
+                <i class="fas fa-plus"></i> Add Program
+              </button>
+              <button type="button" id="saveImportUniBtn" onclick="handleSaveImportedUniversity()" class="primary-btn" style="padding: 12px 30px; font-size: 16px; background: #10b981; border-color: #10b981;">
+                <i class="fas fa-cloud-arrow-up"></i> Save & Publish University
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </main>
+
+  </div>
+
+  <!-- DUPLICATE WARNING MODAL -->
+  <div id="duplicateWarningModal" class="doc-modal" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 9999;">
+    <div class="doc-modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+      <div style="font-size: 48px; color: #f59e0b; margin-bottom: 15px;">
+        <i class="fas fa-triangle-exclamation"></i>
+      </div>
+      <h3 style="margin-bottom: 10px; font-size: 22px; color: #1e293b;">Possible Duplicate University</h3>
+      <p id="duplicateModalMessage" style="color: #64748b; margin-bottom: 25px; font-size: 14px; line-height: 1.5;">
+        A university with this name already exists in the database. Do you want to continue and save anyway?
+      </p>
+      <div style="display: flex; gap: 12px; justify-content: center;">
+        <button type="button" onclick="closeDuplicateModal()" class="secondary-btn" style="flex: 1; padding: 12px;">
+          Cancel
+        </button>
+        <button type="button" id="confirmDuplicateSaveBtn" onclick="confirmAndExecuteSave()" class="primary-btn" style="flex: 1; padding: 12px; background: #f59e0b; border-color: #f59e0b;">
+          Continue & Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+
+</body>
+
+</html>
