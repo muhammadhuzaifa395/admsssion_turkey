@@ -2128,81 +2128,62 @@ const manageUniversityList =
 
 
 async function loadManageUniversities() {
-
-
   if (!manageUniversityList) {
     return;
   }
 
-
   try {
-
-
-    const user =
-      JSON.parse(localStorage.getItem("user"));
-
-
+    const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
+    const headers = {};
+    if (user && user.token) {
+      headers["Authorization"] = `Bearer ${user.token}`;
+    }
 
     const response = await fetch(
       `${API_BASE_URL}/api/universities`,
-      {
-        headers: {
-          Authorization: `Bearer ${user.token}`
-        }
-      }
+      { headers }
     );
 
+    if (!response.ok) {
+      throw new Error(`Failed to load universities (Status: ${response.status})`);
+    }
 
-
-    const data =
-      await response.json();
-
-    const universities = data.universities || [];
-
-
+    const data = await response.json();
+    const universities = data.universities || (Array.isArray(data) ? data : []);
 
     manageUniversityList.innerHTML = "";
 
-
-
-    if (universities.length === 0) {
-
+    if (!universities || universities.length === 0) {
       manageUniversityList.innerHTML = `
-
-<div class="empty-program">
-
-No Universities Added Yet.
-
-</div>
-
-`;
-
+        <div class="empty-program">
+          No Universities Added Yet.
+        </div>
+      `;
       return;
-
     }
 
-
-
-
     universities.forEach((uni, index) => {
-      let totalPrograms = Object.values(uni.programs).flat().length;
+      let totalPrograms = 0;
+      if (uni && uni.programs && typeof uni.programs === "object") {
+        totalPrograms = Object.values(uni.programs).flat().length;
+      }
 
       manageUniversityList.innerHTML += `
-        <div class="program-card" style="display: flex; align-items: center; gap: 15px;">
+        <div class="program-card" style="display: flex; align-items: center; gap: 15px; background: white; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 12px;">
           <div style="display: flex; align-items: center; padding-right: 5px;">
             <input type="checkbox" class="uni-select-checkbox" value="${uni._id}" style="width: 22px; height: 22px; cursor: pointer; accent-color: #ea580c;" onchange="updateSelectedUniCount()" />
           </div>
           <div class="program-info" style="flex: 1;">
-            <h3>${index + 1}. ${uni.name}</h3>
-            <p><strong>Location:</strong> ${uni.location}</p>
-            <p><strong>Total Programs:</strong> ${totalPrograms}</p>
-            <p><strong>Description:</strong> ${uni.description || "No description"}</p>
+            <h3 style="margin-bottom: 5px; color: #1e293b;">${index + 1}. ${uni.name || 'Unnamed University'}</h3>
+            <p style="margin: 2px 0;"><strong>Location:</strong> ${uni.location || 'N/A'}</p>
+            <p style="margin: 2px 0;"><strong>Total Programs:</strong> ${totalPrograms}</p>
+            <p style="margin: 2px 0; color: #64748b;"><strong>Description:</strong> ${uni.description || "No description"}</p>
           </div>
           <div style="display: flex; gap: 8px; align-items: center;">
-            <button class="secondary-btn" onclick="openEditUniModal('${uni._id}')">
+            <button type="button" class="secondary-btn" onclick="openEditUniModal('${uni._id}')" style="cursor: pointer;">
               <i class="fas fa-edit"></i> Edit
             </button>
-            <button class="remove-program-btn" onclick="deleteUniversity('${uni._id}', '${(uni.name || '').replace(/'/g, "\\'")}')">
+            <button type="button" class="remove-program-btn" onclick="deleteUniversity('${uni._id}', '${(uni.name || '').replace(/'/g, "\\'")}')" style="cursor: pointer;">
               <i class="fas fa-trash"></i> Delete
             </button>
           </div>
@@ -2210,9 +2191,16 @@ No Universities Added Yet.
       `;
     });
 
-    updateSelectedUniCount();
+    if (typeof updateSelectedUniCount === "function") {
+      updateSelectedUniCount();
+    }
   } catch (error) {
-    console.log("Manage University Error:", error);
+    console.error("Manage University Error:", error);
+    manageUniversityList.innerHTML = `
+      <div class="empty-program" style="color: #ef4444; padding: 20px;">
+        <i class="fas fa-exclamation-triangle"></i> Failed to load universities. ${error.message || ''}
+      </div>
+    `;
   }
 }
 
@@ -2270,6 +2258,13 @@ function closeEditUniModal() {
   if (modal) modal.style.display = "none";
   currentEditingUni = null;
 }
+
+window.openEditUniModal = openEditUniModal;
+window.closeEditUniModal = closeEditUniModal;
+window.addProgramInEditModal = addProgramInEditModal;
+window.removeProgramInEditModal = removeProgramInEditModal;
+window.updateProgramDepositInEditModal = updateProgramDepositInEditModal;
+window.toggleEditThesisField = toggleEditThesisField;
 
 function toggleEditThesisField() {
   const level = document.getElementById("editProgLevel")?.value;
