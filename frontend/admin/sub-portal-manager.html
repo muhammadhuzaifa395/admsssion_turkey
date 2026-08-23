@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sub-Portal Access Manager | Admin Panel</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body class="admin-body">
+  <header class="admin-header">
+    <div class="admin-logo">
+      <img src="../images/logo.png" alt="Admission Turkey">
+      <div class="admin-title">
+        <h2><i class="fas fa-shield-halved"></i> Admin Panel</h2>
+      </div>
+    </div>
+    <a href="../index.html" class="admin-home-btn">
+      <i class="fas fa-globe"></i> View Website
+    </a>
+  </header>
+
+  <div class="admin-container">
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <h3>Navigation</h3>
+      <a href="admin.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+      <a href="sub-portal-manager.html" class="active" style="color: #ea580c; font-weight: 700;"><i class="fas fa-folder-open"></i> Sub-Portal Approvals</a>
+      <a href="export-fee-structure.html"><i class="fas fa-file-pdf"></i> Export Fee Structure</a>
+      <a href="add-university.html"><i class="fas fa-plus-circle"></i> Add University</a>
+      <a href="import-university.html"><i class="fas fa-file-import"></i> Import University</a>
+      <a href="manage-universities.html"><i class="fas fa-building-columns"></i> Manage Universities</a>
+      <a href="manage-applications.html"><i class="fas fa-id-card"></i> Manage Applications</a>
+      <a href="../index.html"><i class="fas fa-arrow-left"></i> Back to Website</a>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+      <div class="admin-welcome reveal-init reveal-up" style="background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);">
+        <canvas id="adminParticleCanvas" class="particle-canvas-bg"></canvas>
+        <h1><i class="fas fa-folder-open"></i> Sub-Portal Requests & Approvals Folder</h1>
+        <p>Review incoming user access requests, accept or reject email requests, and grant Sub-Portal access.</p>
+      </div>
+
+      <!-- SUB-PORTAL USER MANAGEMENT & APPROVALS -->
+      <div class="admin-section" style="background: white; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.04);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <h2 style="margin: 0; color: #1e293b; display: flex; align-items: center; gap: 10px;">
+              <i class="fas fa-user-shield" style="color: #10b981;"></i> Sub-Portal Access Control
+            </h2>
+            <p style="margin: 4px 0 0 0; color: #64748b; font-size: 14px;">
+              Approved users get access ONLY to Manage Applications and Download Fee Structures.
+            </p>
+          </div>
+          <button type="button" class="primary-btn" onclick="openCreateSubAdminModal()" style="background: #10b981; border-color: #10b981;">
+            <i class="fas fa-user-plus"></i> Add Sub-Portal Account Directly
+          </button>
+        </div>
+
+        <div id="subAdminAlertBox" style="display: none; margin-bottom: 15px; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 14px;"></div>
+
+        <!-- TABS: PENDING VS APPROVED -->
+        <div style="display: flex; gap: 10px; border-bottom: 2px solid #e2e8f0; margin-bottom: 20px;">
+          <button type="button" id="tabBtnPending" onclick="switchSubAdminTab('pending')" class="secondary-btn" style="border: none; border-bottom: 3px solid #ea580c; border-radius: 0; background: transparent; font-weight: 700; color: #ea580c; padding: 10px 15px;">
+            <i class="fas fa-clock-rotate-left"></i> Pending Approval Requests (<span id="pendingRequestsBadge">0</span>)
+          </button>
+          <button type="button" id="tabBtnApproved" onclick="switchSubAdminTab('approved')" class="secondary-btn" style="border: none; border-bottom: 3px solid transparent; border-radius: 0; background: transparent; font-weight: 600; color: #64748b; padding: 10px 15px;">
+            <i class="fas fa-user-check"></i> Approved Sub-Portal Users (<span id="approvedUsersBadge">0</span>)
+          </button>
+        </div>
+
+        <!-- PENDING REQUESTS TABLE -->
+        <div id="subAdminPendingView" style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+            <thead>
+              <tr style="background: #fff7ed; border-bottom: 2px solid #fed7aa; color: #9a3412;">
+                <th style="padding: 12px;">Applicant Name</th>
+                <th style="padding: 12px;">Login Email</th>
+                <th style="padding: 12px;">Status</th>
+                <th style="padding: 12px;">Request Date</th>
+                <th style="padding: 12px; text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="subAdminPendingTable">
+              <tr>
+                <td colspan="5" style="text-align: center; padding: 20px; color: #64748b;">
+                  <i class="fas fa-spinner fa-spin"></i> Checking pending requests...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- APPROVED USERS TABLE -->
+        <div id="subAdminApprovedView" style="overflow-x: auto; display: none;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+            <thead>
+              <tr style="background: #f0fdf4; border-bottom: 2px solid #bbf7d0; color: #166534;">
+                <th style="padding: 12px;">Name</th>
+                <th style="padding: 12px;">Email</th>
+                <th style="padding: 12px;">Role</th>
+                <th style="padding: 12px;">Access Scope</th>
+                <th style="padding: 12px; text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="subAdminApprovedTable">
+              <tr>
+                <td colspan="5" style="text-align: center; padding: 20px; color: #64748b;">
+                  <i class="fas fa-spinner fa-spin"></i> Loading approved sub-portal users...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- CREATE SUB-ADMIN MODAL -->
+  <div id="createSubAdminModal" class="doc-modal" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 9999;">
+    <div class="doc-modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 480px; width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px;">
+        <h3 style="margin: 0; color: #1e293b; display: flex; align-items: center; gap: 8px;"><i class="fas fa-user-plus" style="color: #10b981;"></i> Add Sub-Portal Account Directly</h3>
+        <span onclick="closeCreateSubAdminModal()" style="cursor: pointer; font-size: 24px; color: #64748b;">&times;</span>
+      </div>
+      <form id="createSubAdminForm" onsubmit="handleCreateSubAdmin(event)">
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 5px;">User Full Name *</label>
+          <input type="text" id="subAdminName" placeholder="e.g. Agent John Doe" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1;">
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 5px;">Login Email *</label>
+          <input type="email" id="subAdminEmail" placeholder="agent@admissionturkey.com" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1;">
+        </div>
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 5px;">Password *</label>
+          <input type="password" id="subAdminPassword" placeholder="Minimum 6 characters" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1;">
+        </div>
+        <div style="background: #ecfdf5; border: 1px solid #a7f3d0; padding: 10px; border-radius: 6px; color: #065f46; font-size: 12px; margin-bottom: 20px;">
+          <i class="fas fa-info-circle"></i> Sub-portal users will automatically be restricted to <strong>Manage Applications</strong> & <strong>Fee Structure Downloads</strong>.
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" class="secondary-btn" onclick="closeCreateSubAdminModal()">Cancel</button>
+          <button type="submit" class="primary-btn" style="background: #10b981; border-color: #10b981;"><i class="fas fa-check"></i> Create Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+</body>
+
+</html>
