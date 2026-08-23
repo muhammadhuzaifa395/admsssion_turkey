@@ -818,6 +818,8 @@ exports.checkDuplicateUniversity = async (req, res) => {
 exports.importUniversity = async (req, res) => {
   try {
     const {
+      existingUniversityId,
+      id,
       name,
       country,
       city,
@@ -897,6 +899,30 @@ exports.importUniversity = async (req, res) => {
         categorizedPrograms.bachelors.push(formattedProg);
       }
     });
+
+    const targetId = existingUniversityId || id;
+    if (targetId) {
+      const existing = await University.findById(targetId);
+      if (existing) {
+        existing.name = name.trim();
+        existing.location = computedLocation;
+        existing.country = country || "Turkey";
+        existing.city = city || "";
+        existing.type = type || "Public";
+        existing.description = description || "";
+        existing.website = website || "";
+        existing.image = image || "";
+        existing.applicationLink = applicationLink || "";
+        existing.programs = categorizedPrograms;
+
+        const updatedUniversity = await existing.save();
+        return res.status(200).json({
+          success: true,
+          message: "University and programs updated successfully!",
+          university: updatedUniversity
+        });
+      }
+    }
 
     const university = new University({
       name: name.trim(),

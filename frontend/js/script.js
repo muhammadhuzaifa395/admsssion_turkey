@@ -2180,6 +2180,9 @@ async function loadManageUniversities() {
             <p style="margin: 2px 0; color: #64748b;"><strong>Description:</strong> ${uni.description || "No description"}</p>
           </div>
           <div style="display: flex; gap: 8px; align-items: center;">
+            <a href="import-university.html?editId=${uni._id}" class="secondary-btn" style="cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd;">
+              <i class="fas fa-file-import"></i> Import / Append
+            </a>
             <button type="button" class="secondary-btn" onclick="openEditUniModal('${uni._id}')" style="cursor: pointer;">
               <i class="fas fa-edit"></i> Edit
             </button>
@@ -4683,6 +4686,8 @@ function initMindmapSection() {
 
 let parsedProgramsState = [];
 let pendingSaveImportPayload = null;
+let currentImportUniId = null;
+let detectedDuplicateUniId = null;
 
 function showImportAlert(message, type = "info") {
   const alertBox = document.getElementById("importAlertBox");
@@ -4711,10 +4716,147 @@ function clearImportForm() {
   const rawTextarea = document.getElementById("rawImportText");
   if (rawTextarea) rawTextarea.value = "";
   parsedProgramsState = [];
+  currentImportUniId = null;
+  const existingSelect = document.getElementById("existingUniSelect");
+  if (existingSelect) existingSelect.value = "";
+  const saveBtn = document.getElementById("saveImportUniBtn");
+  if (saveBtn) {
+    saveBtn.innerHTML = `<i class="fas fa-cloud-arrow-up"></i> Save & Publish University`;
+    saveBtn.style.background = "#10b981";
+  }
   const previewSection = document.getElementById("importPreviewSection");
   if (previewSection) previewSection.style.display = "none";
   const alertBox = document.getElementById("importAlertBox");
   if (alertBox) alertBox.style.display = "none";
+}
+
+async function initImportUniversityPage() {
+  const existingSelect = document.getElementById("existingUniSelect");
+  if (!existingSelect) return;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/universities`);
+    const data = await res.json();
+    const universities = data.universities || (Array.isArray(data) ? data : []);
+
+    existingSelect.innerHTML = `<option value="">-- Create New University --</option>` +
+      universities.map(u => `<option value="${u._id}">${escapeHtml(u.name)} (${[u.city, u.country].filter(Boolean).join(", ")})</option>`).join("");
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const editId = urlParams.get("editId") || urlParams.get("id");
+    if (editId) {
+      existingSelect.value = editId;
+      await handleSelectExistingUniversity(editId);
+    }
+  } catch (err) {
+    console.error("Error loading existing universities for dropdown:", err);
+  }
+}
+
+async function handleSelectExistingUniversity(uniId) {
+  const nameInput = document.getElementById("importUniName");
+  const countryInput = document.getElementById("importUniCountry");
+  const cityInput = document.getElementById("importUniCity");
+  const typeSelect = document.getElementById("importUniType");
+  const websiteInput = document.getElementById("importUniWebsite");
+  const imageInput = document.getElementById("importUniImage");
+  const descTextarea = document.getElementById("importUniDescription");
+  const saveBtn = document.getElementById("saveImportUniBtn");
+  const existingSelect = document.getElementById("existingUniSelect");
+
+  if (existingSelect && existingSelect.value !== (uniId || "")) {
+    existingSelect.value = uniId || "";
+  }
+
+  if (!uniId) {
+    currentImportUniId = null;
+    if (nameInput) nameInput.value = "";
+    if (countryInput) countryInput.value = "Turkey";
+    if (cityInput) cityInput.value = "";
+    if (typeSelect) typeSelect.value = "Public";
+    if (websiteInput) websiteInput.value = "";
+    if (imageInput) imageInput.value = "";
+    if (descTextarea) descTextarea.value = "";
+    parsedProgramsState = [];
+    renderImportPreview();
+    const previewSec = document.getElementById("importPreviewSection");
+    if (previewSec) previewSec.style.display = "none";
+    if (saveBtn) {
+      saveBtn.innerHTML = `<i class="fas fa-cloud-arrow-up"></i> Save & Publish University`;
+      saveBtn.style.background = "#10b981";
+    }
+    showImportAlert("Creating a new university record.", "info");
+    return;
+  }
+
+  currentImportUniId = uniId;
+  showImportAlert("Loading existing university details...", "info");
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/universities/${uniId}`);
+    const data = await res.json();
+    const uni = data.university || data;
+
+    if (!uni || (!uni._id && !uni.name)) throw new Error("University details not found.");
+
+    if (nameInput) nameInput.value = uni.name || "";
+    if (countryInput) countryInput.value = uni.country || "Turkey";
+    if (cityInput) cityInput.value = uni.city || "";
+    if (typeSelect) typeSelect.value = uni.type || "Public";
+    if (websiteInput) websiteInput.value = uni.website || "";
+    if (imageInput) imageInput.value = uni.image || "";
+    if (descTextarea) descTextarea.value = uni.description || "";
+
+    const flattened = [];
+    const progsObj = uni.programs || {};
+    const degreeMap = {
+      associate: "Associate",
+      bachelors: "Bachelor's",
+      masters: "Master's",
+      phd: "PhD"
+    };
+
+    Object.keys(degreeMap).forEach(degKey => {
+      const arr = progsObj[degKey] || [];
+      arr.forEach((p, i) => {
+        flattened.push({
+          id: p._id || `existing_${degKey}_${i}`,
+          name: p.name || "",
+          degreeLevel: p.degreeLevel || degreeMap[degKey],
+          faculty: p.faculty || "",
+          language: p.language || "English",
+          duration: p.duration || "",
+          originalFee: p.originalFee || 0,
+          discountFee: p.discountFee || p.originalFee || 0,
+          initialDeposit: p.initialDeposit ?? p.depositFee ?? p.deposit ?? 1000,
+          currency: p.currency || "$",
+          applicationFee: p.applicationFee || "",
+          requirements: p.requirements || "",
+          documents: p.documents || "",
+          additionalRequirements: p.additionalRequirements || "",
+          intake: p.intake || "",
+          description: p.description || "",
+          thesisType: p.thesisType || "N/A"
+        });
+      });
+    });
+
+    parsedProgramsState = flattened;
+    renderImportPreview();
+
+    const previewSec = document.getElementById("importPreviewSection");
+    if (previewSec) previewSec.style.display = "block";
+
+    if (saveBtn) {
+      saveBtn.innerHTML = `<i class="fas fa-cloud-arrow-up"></i> Update & Publish University`;
+      saveBtn.style.background = "#0284c7";
+    }
+
+    showImportAlert(`Loaded "${uni.name}" with ${parsedProgramsState.length} existing program(s). You can edit them or paste new data below to append programs.`, "success");
+  } catch (err) {
+    console.error("Error loading existing university:", err);
+    showImportAlert(`Failed to load university: ${err.message}`, "error");
+  }
 }
 
 async function handleParseData() {
@@ -4766,18 +4908,26 @@ async function handleParseData() {
       console.warn("Backend parse fetch error, using client-side parser fallback:", netErr);
     }
 
+    let newParsed = [];
     if (data && data.success && Array.isArray(data.parsedPrograms) && data.parsedPrograms.length > 0) {
-      parsedProgramsState = data.parsedPrograms;
+      newParsed = data.parsedPrograms;
     } else {
-      // Client-side parser fallback
-      parsedProgramsState = parseRawUniversityTextClient(rawText, uniName);
+      newParsed = parseRawUniversityTextClient(rawText, uniName);
     }
 
-    if (parsedProgramsState.length === 0) {
+    if (newParsed.length === 0) {
       throw new Error("Could not parse any valid programs from the provided text. Please check format.");
     }
 
-    showImportAlert(`Successfully parsed ${parsedProgramsState.length} separate program card(s)! You can now review and edit below.`, "success");
+    if (parsedProgramsState.length > 0) {
+      parsedProgramsState = [...parsedProgramsState, ...newParsed];
+      showImportAlert(`Appended ${newParsed.length} new program card(s)! Total: ${parsedProgramsState.length} program(s) in preview.`, "success");
+    } else {
+      parsedProgramsState = newParsed;
+      showImportAlert(`Successfully parsed ${parsedProgramsState.length} separate program card(s)! You can now review and edit below.`, "success");
+    }
+
+    if (rawTextarea) rawTextarea.value = "";
     renderImportPreview();
 
     const previewSection = document.getElementById("importPreviewSection");
@@ -5136,7 +5286,6 @@ async function handleSaveImportedUniversity() {
     return;
   }
 
-  // Validate that every program has a valid name
   for (let i = 0; i < parsedProgramsState.length; i++) {
     if (!parsedProgramsState[i].name || !parsedProgramsState[i].name.trim()) {
       showImportAlert(`Program #${i + 1} is missing a program name. Please specify name.`, "error");
@@ -5145,6 +5294,7 @@ async function handleSaveImportedUniversity() {
   }
 
   pendingSaveImportPayload = {
+    existingUniversityId: currentImportUniId || null,
     name: uniName,
     country,
     city,
@@ -5159,7 +5309,12 @@ async function handleSaveImportedUniversity() {
   const saveBtn = document.getElementById("saveImportUniBtn");
   if (saveBtn) {
     saveBtn.disabled = true;
-    saveBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Checking Duplicate...`;
+    saveBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing...`;
+  }
+
+  if (currentImportUniId) {
+    await confirmAndExecuteSave();
+    return;
   }
 
   try {
@@ -5178,11 +5333,11 @@ async function handleSaveImportedUniversity() {
     const checkData = await checkRes.json();
 
     if (checkData.exists) {
-      // Show duplicate warning modal
+      detectedDuplicateUniId = checkData.universityId;
       const modal = document.getElementById("duplicateWarningModal");
       const msg = document.getElementById("duplicateModalMessage");
       if (msg) {
-        msg.innerText = `A university named "${uniName}" already exists in the database. Do you want to continue and publish anyway?`;
+        msg.innerText = `A university named "${uniName}" already exists in the database. Choose whether to update & merge programs into the existing record or create a separate duplicate.`;
       }
       if (modal) modal.style.display = "flex";
       if (saveBtn) {
@@ -5208,12 +5363,30 @@ function closeDuplicateModal() {
   if (modal) modal.style.display = "none";
 }
 
-async function confirmAndExecuteSave() {
+async function confirmUpdateExistingUniversity() {
+  if (detectedDuplicateUniId && pendingSaveImportPayload) {
+    pendingSaveImportPayload.existingUniversityId = detectedDuplicateUniId;
+  }
+  await confirmAndExecuteSave();
+}
+
+async function loadDuplicateIntoEditor() {
+  closeDuplicateModal();
+  if (detectedDuplicateUniId) {
+    await handleSelectExistingUniversity(detectedDuplicateUniId);
+  }
+}
+
+async function confirmAndExecuteSave(forceDuplicate = false) {
   closeDuplicateModal();
 
   if (!pendingSaveImportPayload) {
     showImportAlert("No data to save.", "error");
     return;
+  }
+
+  if (forceDuplicate) {
+    delete pendingSaveImportPayload.existingUniversityId;
   }
 
   const saveBtn = document.getElementById("saveImportUniBtn");
@@ -5241,7 +5414,8 @@ async function confirmAndExecuteSave() {
       throw new Error(data.message || "Failed to save university into MongoDB.");
     }
 
-    showImportAlert(`Success! "${pendingSaveImportPayload.name}" with ${pendingSaveImportPayload.programs.length} program(s) saved into MongoDB.`, "success");
+    const actionWord = pendingSaveImportPayload.existingUniversityId ? "updated" : "saved";
+    showImportAlert(`Success! "${pendingSaveImportPayload.name}" ${actionWord} with ${pendingSaveImportPayload.programs.length} program(s) in MongoDB.`, "success");
 
     setTimeout(() => {
       window.location.href = "manage-universities.html";
@@ -5264,6 +5438,24 @@ function escapeHtml(str) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+window.initImportUniversityPage = initImportUniversityPage;
+window.handleSelectExistingUniversity = handleSelectExistingUniversity;
+window.confirmUpdateExistingUniversity = confirmUpdateExistingUniversity;
+window.loadDuplicateIntoEditor = loadDuplicateIntoEditor;
+window.confirmAndExecuteSave = confirmAndExecuteSave;
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.getElementById("existingUniSelect")) {
+      initImportUniversityPage();
+    }
+  });
+} else {
+  if (document.getElementById("existingUniSelect")) {
+    initImportUniversityPage();
+  }
 }
 
 
