@@ -93,18 +93,28 @@ function initLoginForm() {
         body: JSON.stringify({ email: email, password: password })
       }, 3000);
 
-      if (response && response.ok) {
+      if (response) {
         const data = await response.json();
-        const loggedInUser = { ...data.user, token: data.token };
-        localStorage.setItem("user", JSON.stringify(loggedInUser));
-        alert("Login successful! Welcome " + (data.user.name || "User"));
 
-        if (data.user.role === "admin") {
-          window.location.href = "admin/admin.html";
-        } else {
-          window.location.href = "index.html";
+        if (response.ok && data.token) {
+          const loggedInUser = { ...data.user, token: data.token };
+          localStorage.setItem("user", JSON.stringify(loggedInUser));
+          alert("Login successful! Welcome " + (data.user.name || "User"));
+
+          if (data.user.role === "admin") {
+            window.location.href = "admin/admin.html";
+          } else if (data.user.role === "subadmin") {
+            window.location.href = "admin/sub-portal.html";
+          } else {
+            window.location.href = "index.html";
+          }
+          return;
         }
-        return;
+
+        if (response.status === 403 || data.pendingApproval) {
+          alert("⚠️ Access Pending: Your Sub-Portal access request is currently pending Super Admin approval in the Admin Panel folder. Please wait for the Super Admin to accept your request.");
+          return;
+        }
       }
     } catch (error) {
       console.log("Backend API login note:", error);
@@ -5635,9 +5645,48 @@ async function handleCreateSubAdmin(e) {
   }
 }
 
+function switchSubAdminTab(tabName) {
+  const pendingView = document.getElementById("subAdminPendingView");
+  const approvedView = document.getElementById("subAdminApprovedView");
+  const tabPending = document.getElementById("tabBtnPending");
+  const tabApproved = document.getElementById("tabBtnApproved");
+
+  if (tabName === "pending") {
+    if (pendingView) pendingView.style.display = "block";
+    if (approvedView) approvedView.style.display = "none";
+    if (tabPending) {
+      tabPending.style.borderBottom = "3px solid #ea580c";
+      tabPending.style.color = "#ea580c";
+      tabPending.style.fontWeight = "700";
+    }
+    if (tabApproved) {
+      tabApproved.style.borderBottom = "3px solid transparent";
+      tabApproved.style.color = "#64748b";
+      tabApproved.style.fontWeight = "600";
+    }
+  } else {
+    if (pendingView) pendingView.style.display = "none";
+    if (approvedView) approvedView.style.display = "block";
+    if (tabApproved) {
+      tabApproved.style.borderBottom = "3px solid #10b981";
+      tabApproved.style.color = "#10b981";
+      tabApproved.style.fontWeight = "700";
+    }
+    if (tabPending) {
+      tabPending.style.borderBottom = "3px solid transparent";
+      tabPending.style.color = "#64748b";
+      tabPending.style.fontWeight = "600";
+    }
+  }
+}
+
 async function loadSubAdminsList() {
-  const tbody = document.getElementById("subAdminListTable");
-  if (!tbody) return;
+  const pendingTbody = document.getElementById("subAdminPendingTable");
+  const approvedTbody = document.getElementById("subAdminApprovedTable");
+  const pendingBadge = document.getElementById("pendingRequestsBadge");
+  const approvedBadge = document.getElementById("approvedUsersBadge");
+
+  if (!pendingTbody && !approvedTbody) return;
 
   try {
     const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
@@ -5649,29 +5698,103 @@ async function loadSubAdminsList() {
 
     if (!res.ok || !data.success) throw new Error(data.message || "Failed to load sub-portal accounts.");
 
-    const subadmins = data.subadmins || [];
+    const pending = data.pending || [];
+    const approved = data.approved || [];
 
-    if (subadmins.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px; color: #64748b;">No Sub-Portal accounts created yet. Click "Create Sub-Portal User" above to grant access.</td></tr>`;
-      return;
+    if (pendingBadge) pendingBadge.innerText = pending.length;
+    if (approvedBadge) approvedBadge.innerText = approved.length;
+
+    // Render Pending Approvals Folder
+    if (pendingTbody) {
+      if (pending.length === 0) {
+        pendingTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px; color: #64748b;">No pending Sub-Portal access requests. Incoming email access requests will appear here.</td></tr>`;
+      } else {
+        pendingTbody.innerHTML = pending.map(p => `
+          <tr style="border-bottom: 1px solid #fed7aa; background: #fffcf8;">
+            <td style="padding: 12px; font-weight: 600; color: #0f172a;">${escapeHtml(p.name)}</td>
+            <td style="padding: 12px; color: #9a3412; font-weight: 600;">${escapeHtml(p.email)}</td>
+            <td style="padding: 12px;"><span style="background: #ffedd5; color: #c2410c; padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: 700;">Pending Approval</span></td>
+            <td style="padding: 12px; color: #64748b; font-size: 13px;">${new Date(p.createdAt || Date.now()).toLocaleDateString()}</td>
+            <td style="padding: 12px; text-align: right; display: flex; gap: 8px; justify-content: flex-end;">
+              <button type="button" onclick="approveSubAdmin('${p._id}', '${escapeHtml(p.email)}')" class="primary-btn" style="padding: 6px 12px; font-size: 12px; background: #10b981; border-color: #10b981;">
+                <i class="fas fa-check"></i> Accept / Approve Access
+              </button>
+              <button type="button" onclick="rejectSubAdmin('${p._id}', '${escapeHtml(p.email)}')" class="secondary-btn" style="padding: 6px 10px; font-size: 12px; color: #ef4444; border-color: #fca5a5;">
+                <i class="fas fa-xmark"></i> Reject
+              </button>
+            </td>
+          </tr>
+        `).join("");
+      }
     }
 
-    tbody.innerHTML = subadmins.map(s => `
-      <tr style="border-bottom: 1px solid #f1f5f9;">
-        <td style="padding: 12px; font-weight: 600; color: #0f172a;">${escapeHtml(s.name)}</td>
-        <td style="padding: 12px; color: #334155;">${escapeHtml(s.email)}</td>
-        <td style="padding: 12px;"><span style="background: #dcfce7; color: #166534; padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: 700;">Sub-Portal User</span></td>
-        <td style="padding: 12px; color: #64748b; font-size: 13px;">Manage Applications & Fee Structure Downloads Only</td>
-        <td style="padding: 12px;">
-          <button type="button" onclick="deleteSubAdmin('${s._id}', '${escapeHtml(s.email)}')" class="remove-program-btn" style="padding: 4px 8px; font-size: 12px;">
-            <i class="fas fa-trash"></i> Revoke Access
-          </button>
-        </td>
-      </tr>
-    `).join("");
+    // Render Approved Users Table
+    if (approvedTbody) {
+      if (approved.length === 0) {
+        approvedTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px; color: #64748b;">No approved Sub-Portal users yet. Click "Add Sub-Portal Account Directly" above or accept pending requests.</td></tr>`;
+      } else {
+        approvedTbody.innerHTML = approved.map(a => `
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 12px; font-weight: 600; color: #0f172a;">${escapeHtml(a.name)}</td>
+            <td style="padding: 12px; color: #334155;">${escapeHtml(a.email)}</td>
+            <td style="padding: 12px;"><span style="background: #dcfce7; color: #166534; padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: 700;">Sub-Portal User</span></td>
+            <td style="padding: 12px; color: #64748b; font-size: 13px;">Manage Applications & Fee Structures Only</td>
+            <td style="padding: 12px; text-align: right;">
+              <button type="button" onclick="deleteSubAdmin('${a._id}', '${escapeHtml(a.email)}')" class="remove-program-btn" style="padding: 5px 10px; font-size: 12px;">
+                <i class="fas fa-trash"></i> Revoke Access
+              </button>
+            </td>
+          </tr>
+        `).join("");
+      }
+    }
   } catch (err) {
     console.error("Load SubAdmins Error:", err);
-    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px; color: #ef4444;">${err.message}</td></tr>`;
+    if (pendingTbody) pendingTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px; color: #ef4444;">${err.message}</td></tr>`;
+  }
+}
+
+async function approveSubAdmin(id, email) {
+  try {
+    const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
+    const headers = {};
+    if (user && user.token) headers["Authorization"] = `Bearer ${user.token}`;
+
+    const res = await fetch(`${API_BASE_URL}/api/auth/subadmins/approve/${id}`, {
+      method: "POST",
+      headers
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.message || "Failed to approve sub-portal access.");
+
+    showSubAdminAlert(`Success! Accepted Sub-Portal access for ${email}. User can now log into the Sub-Portal.`, "success");
+    loadSubAdminsList();
+  } catch (err) {
+    console.error("Approve SubAdmin Error:", err);
+    alert(err.message || "Failed to approve access.");
+  }
+}
+
+async function rejectSubAdmin(id, email) {
+  if (!confirm(`Are you sure you want to reject Sub-Portal access request for ${email}?`)) return;
+
+  try {
+    const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
+    const headers = {};
+    if (user && user.token) headers["Authorization"] = `Bearer ${user.token}`;
+
+    const res = await fetch(`${API_BASE_URL}/api/auth/subadmins/reject/${id}`, {
+      method: "POST",
+      headers
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.message || "Failed to reject sub-portal access.");
+
+    showSubAdminAlert(`Rejected access request for ${email}.`, "info");
+    loadSubAdminsList();
+  } catch (err) {
+    console.error("Reject SubAdmin Error:", err);
+    alert(err.message || "Failed to reject access.");
   }
 }
 
@@ -5698,10 +5821,53 @@ async function deleteSubAdmin(id, email) {
   }
 }
 
+// PUBLIC SUB-PORTAL REQUEST MODAL HANDLERS
+function openSubPortalRequestModal() {
+  const modal = document.getElementById("subPortalReqModal");
+  if (modal) modal.style.display = "flex";
+}
+
+function closeSubPortalRequestModal() {
+  const modal = document.getElementById("subPortalReqModal");
+  if (modal) modal.style.display = "none";
+}
+
+async function handlePublicSubPortalRequest(e) {
+  e.preventDefault();
+  const name = document.getElementById("reqSubName")?.value.trim();
+  const email = document.getElementById("reqSubEmail")?.value.trim();
+  const password = document.getElementById("reqSubPassword")?.value.trim();
+
+  if (!email || !password) return alert("Email and Password are required.");
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/auth/request-subportal`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password })
+    });
+
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.message || "Failed to submit request.");
+
+    closeSubPortalRequestModal();
+    alert(`Success! Sub-Portal access request for "${email}" has been submitted to the Super Admin's Pending Approvals folder. Once accepted by the Super Admin, you can log in to access the Sub-Portal.`);
+  } catch (err) {
+    console.error("Public Sub-Portal Request Error:", err);
+    alert(err.message || "Failed to submit request.");
+  }
+}
+
+window.switchSubAdminTab = switchSubAdminTab;
+window.approveSubAdmin = approveSubAdmin;
+window.rejectSubAdmin = rejectSubAdmin;
 window.openCreateSubAdminModal = openCreateSubAdminModal;
 window.closeCreateSubAdminModal = closeCreateSubAdminModal;
 window.handleCreateSubAdmin = handleCreateSubAdmin;
 window.deleteSubAdmin = deleteSubAdmin;
+window.openSubPortalRequestModal = openSubPortalRequestModal;
+window.closeSubPortalRequestModal = closeSubPortalRequestModal;
+window.handlePublicSubPortalRequest = handlePublicSubPortalRequest;
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
@@ -5712,7 +5878,7 @@ if (document.readyState === "loading") {
     if (document.getElementById("subTotalApps")) {
       initSubPortalDashboard();
     }
-    if (document.getElementById("subAdminListTable")) {
+    if (document.getElementById("subAdminPendingTable") || document.getElementById("subAdminApprovedTable")) {
       loadSubAdminsList();
     }
   });
@@ -5724,7 +5890,7 @@ if (document.readyState === "loading") {
   if (document.getElementById("subTotalApps")) {
     initSubPortalDashboard();
   }
-  if (document.getElementById("subAdminListTable")) {
+  if (document.getElementById("subAdminPendingTable") || document.getElementById("subAdminApprovedTable")) {
     loadSubAdminsList();
   }
 }

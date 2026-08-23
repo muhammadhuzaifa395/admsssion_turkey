@@ -172,6 +172,14 @@ router.post("/login", async (req, res) => {
       });
     }
 
+    // CHECK SUB-PORTAL APPROVAL STATUS
+    if (user.role === "subadmin" && user.subAdminStatus !== "approved") {
+      return res.status(403).json({
+        success: false,
+        pendingApproval: true,
+        message: "Your Sub-Portal access request is currently pending Super Admin approval. Once the Super Admin accepts your email from the Admin Panel folder, you can log in."
+      });
+    }
 
     // ========================================
     // CREATE JWT TOKEN
@@ -182,7 +190,8 @@ router.post("/login", async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role
+        role: user.role,
+        subAdminStatus: user.subAdminStatus
       },
       process.env.JWT_SECRET || "secretkey",
       {
@@ -196,18 +205,15 @@ router.post("/login", async (req, res) => {
     // ========================================
 
     res.status(200).json({
-
       message: "Login successful.",
-
       token: token,
-
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role
+        role: user.role,
+        subAdminStatus: user.subAdminStatus
       }
-
     });
 
   } catch (error) {
@@ -225,12 +231,63 @@ router.post("/login", async (req, res) => {
 
 
 // ========================================
+// PUBLIC SUB-PORTAL ACCESS REQUEST
+// ========================================
+
+router.post("/request-subportal", async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ success: false, message: "Email is required to request Sub-Portal access." });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    let existing = await User.findOne({ email: normalizedEmail });
+
+    if (existing) {
+      existing.role = "subadmin";
+      existing.subAdminStatus = "pending";
+      if (name && name.trim()) existing.name = name.trim();
+      if (password && password.trim()) {
+        existing.password = await bcrypt.hash(password, 10);
+      }
+      await existing.save();
+      return res.status(200).json({
+        success: true,
+        message: `Sub-Portal access requested for "${normalizedEmail}"! Your request is now pending Super Admin approval in the Admin Panel.`
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password || "123456", 10);
+    const newUser = new User({
+      name: name ? name.trim() : "Sub-Portal Applicant",
+      email: normalizedEmail,
+      password: hashedPassword,
+      role: "subadmin",
+      subAdminStatus: "pending"
+    });
+
+    await newUser.save();
+
+    res.status(201).json({
+      success: true,
+      message: `Sub-Portal request submitted for "${normalizedEmail}"! It has been sent to the Super Admin panel for approval.`
+    });
+  } catch (err) {
+    console.error("Sub-Portal Request Error:", err);
+    res.status(500).json({ success: false, message: "Failed to submit Sub-Portal access request." });
+  }
+});
+
+
+// ========================================
 // SUB-PORTAL MANAGEMENT (SUPER ADMIN ONLY)
 // ========================================
 
 const { verifyToken, isSuperAdmin } = require("../middleware/authMiddleware");
 
-// Create Sub-Portal Account
+// Create / Add Direct Sub-Portal Account (Auto-Approved)
 router.post("/create-subadmin", verifyToken, isSuperAdmin, async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -243,17 +300,15 @@ router.post("/create-subadmin", verifyToken, isSuperAdmin, async (req, res) => {
     const existing = await User.findOne({ email: normalizedEmail });
 
     if (existing) {
-      if (existing.role === "subadmin") {
-        return res.status(400).json({ success: false, message: "A sub-portal user with this email already exists." });
-      }
       existing.role = "subadmin";
+      existing.subAdminStatus = "approved";
       existing.name = name.trim();
       existing.password = await bcrypt.hash(password, 10);
       await existing.save();
       return res.status(200).json({
         success: true,
-        message: `Updated "${existing.email}" to Sub-Portal access successfully!`,
-        user: { id: existing._id, name: existing.name, email: existing.email, role: existing.role }
+        message: `Updated & Approved Sub-Portal access for "${existing.email}"!`,
+        user: { id: existing._id, name: existing.name, email: existing.email, role: existing.role, subAdminStatus: existing.subAdminStatus }
       });
     }
 
@@ -262,15 +317,16 @@ router.post("/create-subadmin", verifyToken, isSuperAdmin, async (req, res) => {
       name: name.trim(),
       email: normalizedEmail,
       password: hashedPassword,
-      role: "subadmin"
+      role: "subadmin",
+      subAdminStatus: "approved"
     });
 
     await newSubAdmin.save();
 
     res.status(201).json({
       success: true,
-      message: `Sub-Portal user "${newSubAdmin.name}" created successfully!`,
-      user: { id: newSubAdmin._id, name: newSubAdmin.name, email: newSubAdmin.email, role: newSubAdmin.role }
+      message: `Sub-Portal user "${newSubAdmin.name}" created & approved successfully!`,
+      user: { id: newSubAdmin._id, name: newSubAdmin.name, email: newSubAdmin.email, role: newSubAdmin.role, subAdminStatus: newSubAdmin.subAdminStatus }
     });
   } catch (err) {
     console.error("Create SubAdmin Error:", err);
@@ -278,11 +334,46 @@ router.post("/create-subadmin", verifyToken, isSuperAdmin, async (req, res) => {
   }
 });
 
-// Get All Sub-Portal Users
+// Approve Sub-Portal User Access
+router.post("/subadmins/approve/:id", verifyToken, isSuperAdmin, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User account not found." });
+    }
+    user.role = "subadmin";
+    user.subAdminStatus = "approved";
+    await user.save();
+    res.status(200).json({ success: true, message: `Approved Sub-Portal access for "${user.email}"!` });
+  } catch (err) {
+    console.error("Approve SubAdmin Error:", err);
+    res.status(500).json({ success: false, message: "Failed to approve sub-portal access." });
+  }
+});
+
+// Reject Sub-Portal User Access
+router.post("/subadmins/reject/:id", verifyToken, isSuperAdmin, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User account not found." });
+    }
+    user.subAdminStatus = "rejected";
+    await user.save();
+    res.status(200).json({ success: true, message: `Rejected Sub-Portal access request for "${user.email}".` });
+  } catch (err) {
+    console.error("Reject SubAdmin Error:", err);
+    res.status(500).json({ success: false, message: "Failed to reject sub-portal access." });
+  }
+});
+
+// Get All Sub-Portal Users (Categorized into Pending and Approved)
 router.get("/subadmins", verifyToken, isSuperAdmin, async (req, res) => {
   try {
-    const subadmins = await User.find({ role: "subadmin" }).select("-password").sort({ createdAt: -1 });
-    res.status(200).json({ success: true, subadmins });
+    const pending = await User.find({ role: "subadmin", subAdminStatus: "pending" }).select("-password").sort({ createdAt: -1 });
+    const approved = await User.find({ role: "subadmin", subAdminStatus: "approved" }).select("-password").sort({ createdAt: -1 });
+    const rejected = await User.find({ role: "subadmin", subAdminStatus: "rejected" }).select("-password").sort({ createdAt: -1 });
+    res.status(200).json({ success: true, pending, approved, rejected });
   } catch (err) {
     console.error("Get SubAdmins Error:", err);
     res.status(500).json({ success: false, message: "Failed to load sub-portal accounts." });

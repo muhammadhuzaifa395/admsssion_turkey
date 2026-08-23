@@ -323,39 +323,72 @@ View student applications.
 
 </div>
 
-<!-- SUB-PORTAL USER MANAGEMENT (SUPER ADMIN ONLY) -->
+<!-- SUB-PORTAL USER MANAGEMENT & APPROVALS (SUPER ADMIN ONLY) -->
 <div class="admin-section" style="margin-top: 40px; background: white; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.04);">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
     <div>
       <h2 style="margin: 0; color: #1e293b; display: flex; align-items: center; gap: 10px;">
-        <i class="fas fa-user-shield" style="color: #10b981;"></i> Sub-Portal Access Manager
+        <i class="fas fa-folder-open" style="color: #ea580c;"></i> Sub-Portal Requests & Approvals Folder
       </h2>
       <p style="margin: 4px 0 0 0; color: #64748b; font-size: 14px;">
-        Create and manage sub-portal accounts. Sub-portal users can only access Manage Applications & Fee Structure Downloads.
+        Review incoming email access requests, accept or reject users, and manage active sub-portal accounts.
       </p>
     </div>
     <button type="button" class="primary-btn" onclick="openCreateSubAdminModal()" style="background: #10b981; border-color: #10b981;">
-      <i class="fas fa-user-plus"></i> Create Sub-Portal User
+      <i class="fas fa-user-plus"></i> Add Sub-Portal Account Directly
     </button>
   </div>
 
   <div id="subAdminAlertBox" style="display: none; margin-bottom: 15px; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 14px;"></div>
 
-  <div style="overflow-x: auto;">
+  <!-- TABS: PENDING VS APPROVED -->
+  <div style="display: flex; gap: 10px; border-bottom: 2px solid #e2e8f0; margin-bottom: 20px;">
+    <button type="button" id="tabBtnPending" onclick="switchSubAdminTab('pending')" class="secondary-btn" style="border: none; border-bottom: 3px solid #ea580c; border-radius: 0; background: transparent; font-weight: 700; color: #ea580c; padding: 10px 15px;">
+      <i class="fas fa-clock-rotate-left"></i> Pending Approval Requests (<span id="pendingRequestsBadge">0</span>)
+    </button>
+    <button type="button" id="tabBtnApproved" onclick="switchSubAdminTab('approved')" class="secondary-btn" style="border: none; border-bottom: 3px solid transparent; border-radius: 0; background: transparent; font-weight: 600; color: #64748b; padding: 10px 15px;">
+      <i class="fas fa-user-check"></i> Approved Sub-Portal Users (<span id="approvedUsersBadge">0</span>)
+    </button>
+  </div>
+
+  <!-- PENDING REQUESTS TABLE -->
+  <div id="subAdminPendingView" style="overflow-x: auto;">
     <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
       <thead>
-        <tr style="background: #f8fafc; border-bottom: 2px solid #cbd5e1; color: #334155;">
+        <tr style="background: #fff7ed; border-bottom: 2px solid #fed7aa; color: #9a3412;">
+          <th style="padding: 12px;">Applicant Name</th>
+          <th style="padding: 12px;">Login Email</th>
+          <th style="padding: 12px;">Status</th>
+          <th style="padding: 12px;">Request Date</th>
+          <th style="padding: 12px; text-align: right;">Action</th>
+        </tr>
+      </thead>
+      <tbody id="subAdminPendingTable">
+        <tr>
+          <td colspan="5" style="text-align: center; padding: 20px; color: #64748b;">
+            <i class="fas fa-spinner fa-spin"></i> Checking pending requests...
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- APPROVED USERS TABLE -->
+  <div id="subAdminApprovedView" style="overflow-x: auto; display: none;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+      <thead>
+        <tr style="background: #f0fdf4; border-bottom: 2px solid #bbf7d0; color: #166534;">
           <th style="padding: 12px;">Name</th>
           <th style="padding: 12px;">Email</th>
           <th style="padding: 12px;">Role</th>
           <th style="padding: 12px;">Access Scope</th>
-          <th style="padding: 12px;">Actions</th>
+          <th style="padding: 12px; text-align: right;">Action</th>
         </tr>
       </thead>
-      <tbody id="subAdminListTable">
+      <tbody id="subAdminApprovedTable">
         <tr>
           <td colspan="5" style="text-align: center; padding: 20px; color: #64748b;">
-            <i class="fas fa-spinner fa-spin"></i> Loading sub-portal accounts...
+            <i class="fas fa-spinner fa-spin"></i> Loading approved sub-portal users...
           </td>
         </tr>
       </tbody>

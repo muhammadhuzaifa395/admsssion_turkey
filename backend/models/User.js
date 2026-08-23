@@ -32,6 +32,12 @@ const userSchema = new mongoose.Schema(
       default: "user"
     },
 
+    subAdminStatus: {
+      type: String,
+      enum: ["none", "pending", "approved", "rejected"],
+      default: "none"
+    },
+
     universityId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "University",
