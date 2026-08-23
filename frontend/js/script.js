@@ -423,29 +423,33 @@ if (savedUser) {
 
 }
 // ===============================
-// LOGOUT
+// GLOBAL LOGOUT FUNCTION
 // ===============================
 
+function handleLogout() {
+  localStorage.removeItem("user");
+  localStorage.removeItem("adminUser");
+  localStorage.removeItem("token");
+
+  const isInsideAdmin = window.location.pathname.toLowerCase().includes("/admin/");
+  window.location.href = isInsideAdmin ? "../login.html" : "login.html";
+}
+
+window.handleLogout = handleLogout;
+
+document.addEventListener("click", function (e) {
+  const btn = e.target.closest("#logoutBtn, .logout-btn, [data-action='logout']");
+  if (btn) {
+    e.preventDefault();
+    handleLogout();
+  }
+});
+
 if (logoutBtn) {
-
-  logoutBtn.addEventListener(
-    "click",
-    function () {
-
-      localStorage.removeItem(
-        "user"
-      );
-
-      localStorage.removeItem(
-        "token"
-      );
-
-      window.location.href =
-        "index.html";
-
-    }
-  );
-
+  logoutBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    handleLogout();
+  });
 }
 // ===============================
 // APPLICATION FORM
