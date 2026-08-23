@@ -221,11 +221,21 @@ body {
   }
 
   .nav-buttons {
-    display: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-buttons .login-btn,
+  .nav-buttons .signup-btn {
+    padding: 6px 10px;
+    font-size: 12px;
   }
 
   .menu-btn {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 

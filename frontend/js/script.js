@@ -52,11 +52,67 @@ if (window.location.pathname.toLowerCase().includes("/admin")) {
 // MOBILE MENU
 // ===============================
 
+function updateMobileNavItems() {
+  const navLinks = document.querySelector(".nav-links");
+  if (!navLinks) return;
+
+  const existing = navLinks.querySelectorAll(".mobile-auth-link");
+  existing.forEach(el => el.remove());
+
+  const savedUserRaw = localStorage.getItem("user");
+  let user = null;
+  if (savedUserRaw) {
+    try { user = JSON.parse(savedUserRaw); } catch (e) { }
+  }
+
+  const container = document.createElement("li");
+  container.className = "mobile-auth-link";
+  container.style.paddingTop = "12px";
+  container.style.marginTop = "10px";
+  container.style.borderTop = "2px dashed #e2e8f0";
+  container.style.display = "flex";
+  container.style.flexDirection = "column";
+  container.style.gap = "8px";
+
+  const isInsideAdmin = window.location.pathname.toLowerCase().includes("/admin/");
+  const loginPath = isInsideAdmin ? "../login.html" : "login.html";
+  const signupPath = isInsideAdmin ? "../signup.html" : "signup.html";
+  const adminPath = isInsideAdmin ? "admin.html" : "admin/admin.html";
+  const subportalPath = isInsideAdmin ? "sub-portal.html" : "admin/sub-portal.html";
+
+  if (user && user.token) {
+    if (user.role === "admin") {
+      container.innerHTML = `
+        <a href="${adminPath}" class="primary-btn" style="text-align: center; font-size: 13px; padding: 8px 12px;"><i class="fas fa-shield-halved"></i> Admin Panel</a>
+        <button onclick="handleLogout()" class="secondary-btn" style="width: 100%; font-size: 13px; padding: 8px 12px;"><i class="fas fa-right-from-bracket"></i> Logout</button>
+      `;
+    } else if (user.role === "subadmin") {
+      container.innerHTML = `
+        <a href="${subportalPath}" class="primary-btn" style="text-align: center; font-size: 13px; padding: 8px 12px; background: #1d5bbf;"><i class="fas fa-chart-line"></i> Sub-Portal Dashboard</a>
+        <button onclick="handleLogout()" class="secondary-btn" style="width: 100%; font-size: 13px; padding: 8px 12px;"><i class="fas fa-right-from-bracket"></i> Logout</button>
+      `;
+    } else {
+      container.innerHTML = `
+        <span style="font-weight: 700; color: #1d5bbf; font-size: 14px;"><i class="fas fa-user"></i> ${user.name || 'User'}</span>
+        <button onclick="handleLogout()" class="secondary-btn" style="width: 100%; font-size: 13px; padding: 8px 12px;"><i class="fas fa-right-from-bracket"></i> Logout</button>
+      `;
+    }
+  } else {
+    container.innerHTML = `
+      <a href="${loginPath}" class="primary-btn" style="text-align: center; font-size: 13px; padding: 8px 12px; background: #1d5bbf;"><i class="fas fa-user"></i> Login</a>
+      <a href="${signupPath}" class="secondary-btn" style="text-align: center; font-size: 13px; padding: 8px 12px;"><i class="fas fa-user-plus"></i> Create Account</a>
+    `;
+  }
+
+  navLinks.appendChild(container);
+}
+
 const menuBtn = document.querySelector(".menu-btn");
 const navLinks = document.querySelector(".nav-links");
 
 if (menuBtn && navLinks) {
   menuBtn.addEventListener("click", () => {
+    updateMobileNavItems();
     navLinks.classList.toggle("mobile-active");
   });
 }
