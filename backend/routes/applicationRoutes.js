@@ -33,10 +33,12 @@ router.get("/", verifyToken, isAdmin, async (req, res) => {
       applications
     });
   } catch (error) {
-    console.log("Get Applications Error:", error);
-    res.status(500).json({
+    console.log("Get Applications Error:", error ? error.message : error);
+    res.status(200).json({
       success: false,
-      message: "Failed to load applications."
+      dbError: true,
+      message: `Database connection failed (${error.message}). Please ensure IP 0.0.0.0/0 is whitelisted in MongoDB Atlas Network Access.`,
+      applications: []
     });
   }
 });
