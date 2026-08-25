@@ -1469,52 +1469,11736 @@ if (universityForm) {
 
 const defaultTurkishUniversities = [
   {
-    _id: "medipol",
-    name: "Istanbul Medipol University",
-    location: "Istanbul, Türkiye",
-    image: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80",
-    description: "Leading medical & technology research university in Istanbul offering up to 50% scholarships.",
-    programs: { bachelors: ["Medicine", "Dentistry", "Pharmacy", "Software Eng"] }
+    "_id": "6a8b42546198c72e5070f0c0",
+    "name": "Istanbul Bilgi University",
+    "location": "Istanbul, Turkey",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdB1KumYQVtLjeSDTPWhWjHmNOLfl2vX5TEHhaQQzemA&s=10",
+    "description": "Bachelor's Degree Fee List 2025-2026",
+    "programs": {
+      "associate": [
+        {
+          "name": "Associate Child Development",
+          "duration": "2 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Public Relations and Advertising",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Physiotherapy",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Pathology Laboratory Techniques",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Oral and Dental Health",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Opticianry",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Operating Room Services",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Medical Imaging Techniques",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate International Trade",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Interior Space Design",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Information Security Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Graphic Design",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate First and Emergency Aid",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Fashion Design",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Emergency and Disaster Management",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Electroneurophysiology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate E-Commerce and Marketing",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Dialysis",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Dental Prosthetics Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Cookery",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Construction Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Computer Programming",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Civil Aviation Cabin Services",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Civil Air Transportation Management",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Child Development",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Banking and Insurance",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Audiometry",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Architectural Restoration",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Anesthesia",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Accounting and Tax Applications",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        }
+      ],
+      "bachelors": [
+        {
+          "name": "Bachelor Physiotherapy and Rehabilitation",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Nutrition and Dietetics",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Nursing",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Law",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 9600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Visual Communication Design",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Tourism Management",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Television Reporting and Programming",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Sociology",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 4800,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Radio, Television and Film",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Public Relations and Publicity",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Psychology",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 7800,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Political Science and Public Administration",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6600,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor New Media and Communication Systems",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Music",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6600,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Mechatronics Engineering",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Mechanical Engineering",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 4800,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Mathematics",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 4800,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Marketing",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 7200,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Management of Performing Arts",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Management Information Systems",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 7200,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Logistics Management",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor International Trade and Business",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 7200,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor International Relations",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6600,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor International Finance",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 7200,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Interior Architecture",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 7200,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Industrial Engineering",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 7800,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Industrial Design",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 7200,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor History",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 4800,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Genetics and Bioengineering",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 4800,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Gastronomy and Culinary Arts",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Fashion and Textile Design",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor English Language and Literature",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 4800,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Electrical and Electronics Engineering",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 4800,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Economics and Finance",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 7200,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Economics",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 7200,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Digital Game Design",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 7200,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Computer Engineering",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 7800,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Comparitive Literature",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 4800,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Communication Design and Management",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Civil Engineering",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 4800,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Business Administration",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 7200,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Aviation Management",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Architecture",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 4800,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Advertising",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "English"
+        }
+      ],
+      "masters": [],
+      "phd": []
+    }
   },
   {
-    _id: "bahcesehir",
-    name: "Bahçeşehir University (BAU)",
-    location: "Istanbul (Besiktas), Türkiye",
-    image: "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=600&q=80",
-    description: "Global university located at the heart of Istanbul with top engineering and business programs.",
-    programs: { bachelors: ["Architecture", "AI Engineering", "Business Admin"] }
+    "_id": "6a8b40f85db2ac417cc76daf",
+    "name": "Istinye University",
+    "location": "Istanbul, Turkey",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE-ZdcwJbtHhcEGIyXmif6OWHLS7y6E2Jpq3Mc1_iewtXEg5c7KAWGCRiv&s=10",
+    "description": "Bachelor's Degree Fee List 2025-2026",
+    "programs": {
+      "associate": [
+        {
+          "name": "Associate Radiotherapy",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Pharmacy Services",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Oral and Dental Health",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Opticianry",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Operating Room Services",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Medical Laboratory Techniques",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Medical Imaging Techniques",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Medical Documentation and Secretary",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Justice",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate International Trade",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Information Security Technology",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Food Technology",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate First Aid and Emergency",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Electroneurophysiology",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate E-Commerce and Marketing",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Dialysis",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Cookery",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Computer Technology",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Computer Programming",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Computer Aided Design and Animation",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Civil Aviation Cabin Services",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Automotive Technology",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Anesthesia",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Aircraft Technology",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        }
+      ],
+      "bachelors": [
+        {
+          "name": "Bachelor Visual Communication Design",
+          "duration": "4 Years",
+          "originalFee": 6000,
+          "discountFee": 6000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Turkish Language and Literature",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Speech and Language Therapy",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Software Engineering",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Social Work",
+          "duration": "4 Years",
+          "originalFee": 6000,
+          "discountFee": 6000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Public Relations and Advertising",
+          "duration": "4 Years",
+          "originalFee": 6000,
+          "discountFee": 6000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Psychology",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Political Science and Public Administration",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Physiotherapy and Rehabilitation",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Philosophy",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Pharmacy",
+          "duration": "4 Years",
+          "originalFee": 14000,
+          "discountFee": 14000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Nutrition and Dietetics",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Nursing",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Midwifery",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Medicine",
+          "duration": "4 Years",
+          "originalFee": 23000,
+          "discountFee": 23000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Management Information Systems",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Interior Architecture and Environmental Design",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Health Management",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Gastronomy and Culinary Arts",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Fashion and Textile Design",
+          "duration": "4 Years",
+          "originalFee": 5500,
+          "discountFee": 5500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Dentistry",
+          "duration": "4 Years",
+          "originalFee": 20000,
+          "discountFee": 20000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Computer Engineering",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Child Development",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Theatre",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 7500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Software Engineering",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Radio, Television and Cinema",
+          "duration": "4 Years",
+          "originalFee": 6000,
+          "discountFee": 6000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Radio Television and Cinema",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 7500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Psychology",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Physiotherapy and Rehabilitation",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Pharmacy",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 15000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Nursing",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor New Media and Communication",
+          "duration": "4 Years",
+          "originalFee": 6000,
+          "discountFee": 6000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor New Media",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 7500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Molecular Biology and Genetics",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Medicine",
+          "duration": "4 Years",
+          "originalFee": 29000,
+          "discountFee": 29000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Mechatronics Engineering",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 7500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Mechanical Engineering",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Mathematics",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Management Information Systems",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor International Trade and Business",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor International Relations",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Industrial Engineering",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Industrial Design",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 7500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Gastronomy and Culinary Arts",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor English Translation and Interpretation (English/Turkish)",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor English Language and Literature",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Electrical and Electronics Engineering",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Economics",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Digital Game Design Non-Thesis",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Dentistry",
+          "duration": "4 Years",
+          "originalFee": 24500,
+          "discountFee": 24500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Computer Engineering",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Chemistry",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Business Administration",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Biomedical Engineering",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Architecture",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Advertising",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 7500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Child Development",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        }
+      ],
+      "masters": [
+        {
+          "name": "Master Turkish Language and Literature Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Surgical Disease Nursing Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Surgical Disease Nursing (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Stem Cell and Tissue Engineering Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Sports Physiotherapy Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Speech and Language Therapy Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Public Law",
+          "duration": "2 Years",
+          "originalFee": 15000,
+          "discountFee": 7500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Psychology Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Psychology (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Political Science and International Relations Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Physiotherapy and Rehabilitation Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Obstetrics and Gynaecological Nursing (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Nutrition and Dietetics Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Nutrition and Dietetics (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Neuroscience Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Medical Biology and Genetics Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Law",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master International Relations and Political Science Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Healthcare Management",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Health Management (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Gynecology and Obstetrics Nursing",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Clinical Psychology (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Cancer Biology and Pharmacology Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Business Administration - MBA",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Business Administration - MBA (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Architectural Design Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master User Experience Design (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Psychology",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Private Law",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Preservation of Cultural Heritage",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Political Science and Public Administration",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Political Science and International Relations Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Physiotherapy and Rehabilitation Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Molecular Biology and Genetics Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Materials Science and Nanotechnology",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Management Information Systems Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Management for Professionals (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master International Relations",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master International Political Economy",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Industrial Engineering",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Finance and Banking",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Film and Drama",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Energy and Sustainable Development",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Electrical and Computer Engineering",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Economics",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Design",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Cyber Security",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Computer Engineering Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Computer Engineering (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Computational Science and Engineering",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Communication Studies",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Business Intelligence and Analytics (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Business Administration - MBA",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Business Administration - MBA (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Artificial Intelligence Engineering Thesis",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Architectural and Urban Studies",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Architectural and Urban Studies (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        }
+      ],
+      "phd": [
+        {
+          "name": "Stem Cell and Tissue Engineering Thesis",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Speech and Language Therapy Thesis",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Pharmaceutical Chemistry Thesis",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Obstetrics and Gynaecological Nursing Thesis",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Nutrition and Dietetics Thesis",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Neuroscience",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Molecular Oncology Thesis",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Midwifery",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Biology and Genetics Thesis",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Histology and Embryology Thesis",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Health Management Thesis",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Communication Sciences Thesis",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Clinical Anatomy",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration Thesis",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Physics Thesis",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "International Relations",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 7500,
+          "language": "English"
+        },
+        {
+          "name": "Gender Studies",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 7500,
+          "language": "English"
+        },
+        {
+          "name": "Electrical and Electronics Engineering",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 7500,
+          "language": "English"
+        },
+        {
+          "name": "Economics",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 7500,
+          "language": "English"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 7500,
+          "language": "English"
+        },
+        {
+          "name": "Communication Sciences",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Chemistry Thesis",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4 Years",
+          "originalFee": 12500,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Banking and Finance",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 7500,
+          "language": "English"
+        }
+      ]
+    }
   },
   {
-    _id: "istinye",
-    name: "Istinye University",
-    location: "Istanbul, Türkiye",
-    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
-    description: "Premier university with state-of-the-art medical hospitals and research facilities.",
-    programs: { bachelors: ["Medicine", "Computer Eng", "Nursing"] }
+    "_id": "6a8b35636cba956253c6afd5",
+    "name": "Lokman Hekim University",
+    "location": "Ankara, Turkey",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhcuzX9fHAHpxusO4t-U3EuYUxxOYrdn_hZOmt2Qp-ZA&s=10",
+    "description": "Bachelor's Degree Fee List 2025-2026",
+    "programs": {
+      "associate": [
+        {
+          "name": "Associate Pharmacy Services",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3150,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Oral and Dental Health",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3150,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Opticianery",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3150,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Operating Room Services",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3150,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Medical Laboratory Techniques",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3150,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Medical Imaging Techniques",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3150,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate First Aid and Emergency",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3150,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Elderly Care",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3150,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Dialysis",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3150,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Dental Prosthetics Technology",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3150,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Anesthesia",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3150,
+          "language": "Turkish"
+        }
+      ],
+      "bachelors": [
+        {
+          "name": "Bachelor Sports Management",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 3600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Speech and Language Therapy",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 3600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Physiotherapy and Rehabilitation",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4050,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Pharmacy",
+          "duration": "4 Years",
+          "originalFee": 13500,
+          "discountFee": 9100,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Occupational Therapy",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 3600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Nutrition and Dietetics",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 3600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Nursing",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 3600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Midwifery",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 3600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Medicine",
+          "duration": "4 Years",
+          "originalFee": 20000,
+          "discountFee": 18000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Dentistry",
+          "duration": "4 Years",
+          "originalFee": 18000,
+          "discountFee": 12150,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Coaching Education",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 3600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Audiology",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 3600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Pharmacy",
+          "duration": "4 Years",
+          "originalFee": 13500,
+          "discountFee": 9100,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Medicine",
+          "duration": "4 Years",
+          "originalFee": 22500,
+          "discountFee": 15200,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Dentistry",
+          "duration": "4 Years",
+          "originalFee": 20000,
+          "discountFee": 13500,
+          "language": "English"
+        }
+      ],
+      "masters": [],
+      "phd": []
+    }
   },
   {
-    _id: "bilgi",
-    name: "Istanbul Bilgi University",
-    location: "Istanbul, Türkiye",
-    image: "https://images.unsplash.com/photo-1592280771190-3e2e4d571952?auto=format&fit=crop&w=600&q=80",
-    description: "Internationally accredited university located on the historic Golden Horn campus.",
-    programs: { bachelors: ["Law", "International Relations", "Computer Science"] }
+    "_id": "6a8b344b6cba956253c6a555",
+    "name": "Yasar University",
+    "location": "Istanbul, Turkey",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_VuAjk8v6wl9WEIwIQRwc7B0eYcFp7_gAROiosQgVEw&s=10",
+    "description": "Bachelor's Degree Fee List 2025-2026",
+    "programs": {
+      "associate": [
+        {
+          "name": "Associate Justice",
+          "duration": "2 Years",
+          "originalFee": 4000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        }
+      ],
+      "bachelors": [
+        {
+          "name": "Bachelor Law",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Gastronomy and Culinary Arts",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Visual Communication Design",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Software Engineering",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Public Relations and Advertising",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Psychology",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor New Media and Communication",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Mechanical Engineering",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Management Information Systems",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Logistics Management",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor International Trade and Finance",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Interior Architecture and Environmental Design",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Industrial Engineering",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Electrical and Electronics Engineering",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Economics",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Computer Engineering",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Civil Engineering",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Business Administration",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Architecture",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "English"
+        }
+      ],
+      "masters": [
+        {
+          "name": "Master Public Law",
+          "duration": "2 Years",
+          "originalFee": 7200,
+          "discountFee": 7200,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Public Law (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7200,
+          "discountFee": 7200,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Private Law",
+          "duration": "2 Years",
+          "originalFee": 7200,
+          "discountFee": 7200,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Private Law (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7200,
+          "discountFee": 7200,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Tourism Management",
+          "duration": "2 Years",
+          "originalFee": 7200,
+          "discountFee": 7200,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Industrial Engineering",
+          "duration": "2 Years",
+          "originalFee": 7200,
+          "discountFee": 7200,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Electrical and Electronics Engineering",
+          "duration": "2 Years",
+          "originalFee": 7200,
+          "discountFee": 7200,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Electrical and Electronic Engineering (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7200,
+          "discountFee": 7200,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Computer Engineering",
+          "duration": "2 Years",
+          "originalFee": 7200,
+          "discountFee": 7200,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Computer Engineering (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7200,
+          "discountFee": 7200,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Architecture (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7200,
+          "discountFee": 7200,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        }
+      ],
+      "phd": [
+        {
+          "name": "Public Law",
+          "duration": "4 Years",
+          "originalFee": 16000,
+          "discountFee": 16000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Private Law",
+          "duration": "4 Years",
+          "originalFee": 16000,
+          "discountFee": 16000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "4 Years",
+          "originalFee": 16000,
+          "discountFee": 16000,
+          "language": "English"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4 Years",
+          "originalFee": 16000,
+          "discountFee": 16000,
+          "language": "English"
+        }
+      ]
+    }
   },
   {
-    _id: "sabanci",
-    name: "Sabancı University",
-    location: "Istanbul, Türkiye",
-    image: "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=600&q=80",
-    description: "Ranked among top research universities in Türkiye with multidisciplinary education.",
-    programs: { bachelors: ["Computer Eng", "Industrial Eng", "Economics"] }
+    "_id": "6a8b33076cba956253c69b4b",
+    "name": "Ozyegin University",
+    "location": "Istanbul, Turkey",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRptH6UsCjUeU88nlFRM_j9lge8A9oPre8Y-KNC62XCsg&s=10",
+    "description": "Bachelor's Degree Fee List 2025-2026",
+    "programs": {
+      "associate": [],
+      "bachelors": [
+        {
+          "name": "Bachelor Law",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Architecture",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Psychology",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Pilotage - Pilot Training",
+          "duration": "4 Years",
+          "originalFee": 16500,
+          "discountFee": 16500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Mechanical Engineering",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Management Information Systems",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor International Trade and Business",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor International Relations",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor International Finance",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Interior Architecture and Environmental Design",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Industrial Engineering",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Industrial Design",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Hotel Management",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Gastronomy and Culinary Arts",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Electrical and Electronics Engineering",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Economics",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Computer Engineering",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Communication Design",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Civil Engineering",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Business Administration",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Aviation Management",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Artificial Intelligence and Data Engineering",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Architecture",
+          "duration": "4 Years",
+          "originalFee": 25000,
+          "discountFee": 12500,
+          "language": "English"
+        }
+      ],
+      "masters": [],
+      "phd": []
+    }
   },
   {
-    _id: "koc",
-    name: "Koç University",
-    location: "Istanbul, Türkiye",
-    image: "https://images.unsplash.com/photo-1519452635265-7b1fbfd1e4e0?auto=format&fit=crop&w=600&q=80",
-    description: "World-class private university offering full English medium degree programs.",
-    programs: { bachelors: ["Electrical Eng", "Mechanical Eng", "Psychology"] }
+    "_id": "6a8b31856cba956253c68c5e",
+    "name": "Fenerbahce University",
+    "location": "Istanbul, Turkey",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmNSvZo72AEpwEXjF_xoBm9QgQ6kCHav9jorxDEfByrw&s=10",
+    "description": "Bachelor's Degree Fee List 2025-2026",
+    "programs": {
+      "associate": [
+        {
+          "name": "Associate Radiotherapy",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Prosthesis and Orthosis",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Pathology Laboratory Techniques",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Oral and Dental Health",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Medical Laboratory Techniques",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Medical Imaging Techniques",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Dialysis",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Dental Prosthesis Technology",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Physiotherapy",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 2000,
+          "language": "English"
+        }
+      ],
+      "bachelors": [
+        {
+          "name": "Bachelor Sports Management",
+          "duration": "4 Years",
+          "originalFee": 7500,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Sports Coaching",
+          "duration": "4 Years",
+          "originalFee": 7500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Speech and Language Therapy",
+          "duration": "4 Years",
+          "originalFee": 7500,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Radio Television and Cinema",
+          "duration": "4 Years",
+          "originalFee": 7500,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Public Relations and Advertising",
+          "duration": "4 Years",
+          "originalFee": 7500,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Pharmacy",
+          "duration": "4 Years",
+          "originalFee": 10000,
+          "discountFee": 6000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Occupational Therapy",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Midwifery",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Interior Architecture and Environmental Design",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Exercise and Sports Sciences",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Ergotherapy",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Architecture",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Pharmacy",
+          "duration": "4 Years",
+          "originalFee": 12000,
+          "discountFee": 7500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor International Finance",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor English Language and Literature",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Economics and Finance",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "English"
+        }
+      ],
+      "masters": [
+        {
+          "name": "Master Sport Sciences",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Sport Sciences (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5500,
+          "discountFee": 2250,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Internal Medicine Nursing",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Clinical Pharmacy (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5500,
+          "discountFee": 2250,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Business Administration - MBA",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Business Administration - MBA (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5500,
+          "discountFee": 2250,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Business Administration - MBA",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Business Administration - MBA (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5500,
+          "discountFee": 2250,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        }
+      ],
+      "phd": [
+        {
+          "name": "Sport Sciences",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 7500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 7500,
+          "language": "Turkish"
+        }
+      ]
+    }
+  },
+  {
+    "_id": "6a8afd402f6fba39ba418ae9",
+    "name": "Uskudar University",
+    "location": "Istanbul, Turkey",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRj2F1gPTh29ISCkiVRRcbqL2ubuejjwbxsaqT1EWNn_Q&s=10",
+    "description": "Bachelor's Degree Fee List 2025-2026",
+    "programs": {
+      "associate": [
+        {
+          "name": "Associate Social Services",
+          "duration": "2 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Radiotherapy",
+          "duration": "2 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Pharmacy Services",
+          "duration": "2 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Perfusion Techniques",
+          "duration": "2 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Orthopedic Prosthetics and Orthotics",
+          "duration": "2 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Opticianry",
+          "duration": "2 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Operating Room Services",
+          "duration": "2 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Home Health Nursing",
+          "duration": "2 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Disabled Care and Rehabilitation",
+          "duration": "2 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Dental Prosthesis Technology",
+          "duration": "2 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Child Protection and Nursing Services",
+          "duration": "2 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Biomedical Device Technology",
+          "duration": "2 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Autopsy Assistantship",
+          "duration": "2 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Audiometry",
+          "duration": "2 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Anesthesia",
+          "duration": "2 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        }
+      ],
+      "bachelors": [
+        {
+          "name": "Bachelor Visual Communication Design",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Speech and Language Therapy",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Sociology",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Social Work",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Radio Television and Cinema",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Public Relations and Publicity",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Psychology",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Political Science and International Relations",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Physiotherapy and Rehabilitation",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Philosophy",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Perfusion",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Occupational Health and Safety",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Nutrition and Dietetics",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Nursing",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor New Media and Communication",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Molecular Biology and Genetics",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Midwifery",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Medicine",
+          "duration": "4 Years",
+          "originalFee": 18000,
+          "discountFee": 16200,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Journalism",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor History",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Health Management",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Forensic Sciences",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Dentistry",
+          "duration": "4 Years",
+          "originalFee": 16000,
+          "discountFee": 14400,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Child Development",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Cartoon and Animation",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Audiology",
+          "duration": "4 Years",
+          "originalFee": 4200,
+          "discountFee": 3800,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Advertising",
+          "duration": "4 Years",
+          "originalFee": 3600,
+          "discountFee": 3420,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor English Translation and Interpretation (English/Turkish) English/",
+          "duration": "4 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Software Engineering",
+          "duration": "4 Years",
+          "originalFee": 5600,
+          "discountFee": 5000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Psychology",
+          "duration": "4 Years",
+          "originalFee": 5600,
+          "discountFee": 5000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Political Science and International Relations",
+          "duration": "4 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Molecular Biology and Genetics",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Medicine",
+          "duration": "4 Years",
+          "originalFee": 24000,
+          "discountFee": 21600,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Industrial Engineering",
+          "duration": "4 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Electrical and Electronics Engineering",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Dentistry",
+          "duration": "4 Years",
+          "originalFee": 22000,
+          "discountFee": 19800,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Computer Engineering",
+          "duration": "4 Years",
+          "originalFee": 5600,
+          "discountFee": 5000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Bioengineering",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4500,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Occupational Health and Safety",
+          "duration": "4 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Child Development",
+          "duration": "4 Years",
+          "originalFee": 2800,
+          "discountFee": 2660,
+          "language": "Turkish"
+        }
+      ],
+      "masters": [
+        {
+          "name": "Master Visual Communication Design Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Visual Communication Design (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Sufi Culture and Literature Thesis",
+          "duration": "2 Years",
+          "originalFee": 9150,
+          "discountFee": 8235,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Sufi Culture and Literature (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 7500,
+          "discountFee": 6750,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Speech and Language Therapy Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Sociology Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Social Work Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Social Work (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Public Relations and Advertising Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Public Relations and Advertising (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Physiotherapy and Rehabilitation Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Physiotherapy and Rehabilitation (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Philosophy Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Occupational Health and Safety Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Occupational Health and Safety (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Nutrition and Dietetics Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Nutrition and Dietetics (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Nursing Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Nursing (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master New Media and Journalism Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master New Media and Journalism (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Neuroscience Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Neuroscience (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Neuromarketing Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Neuromarketing (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Molecular Biology Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Molecular Biology (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Media and Cultural Studies Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Media and Cultural Studies (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master International Relations Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Healthcare Management",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Health Management (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Forensic Science Thesis",
+          "duration": "2 Years",
+          "originalFee": 5100,
+          "discountFee": 4590,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Forensic Science (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Family Counseling Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Family Counseling (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Engineering Management Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Cyber Security Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Cyber Security (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Criminal Justice Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Criminal Justice (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Computer Engineering Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Computer Engineering (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Clinical Psychology Thesis",
+          "duration": "2 Years",
+          "originalFee": 17400,
+          "discountFee": 15660,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Clinical Psychology (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 15200,
+          "discountFee": 13680,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Child Development Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Child Development (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Biotechnology Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Biotechnology (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Biosecurity Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Bioinformatics Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Bioengineering Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Bioengineering (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Artificial Intelligence Engineering Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Artificial Intelligence Engineering (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Applied Psychology Thesis",
+          "duration": "2 Years",
+          "originalFee": 7300,
+          "discountFee": 6570,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Addiction Consulting and Rehabilitation Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Addiction Consulting and Rehabilitation (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Neuroscience Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Neuroscience (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Molecular Biology Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Molecular Biology (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Engineering Management Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Engineering Management (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Electrical and Electronics Engineering",
+          "duration": "2 Years",
+          "originalFee": 5700,
+          "discountFee": 5130,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Electrical and Electronic Engineering (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 5100,
+          "discountFee": 4590,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Cyber Security Thesis",
+          "duration": "2 Years",
+          "originalFee": 5700,
+          "discountFee": 5130,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Cyber Security (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Computer Engineering Thesis",
+          "duration": "2 Years",
+          "originalFee": 5700,
+          "discountFee": 5130,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Computer Engineering (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 5100,
+          "discountFee": 4590,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Chemical Engineering Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Chemical Engineering (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Bioengineering Thesis",
+          "duration": "2 Years",
+          "originalFee": 4800,
+          "discountFee": 4320,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Bioengineering (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 4400,
+          "discountFee": 3960,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        }
+      ],
+      "phd": [
+        {
+          "name": "Visual Communication Design",
+          "duration": "5 Years",
+          "originalFee": 9000,
+          "discountFee": 8100,
+          "language": "Turkish"
+        },
+        {
+          "name": "Speech and Language Therapy",
+          "duration": "4 Years",
+          "originalFee": 7800,
+          "discountFee": 7020,
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology",
+          "duration": "5 Years",
+          "originalFee": 19100,
+          "discountFee": 17190,
+          "language": "Turkish"
+        },
+        {
+          "name": "Occupational Health and Safety",
+          "duration": "4 Years",
+          "originalFee": 7800,
+          "discountFee": 7020,
+          "language": "Turkish"
+        },
+        {
+          "name": "Nursing",
+          "duration": "5 Years",
+          "originalFee": 9000,
+          "discountFee": 8100,
+          "language": "Turkish"
+        },
+        {
+          "name": "New Media and Communication",
+          "duration": "5 Years",
+          "originalFee": 7800,
+          "discountFee": 7020,
+          "language": "Turkish"
+        },
+        {
+          "name": "Neuroscience",
+          "duration": "5 Years",
+          "originalFee": 9000,
+          "discountFee": 8100,
+          "language": "Turkish"
+        },
+        {
+          "name": "International Relations",
+          "duration": "5 Years",
+          "originalFee": 7800,
+          "discountFee": 7020,
+          "language": "Turkish"
+        },
+        {
+          "name": "Health Management",
+          "duration": "5 Years",
+          "originalFee": 7800,
+          "discountFee": 7020,
+          "language": "Turkish"
+        }
+      ]
+    }
+  },
+  {
+    "_id": "6a8ae443197f5d72d960f5b2",
+    "name": "Istanbul Okan University",
+    "location": "Istanbul, Turkey",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtZDskQMSZuuygYmezbWrVw6nqYqpfOANRnOAcOYBeLA&s",
+    "description": "Bachelor's Degree Fee List 2025-2026",
+    "programs": {
+      "associate": [
+        {
+          "name": "Associate Survey and Cadaster",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Radiotherapy",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Pathology Laboratory Techniques",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Oral and Dental Health",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Opticianry",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Operating Room Services",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Occupational Health and Safety",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Occupational Health and Safety (D.E)",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Mobile Technology",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Medical Laboratory Techniques",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Medical Imaging Techniques",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Mechatronics",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Mechanics",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Justice",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Interior Design",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Graphic Design",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Foreign Trade",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Flight Operations Management",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate First Aid and Emergency",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Electroneurophysiology",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Electric",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Dialysis",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Court Office Services",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Cookery",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Construction Technology",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Computer Programming",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Computer Aided Design and Animation",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Civil Aviation Management",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Civil Aviation Cabin Services",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Audiometry",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Architectural Restoration",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Anesthesia",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Aircraft Technology",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Associate Foreign Trade",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "English"
+        },
+        {
+          "name": "Associate Civil Aviation Management",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "English"
+        },
+        {
+          "name": "Associate Civil Aviation Cabin Services",
+          "duration": "2 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "English"
+        }
+      ],
+      "bachelors": [
+        {
+          "name": "Bachelor Visual Communication Design",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Theatre",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Sports Management",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Special Education Teaching",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Public Relations and Advertising",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Psychology",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Psychological Counselling and Guidance",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Pre-School Teaching",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Physiotherapy and Rehabilitation",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Pharmacy",
+          "duration": "4 Years",
+          "originalFee": 9000,
+          "discountFee": 8550,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Nutrition and Dietetics",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Nursing",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor New Media and Communication",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Music",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Medicine",
+          "duration": "4 Years",
+          "originalFee": 19500,
+          "discountFee": 18525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Law",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor International Trade",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor International Relations",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor International Finance and Banking",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Interior Architecture and Environmental Design",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Information Systems and Technologies",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Health Management",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Gastronomy and Culinary Arts",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Fashion and Textile Design",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Digital Game Design",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Dentistry",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 14250,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Civil Engineering",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Cinema and Television",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Child Development",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Business Administration",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Aviation Management",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Architecture",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Russian Translation and Interpretation (Russian/Turkish) Russian/",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor English Translation and Interpretation (English/Turkish) English/",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Software Engineering",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Psychology",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Pilotage - Pilot Training",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 7600,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Physiotherapy and Rehabilitation",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Pharmacy",
+          "duration": "4 Years",
+          "originalFee": 10000,
+          "discountFee": 8000,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Nutrition and Dietetics",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4275,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Nursing",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Medicine",
+          "duration": "4 Years",
+          "originalFee": 22500,
+          "discountFee": 21375,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Mechatronics Engineering",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Mechanical Engineering",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Logistics Management",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor International Trade",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor International Relations",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Interior Architecture and Environmental Design",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Information Systems and Technologies",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 3800,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Industrial Engineering",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Geomatics Engineering",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Genetics and Bioengineering",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Gastronomy and Culinary Arts",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor English Teaching",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor English Language Teaching",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 3800,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Electrical and Electronics Engineering",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Economics and Finance",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Dentistry",
+          "duration": "4 Years",
+          "originalFee": 18000,
+          "discountFee": 17100,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Computer Engineering",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Civil Engineering",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Business Administration",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Automotive Engineering",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Architecture",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Bachelor Chinese Translation and Interpretion (Chinese/Turkish) Chinese/",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Sports Management",
+          "duration": "4 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Child Development",
+          "duration": "4 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        },
+        {
+          "name": "Bachelor Business Administration",
+          "duration": "4 Years",
+          "originalFee": 2025,
+          "discountFee": 1925,
+          "language": "Turkish"
+        }
+      ],
+      "masters": [
+        {
+          "name": "Master Urban Renewal",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Urban Renewal (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Translation Studies",
+          "duration": "2 Years",
+          "originalFee": 5500,
+          "discountFee": 5500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Translation Studies (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Tourism Management",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Tourism Management (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Sports Physiology",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Sports Physiology (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Sports Management",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Sports Management (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Social and Cultural Studies",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Social and Cultural Studies (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Sales and Marketing",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Sales and Marketing (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Real Estate Finance and Valuation",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Real Estate Finance and Valuation (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Quality Management in Healthcare",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Quality Management in Healthcare (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Public Law",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Public Law (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Psychology",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Psychology (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Property Financing and Valuation (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Private Law",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Private Law (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Pre-school Education",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Pre-school Education (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Physiotherapy and Rehabilitation",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Physiotherapy and Rehabilitation (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Painting",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Painting (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Oral and Maxillofacial Radiology",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Oral and Maxillofacial Radiology (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Occupational Health and Safety",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Occupational Health and Safety (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Nutrition and Dietetics",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Nutrition and Dietetics (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Nursing",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Nursing (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Music",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Music (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Marketing Communication",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Marketing Communication (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Logistics Management",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Logistics Management (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Local Administrations",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Local Administrations (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master IT Law (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master International Trade",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master International Trade (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master International Relations",
+          "duration": "2 Years",
+          "originalFee": 5500,
+          "discountFee": 5500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master International Relations (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Interior Architecture and Environmental Design",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Interior Architecture and Environmental Design (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Information Technologies Law",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Information Technologies Law (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Human Resources Management",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Human Resources Management (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Healthcare Management",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Health Management (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Geotechnical Engineering",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Geotechnical Engineering (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Geomatics Engineering",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Geomatics Engineering (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Gastronomy",
+          "duration": "2 Years",
+          "originalFee": 5500,
+          "discountFee": 5500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Gastronomy (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Fashion Design",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Fashion Design (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Explosives Engineering",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Explosives Engineering (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Entrepreneurship",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Entrepreneurship (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Engineering Management",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Engineering Management (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Educational Administration and Supervision",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Educational Administration and Supervision (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Computer Engineering",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Computer Engineering (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Clinical Psychology",
+          "duration": "2 Years",
+          "originalFee": 24200,
+          "discountFee": 24200,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Clinical Psychology (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 20000,
+          "discountFee": 19000,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Civil Engineering",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Cinema and Television",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Cinema and Television (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Child Development and Education",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Child Development and Education (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Business Administration - MBA",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Business Administration - MBA (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 6100,
+          "discountFee": 6100,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Banking",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Banking (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Architecture",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Architecture (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Aestetic Restorative",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Aestetic Restorative (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Accounting and Auditing",
+          "duration": "2 Years",
+          "originalFee": 4500,
+          "discountFee": 4275,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Accounting and Auditing (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 3325,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Master Power Electronics and Clean Energy Systems",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 5700,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Marketing",
+          "duration": "2 Years",
+          "originalFee": 5500,
+          "discountFee": 5500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Marketing (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master International Trade",
+          "duration": "2 Years",
+          "originalFee": 5500,
+          "discountFee": 5500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master International Trade (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Information Systems",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 5700,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Information Systems (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Gastronomy",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 5700,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Gastronomy (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 5000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Finance",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 5700,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Finance (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5500,
+          "discountFee": 5500,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Business Administration - MBA",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 5700,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Business Administration - MBA (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Automotive Mechatronics and Intelligent Vehicles",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 5700,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Artificial Intelligence Engineering",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 5700,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Artificial Intelligence Engineering (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Architecture",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 5700,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Architecture (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5000,
+          "discountFee": 4750,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Master Advanced Electronics and Communication Technology",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 5700,
+          "thesisType": "Thesis",
+          "language": "English"
+        }
+      ],
+      "phd": [
+        {
+          "name": "Educational Administration and Supervision",
+          "duration": "4 Years",
+          "originalFee": 7000,
+          "discountFee": 6650,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "4 Years",
+          "originalFee": 7000,
+          "discountFee": 6650,
+          "language": "Turkish"
+        },
+        {
+          "name": "Cinema and Television",
+          "duration": "4 Years",
+          "originalFee": 7000,
+          "discountFee": 6650,
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4 Years",
+          "originalFee": 7000,
+          "discountFee": 6650,
+          "language": "Turkish"
+        },
+        {
+          "name": "Banking",
+          "duration": "4 Years",
+          "originalFee": 10600,
+          "discountFee": 10600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Architecture",
+          "duration": "4 Years",
+          "originalFee": 7000,
+          "discountFee": 6650,
+          "language": "Turkish"
+        },
+        {
+          "name": "Applied Psychology",
+          "duration": "4 Years",
+          "originalFee": 7000,
+          "discountFee": 6650,
+          "language": "Turkish"
+        },
+        {
+          "name": "Accounting and Auditing",
+          "duration": "4 Years",
+          "originalFee": 7000,
+          "discountFee": 6650,
+          "language": "Turkish"
+        },
+        {
+          "name": "Public Law",
+          "duration": "4 Years",
+          "originalFee": 7000,
+          "discountFee": 6650,
+          "language": "Turkish"
+        },
+        {
+          "name": "Private Law",
+          "duration": "4 Years",
+          "originalFee": 7000,
+          "discountFee": 6650,
+          "language": "Turkish"
+        },
+        {
+          "name": "Periodontology",
+          "duration": "4 Years",
+          "originalFee": 13200,
+          "discountFee": 13200,
+          "language": "Turkish"
+        },
+        {
+          "name": "Orthodontics",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 14250,
+          "language": "Turkish"
+        },
+        {
+          "name": "Nutrition and Dietetics",
+          "duration": "4 Years",
+          "originalFee": 7000,
+          "discountFee": 6650,
+          "language": "Turkish"
+        },
+        {
+          "name": "Nursing",
+          "duration": "4 Years",
+          "originalFee": 7000,
+          "discountFee": 6650,
+          "language": "Turkish"
+        },
+        {
+          "name": "Music",
+          "duration": "4 Years",
+          "originalFee": 7000,
+          "discountFee": 6650,
+          "language": "Turkish"
+        },
+        {
+          "name": "Land-use Planning and Management",
+          "duration": "4 Years",
+          "originalFee": 7000,
+          "discountFee": 6650,
+          "language": "Turkish"
+        },
+        {
+          "name": "Health Management",
+          "duration": "4 Years",
+          "originalFee": 7000,
+          "discountFee": 6650,
+          "language": "Turkish"
+        },
+        {
+          "name": "Endodontics",
+          "duration": "4 Years",
+          "originalFee": 13200,
+          "discountFee": 13200,
+          "language": "Turkish"
+        },
+        {
+          "name": "Mechatronics Engineering",
+          "duration": "4 Years",
+          "originalFee": 9000,
+          "discountFee": 8550,
+          "language": "English"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4 Years",
+          "originalFee": 9000,
+          "discountFee": 8550,
+          "language": "English"
+        },
+        {
+          "name": "Architecture",
+          "duration": "4 Years",
+          "originalFee": 9000,
+          "discountFee": 8550,
+          "language": "English"
+        }
+      ]
+    }
+  },
+  {
+    "_id": "6a8a20ca5d06fce5adcb37ee",
+    "name": "ISTANBUL GELISIM UNIVERSITY",
+    "location": "Istanbul, Turkey",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQen3w8bj7KaVk5FMQnd8Iot8oqJzjB9cWgL8g5i0XX3g&s=10",
+    "description": "Bachelor's Degree Fee List 2025-2026",
+    "programs": {
+      "associate": [
+        {
+          "name": "Computer Programming",
+          "duration": "2",
+          "originalFee": 6500,
+          "discountFee": 3250,
+          "language": "English"
+        },
+        {
+          "name": "Civil Aviation Transportation",
+          "duration": "2",
+          "originalFee": 6500,
+          "discountFee": 3250,
+          "language": "English"
+        },
+        {
+          "name": "Civil Aviation Cabin Services",
+          "duration": "2",
+          "originalFee": 6500,
+          "discountFee": 3250,
+          "language": "English"
+        },
+        {
+          "name": "Web Design and Coding",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Radiotherapy",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Radio and Television Programming",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Podology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Physiotherapy",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Pathology Laboratory Techniques",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Pastry and Bakery",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Orthopedic Prosthetics and Orthotics",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Oral and Dental Health",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Opticianery",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Operating Room Services",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Occupational Health and Safety",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Laboratory Techniques",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Imaging Techniques",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Documentation and Secretary",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Mechatronics",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Maritime and Port Management",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Management of Health lnstitutions",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Machinery",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Logistics",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Laboratory Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Justice",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Interior Design",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Information Security Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Hybrid and Electric Vehicles Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Human Resources Management",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Hair Care and Beauty Services",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Food Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Food Quality Control and Analysis",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "First Aid and Emergency",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Fashion Design",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Electronics Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Electroneurophysiology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Electric",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Dialysis",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Dental Prosthesis Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Cookery",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Construction Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Programming",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Aided Design and Animation",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Civil Aviation Transportation Management",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Civil Aviation Cabin Services",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Biomedical Device Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Autopsy Assistantship",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Automotive Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Audiometry",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Anesthesia",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Aircraft Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Air Logistics",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        }
+      ],
+      "bachelors": [
+        {
+          "name": "Psychology",
+          "duration": "4",
+          "originalFee": 8500,
+          "discountFee": 4250,
+          "language": "English"
+        },
+        {
+          "name": "Political Science and International Relations",
+          "duration": "4",
+          "originalFee": 8500,
+          "discountFee": 4250,
+          "language": "English"
+        },
+        {
+          "name": "Nutrition and Dietetics",
+          "duration": "4",
+          "originalFee": 8500,
+          "discountFee": 4250,
+          "language": "English"
+        },
+        {
+          "name": "Nursing",
+          "duration": "4",
+          "originalFee": 8500,
+          "discountFee": 4250,
+          "language": "English"
+        },
+        {
+          "name": "Logistics Management",
+          "duration": "4",
+          "originalFee": 8500,
+          "discountFee": 4250,
+          "language": "English"
+        },
+        {
+          "name": "International Trade and Finance",
+          "duration": "4",
+          "originalFee": 8500,
+          "discountFee": 4250,
+          "language": "English"
+        },
+        {
+          "name": "Interior Architecture and Environmental Design",
+          "duration": "4",
+          "originalFee": 8500,
+          "discountFee": 4250,
+          "language": "English"
+        },
+        {
+          "name": "Gastronomy and Culinary Arts",
+          "duration": "4",
+          "originalFee": 8500,
+          "discountFee": 4250,
+          "language": "English"
+        },
+        {
+          "name": "English Language and Literature",
+          "duration": "4",
+          "originalFee": 8500,
+          "discountFee": 4250,
+          "language": "English"
+        },
+        {
+          "name": "Economics and Finance",
+          "duration": "4",
+          "originalFee": 8500,
+          "discountFee": 4250,
+          "language": "English"
+        },
+        {
+          "name": "Coaching Training",
+          "duration": "4",
+          "originalFee": 8500,
+          "discountFee": 4250,
+          "language": "English"
+        },
+        {
+          "name": "Child Development",
+          "duration": "4",
+          "originalFee": 8500,
+          "discountFee": 4250,
+          "language": "English"
+        },
+        {
+          "name": "Aviation Management",
+          "duration": "4",
+          "originalFee": 8500,
+          "discountFee": 4250,
+          "language": "English"
+        },
+        {
+          "name": "Physiotherapy and Rehabilitation",
+          "duration": "4",
+          "originalFee": 9000,
+          "discountFee": 4500,
+          "language": "English"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4",
+          "originalFee": 9000,
+          "discountFee": 4500,
+          "language": "English"
+        },
+        {
+          "name": "Electrical and Electronics Engineering",
+          "duration": "4",
+          "originalFee": 9500,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Civil Engineering",
+          "duration": "4",
+          "originalFee": 9500,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Architecture",
+          "duration": "4",
+          "originalFee": 9500,
+          "discountFee": 4750,
+          "language": "English"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "4",
+          "originalFee": 11000,
+          "discountFee": 5500,
+          "language": "English"
+        },
+        {
+          "name": "Aeronautical Engineering",
+          "duration": "4",
+          "originalFee": 12000,
+          "discountFee": 6000,
+          "language": "English"
+        },
+        {
+          "name": "Dentistry",
+          "duration": "5",
+          "originalFee": 20000,
+          "discountFee": 17250,
+          "language": "English"
+        },
+        {
+          "name": "Visual Communication Design",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Turkish Language and Literature",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Tourism Guidance",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Television Reporting and Programming",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Sports Management",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Speech and Language Therapy",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Software Engineering",
+          "duration": "4 Years",
+          "originalFee": 9000,
+          "discountFee": 4500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Sociology",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Social Work",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Recreation",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Radio Television and Cinema",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Public Relations and Publicity",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Public Relations and Advertising",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Political Science and Public Administration",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Political Science and International Relations",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Physiotherapy and Rehabilitation",
+          "duration": "4 Years",
+          "originalFee": 9000,
+          "discountFee": 4500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Perfusion",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Occupational Therapy",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Nutrition and Dietetics",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Nursing",
+          "duration": "4 Years",
+          "originalFee": 10000,
+          "discountFee": 5000,
+          "language": "Turkish"
+        },
+        {
+          "name": "New Media and Communication",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Mechatronics Engineering",
+          "duration": "4 Years",
+          "originalFee": 9000,
+          "discountFee": 4500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Management Information Systems",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Logistics Management",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "International Trade and Finance",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "International Trade and Business",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Interior Architecture and Environmental Design",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Industrial Engineering",
+          "duration": "4 Years",
+          "originalFee": 9000,
+          "discountFee": 4500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Healthcare Management",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Gastronomy and Culinary Arts",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Exercise and Sports Sciences",
+          "duration": "4 Years",
+          "originalFee": 7000,
+          "discountFee": 3500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Exercise and Sports for Disabled",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Electronic Commerce and Management",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Electrical and Electronics Engineering",
+          "duration": "4 Years",
+          "originalFee": 9000,
+          "discountFee": 4500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Economics and Finance",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Dentistry",
+          "duration": "4 Years",
+          "originalFee": 17500,
+          "discountFee": 13500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "4 Years",
+          "originalFee": 9000,
+          "discountFee": 4500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Coaching Training",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Civil Engineering",
+          "duration": "4 Years",
+          "originalFee": 9000,
+          "discountFee": 4500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Child Development",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Banking and Insurance",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Avionics",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Aviation Management",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Audiology",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Architecture",
+          "duration": "4 Years",
+          "originalFee": 9000,
+          "discountFee": 4500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Aircraft Maintenance and Repair",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Aeronautical Engineering",
+          "duration": "4 Years",
+          "originalFee": 9000,
+          "discountFee": 4500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Advertising",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Tourism Guidance",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 4000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Sports Management",
+          "duration": "4 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Public Relations and Advertising",
+          "duration": "4 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design",
+          "duration": "4 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Child Development",
+          "duration": "4 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Banking and Insurance",
+          "duration": "4 Years",
+          "originalFee": 3000,
+          "discountFee": 3000,
+          "language": "Turkish"
+        },
+        {
+          "name": "New Program",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4000,
+          "language": "English"
+        }
+      ],
+      "masters": [
+        {
+          "name": "Political Science and Public Administration",
+          "duration": "1.5",
+          "originalFee": 10000,
+          "discountFee": 4000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Political Science and International Relations",
+          "duration": "1.5",
+          "originalFee": 10000,
+          "discountFee": 4000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Economics and Finance",
+          "duration": "1.5",
+          "originalFee": 10000,
+          "discountFee": 4000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Civil Engineering",
+          "duration": "1.5",
+          "originalFee": 10000,
+          "discountFee": 4000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Business Administration - MBA",
+          "duration": "1.5",
+          "originalFee": 10000,
+          "discountFee": 4000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Architecture",
+          "duration": "1.5",
+          "originalFee": 10000,
+          "discountFee": 4000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Political Science and Public Administration",
+          "duration": "2",
+          "originalFee": 10000,
+          "discountFee": 5000,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Political Science and International Relations",
+          "duration": "2",
+          "originalFee": 10000,
+          "discountFee": 5000,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Economics and Finance",
+          "duration": "2",
+          "originalFee": 10000,
+          "discountFee": 5000,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Aeronautical Engineering",
+          "duration": "1.5",
+          "originalFee": 10000,
+          "discountFee": 5000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Civil Engineering",
+          "duration": "2",
+          "originalFee": 10000,
+          "discountFee": 5500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Architecture",
+          "duration": "2",
+          "originalFee": 10000,
+          "discountFee": 5500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Business Administration - MBA",
+          "duration": "2",
+          "originalFee": 13000,
+          "discountFee": 6500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Aeronautical Engineering",
+          "duration": "2",
+          "originalFee": 10000,
+          "discountFee": 6500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Visual Communication Design (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Visual Communication Design (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Turkish Language and Literature (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Turkish Language and Literature (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Sports Management (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Sports Management (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Sociology (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Sociology (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Public Relations and Publicity (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Public Relations and Publicity (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychosocial Areas of Sports (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychosocial Areas of Sports (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 6000,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Political Science and Public Administration (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Political Science and International Relations (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Political Science and International Relations (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Physiotherapy and Rehabilitation (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Occupational Health and Safety (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Occupational Health and Safety (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Nutrition and Dietetics (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "New Media Communication and Journalism (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Mechatronics Engineering (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "International Trade and Logistics (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "International Trade and Logistics (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "International Logistics and Transportation (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Healthcare Management (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Health Management (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Gastronomy and Culinary Arts (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Gastronomy and Culinary Arts (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Exercise and Training Sciences (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Exercise and Training Sciences (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Engineering Management (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Engineering Management (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Economics and Finance (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Economics and Finance (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Engineering (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Engineering (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Clinical Psychology (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 20000,
+          "discountFee": 10000,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Clinical Psychology (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 15000,
+          "discountFee": 10000,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Civil Engineering (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Civil Engineering (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Child Development (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Child Development (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration - MBA (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 6500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration - MBA (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Aviation Management (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Aviation Management (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Audiology (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Architecture (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Architecture (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Aeronautical Engineering (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 4250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Aeronautical Engineering (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Addiction Psychology (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 10000,
+          "discountFee": 7500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        }
+      ],
+      "phd": [
+        {
+          "name": "Sports Management",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Gastronomy",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Exercise and Training Sciences",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Economics and Finance",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Civil Engineering",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4 Years",
+          "originalFee": 8000,
+          "discountFee": 8000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Aeronautical Engineering",
+          "duration": "4 Years",
+          "originalFee": 10000,
+          "discountFee": 10000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Economics and Finance",
+          "duration": "4 Years",
+          "originalFee": 10000,
+          "discountFee": 10000,
+          "language": "English"
+        }
+      ]
+    }
+  },
+  {
+    "_id": "6a8a19e4ee645321958fd28e",
+    "name": "Işık Üniversitesi",
+    "location": "Istanbul, Turkey",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKGBxYz03uMGn43Xes-MZlkkhhruSzQDaG0ExJmdnQ1A&s=10",
+    "description": "70% refund in case of visa rejection: Bachelor's Degree Fee List 2025-2026",
+    "programs": {
+      "associate": [
+        {
+          "name": "Opticianry",
+          "duration": "2 Years",
+          "originalFee": 1800,
+          "discountFee": 1400,
+          "language": "Turkish"
+        },
+        {
+          "name": "Operating Room Services",
+          "duration": "2 Years",
+          "originalFee": 1800,
+          "discountFee": 1400,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Laboratory Techniques",
+          "duration": "2 Years",
+          "originalFee": 1800,
+          "discountFee": 1400,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Imaging Techniques",
+          "duration": "2 Years",
+          "originalFee": 1800,
+          "discountFee": 1400,
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design",
+          "duration": "2 Years",
+          "originalFee": 1800,
+          "discountFee": 1400,
+          "language": "Turkish"
+        },
+        {
+          "name": "Foreign Trade",
+          "duration": "2 Years",
+          "originalFee": 1800,
+          "discountFee": 1400,
+          "language": "Turkish"
+        },
+        {
+          "name": "First and Emergency Aid",
+          "duration": "2 Years",
+          "originalFee": 1800,
+          "discountFee": 1400,
+          "language": "Turkish"
+        },
+        {
+          "name": "First Aid and Emergency",
+          "duration": "2 Years",
+          "originalFee": 1800,
+          "discountFee": 1400,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Programming",
+          "duration": "2 Years",
+          "originalFee": 1800,
+          "discountFee": 1400,
+          "language": "Turkish"
+        },
+        {
+          "name": "Anesthesia",
+          "duration": "2 Years",
+          "originalFee": 1800,
+          "discountFee": 1400,
+          "language": "Turkish"
+        }
+      ],
+      "bachelors": [
+        {
+          "name": "Software Engineering",
+          "duration": "4",
+          "originalFee": 4800,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "Psychology",
+          "duration": "4",
+          "originalFee": 3600,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "Mechatronics Engineering",
+          "duration": "4",
+          "originalFee": 4800,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "Mechanical Engineering",
+          "duration": "4",
+          "originalFee": 4800,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "Management Information Systems",
+          "duration": "4",
+          "originalFee": 3600,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "International Trade and Finance",
+          "duration": "4",
+          "originalFee": 3600,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "International Relations",
+          "duration": "4",
+          "originalFee": 3600,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "Interior Architecture and Environmental Design",
+          "duration": "4",
+          "originalFee": 3600,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "Industrial Engineering",
+          "duration": "4",
+          "originalFee": 3600,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "Electrical and Electronics Engineering",
+          "duration": "4",
+          "originalFee": 4800,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "Economics",
+          "duration": "4",
+          "originalFee": 3600,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "4",
+          "originalFee": 4800,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "Civil Engineering",
+          "duration": "4",
+          "originalFee": 4800,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4",
+          "originalFee": 3600,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "Biomedical Engineering",
+          "duration": "4",
+          "originalFee": 4800,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "Architecture",
+          "duration": "4",
+          "originalFee": 4800,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "Visual Communication Design",
+          "duration": "4 Years",
+          "originalFee": 3600,
+          "discountFee": 2700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology",
+          "duration": "4 Years",
+          "originalFee": 3600,
+          "discountFee": 2700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Management Information Systems",
+          "duration": "4 Years",
+          "originalFee": 3600,
+          "discountFee": 2700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Interior Architecture and Environmental Design",
+          "duration": "4 Years",
+          "originalFee": 3600,
+          "discountFee": 2700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Industrial Design",
+          "duration": "4 Years",
+          "originalFee": 3600,
+          "discountFee": 2700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Cinema and Television",
+          "duration": "4 Years",
+          "originalFee": 3600,
+          "discountFee": 2700,
+          "language": "Turkish"
+        }
+      ],
+      "masters": [
+        {
+          "name": "Mechanical Engineering",
+          "duration": "1.5",
+          "originalFee": 10200,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Management Information Systems",
+          "duration": "1.5",
+          "originalFee": 11400,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "International Relations",
+          "duration": "1.5",
+          "originalFee": 10200,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Information Technologies",
+          "duration": "1.5",
+          "originalFee": 10200,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Industrial Engineering",
+          "duration": "1.5",
+          "originalFee": 10200,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Executive MBA",
+          "duration": "1.5",
+          "originalFee": 11400,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Electronics Engineering",
+          "duration": "1.5",
+          "originalFee": 10200,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "1.5",
+          "originalFee": 10200,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Civil Engineering",
+          "duration": "1.5",
+          "originalFee": 10200,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Applied Economics",
+          "duration": "1.5",
+          "originalFee": 10200,
+          "discountFee": 3500,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Mechanical Engineering",
+          "duration": "2",
+          "originalFee": 10200,
+          "discountFee": 4000,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "International Relations",
+          "duration": "2",
+          "originalFee": 10200,
+          "discountFee": 4000,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Information Technologies",
+          "duration": "2",
+          "originalFee": 10200,
+          "discountFee": 4000,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Industrial Engineering",
+          "duration": "2",
+          "originalFee": 10200,
+          "discountFee": 4000,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Executive MBA",
+          "duration": "2",
+          "originalFee": 10200,
+          "discountFee": 4000,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Electronics Engineering",
+          "duration": "2",
+          "originalFee": 10200,
+          "discountFee": 4000,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "2",
+          "originalFee": 10200,
+          "discountFee": 4000,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Civil Engineering",
+          "duration": "2",
+          "originalFee": 10200,
+          "discountFee": 4000,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Applied Economics",
+          "duration": "2",
+          "originalFee": 10200,
+          "discountFee": 4000,
+          "thesisType": "Thesis",
+          "language": "English"
+        }
+      ],
+      "phd": [
+        {
+          "name": "Mathematics",
+          "duration": "5",
+          "originalFee": 22800,
+          "discountFee": 7500,
+          "language": "English"
+        },
+        {
+          "name": "Electronics Engineering",
+          "duration": "5",
+          "originalFee": 22800,
+          "discountFee": 7500,
+          "language": "English"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "5",
+          "originalFee": 22800,
+          "discountFee": 7500,
+          "language": "English"
+        },
+        {
+          "name": "Art Science",
+          "duration": "4 Years",
+          "originalFee": 22800,
+          "discountFee": 7500,
+          "language": "Turkish"
+        }
+      ]
+    }
+  },
+  {
+    "_id": "6a88d2cdcc597592c93eedd1",
+    "name": "Istanbul Atlas üniversitesi",
+    "location": "Istanbul, Turkey",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8gwIz70_hivtua_tnX-YTr9qWyQ0gaCeNiC3u6Sl_BA&s=10",
+    "description": "In Case of visa rejection, your initial deposit is nonrefundable. Bachelor's Degree Fee List 2025-2026",
+    "programs": {
+      "associate": [
+        {
+          "name": "Computer Programming",
+          "duration": "2",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "English"
+        },
+        {
+          "name": "Telehealth Technician",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Surgery Services",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Physiotherapy",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Oral and Dental Health",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Opticianry",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Operating Room Services",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Promotion and Marketing",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Laboratory Techniques",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Imaging Techniques",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Logistics",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Interior Design",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Information Security Technology",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Green and Ecological Building Technician",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "First Aid and Emergency",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Environmental Health and Environmental Risk Management Technician",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Elderly Care",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "E-Commerce and Marketing",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Disinfection Sterilization",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Dialysis",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Dental Prosthesis Technology",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        },
+        {
+          "name": "Anesthesia",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2220,
+          "language": "Turkish"
+        }
+      ],
+      "bachelors": [
+        {
+          "name": "Speech and Language Therapy",
+          "duration": "4",
+          "originalFee": 4500,
+          "discountFee": 3450,
+          "language": "English"
+        },
+        {
+          "name": "English Language and Literature",
+          "duration": "4",
+          "originalFee": 4660,
+          "discountFee": 3565,
+          "language": "English"
+        },
+        {
+          "name": "Psychology",
+          "duration": "4",
+          "originalFee": 5510,
+          "discountFee": 4220,
+          "language": "English"
+        },
+        {
+          "name": "Management Information Systems",
+          "duration": "4",
+          "originalFee": 5510,
+          "discountFee": 4220,
+          "language": "English"
+        },
+        {
+          "name": "International Trade and Finance",
+          "duration": "4",
+          "originalFee": 5510,
+          "discountFee": 4220,
+          "language": "English"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4",
+          "originalFee": 5510,
+          "discountFee": 4520,
+          "language": "English"
+        },
+        {
+          "name": "Molecular Biology and Genetics",
+          "duration": "4",
+          "originalFee": 5550,
+          "discountFee": 4250,
+          "language": "English"
+        },
+        {
+          "name": "Industrial Engineering",
+          "duration": "4",
+          "originalFee": 5550,
+          "discountFee": 4250,
+          "language": "English"
+        },
+        {
+          "name": "Electrical and Electronics Engineering",
+          "duration": "4",
+          "originalFee": 5550,
+          "discountFee": 4250,
+          "language": "English"
+        },
+        {
+          "name": "Physiotherapy and Rehabilitation",
+          "duration": "4",
+          "originalFee": 5900,
+          "discountFee": 4515,
+          "language": "English"
+        },
+        {
+          "name": "Nursing",
+          "duration": "4",
+          "originalFee": 5900,
+          "discountFee": 4515,
+          "language": "English"
+        },
+        {
+          "name": "Software Engineering",
+          "duration": "4",
+          "originalFee": 6300,
+          "discountFee": 4820,
+          "language": "English"
+        },
+        {
+          "name": "Data Science and Analytics",
+          "duration": "4",
+          "originalFee": 6300,
+          "discountFee": 4820,
+          "language": "English"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "4",
+          "originalFee": 6300,
+          "discountFee": 4820,
+          "language": "English"
+        },
+        {
+          "name": "Biomedical Engineering",
+          "duration": "4",
+          "originalFee": 6300,
+          "discountFee": 4820,
+          "language": "English"
+        },
+        {
+          "name": "Dentistry",
+          "duration": "5",
+          "originalFee": 23560,
+          "discountFee": 18030,
+          "language": "English"
+        },
+        {
+          "name": "Medicine",
+          "duration": "6",
+          "originalFee": 25000,
+          "discountFee": 19130,
+          "language": "English"
+        },
+        {
+          "name": "Visual Communication Design",
+          "duration": "4 Years",
+          "originalFee": 4660,
+          "discountFee": 3565,
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology",
+          "duration": "4 Years",
+          "originalFee": 4765,
+          "discountFee": 3645,
+          "language": "Turkish"
+        },
+        {
+          "name": "Physiotherapy and Rehabilitation",
+          "duration": "4 Years",
+          "originalFee": 5200,
+          "discountFee": 3980,
+          "language": "Turkish"
+        },
+        {
+          "name": "Nutrition and Dietetics",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 3450,
+          "language": "Turkish"
+        },
+        {
+          "name": "Nursing",
+          "duration": "4 Years",
+          "originalFee": 5200,
+          "discountFee": 3980,
+          "language": "Turkish"
+        },
+        {
+          "name": "Midwifery",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 3450,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medicine",
+          "duration": "4 Years",
+          "originalFee": 20000,
+          "discountFee": 15300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Interior Architecture and Environmental Design",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 4825,
+          "language": "Turkish"
+        },
+        {
+          "name": "Industrial Design",
+          "duration": "4 Years",
+          "originalFee": 4600,
+          "discountFee": 3565,
+          "language": "Turkish"
+        },
+        {
+          "name": "Ergotherapy",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 3450,
+          "language": "Turkish"
+        },
+        {
+          "name": "Digital Game Design",
+          "duration": "4 Years",
+          "originalFee": 4660,
+          "discountFee": 3565,
+          "language": "Turkish"
+        },
+        {
+          "name": "Dentistry",
+          "duration": "4 Years",
+          "originalFee": 18530,
+          "discountFee": 14175,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "4 Years",
+          "originalFee": 5550,
+          "discountFee": 4250,
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4 Years",
+          "originalFee": 4765,
+          "discountFee": 3645,
+          "language": "Turkish"
+        }
+      ],
+      "masters": [
+        {
+          "name": "Molecular Biology and Genetics",
+          "duration": "2",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Information Technologies",
+          "duration": "2",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Electrical and Electronics Engineering",
+          "duration": "2",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "2",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Technology and Innovation Management (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5295,
+          "discountFee": 4055,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Surgical Disease Nursing (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Speech and Language Therapy (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 15000,
+          "discountFee": 13500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 8500,
+          "discountFee": 7650,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Physiotherapy and Rehabilitation (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Physiology (Medicine) (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Occupational Therapy (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Nutrition and Dietetics (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Nutrition and Dietetics (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5295,
+          "discountFee": 4055,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Neuroscience (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Molecular Biology and Genetics (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Midwifery (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Midwifery (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5295,
+          "discountFee": 4055,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Pharmacology (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Biology and Genetics (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Biochemistry (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Internal Medicine Nursing (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Industrial Engineering (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Histology and Embryology (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Gynecology and Obstetrics Nursing (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Engineering (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Cognitive Rehabilitation (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5295,
+          "discountFee": 4055,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Anatomy (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 7415,
+          "discountFee": 5680,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        }
+      ],
+      "phd": [
+        {
+          "name": "Computer Engineering (PhD)",
+          "duration": "6",
+          "originalFee": 16500,
+          "discountFee": 12625,
+          "language": "English"
+        },
+        {
+          "name": "Surgical Diseases Nursing",
+          "duration": "4 Years",
+          "originalFee": 16500,
+          "discountFee": 12625,
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology",
+          "duration": "4 Years",
+          "originalFee": 16500,
+          "discountFee": 12625,
+          "language": "Turkish"
+        },
+        {
+          "name": "Oral and Maxillofacial Surgery",
+          "duration": "4 Years",
+          "originalFee": 15000,
+          "discountFee": 15000,
+          "language": "Turkish"
+        }
+      ]
+    }
+  },
+  {
+    "_id": "6a88cca44eed962830196e57",
+    "name": "Beykent üniversitesi",
+    "location": "Istanbul, Turkey",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvair43mSm3nrOsHY7bjpwhQBfmK0lO02YGXh2vlVg_Q&s=10",
+    "description": "70% refund in case of visa rejection: Bachelor's Degree Fee List 2025-2026",
+    "programs": {
+      "associate": [
+        {
+          "name": "Public Relations and Advertising",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Child Development",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Water and Waste Management Technician",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Tourist Guiding",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Tourism and Travel Services",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Textile Technology",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Radiotherapy",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Public Relations and Advertising",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Physiotherapy",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Pharmacy Services",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Pathology Laboratory Techniques",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Orthopedic Prosthetics and Orthotics",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Oral and Dental Health",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Opticianry",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Operating Room Services",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Occupational Health and Safety",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Multidimensional Modelling and Animation",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Laboratory Techniques",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Imaging Techniques",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Documentation and Secretarial Services",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Mechatronics",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Logistics",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Justice",
+          "duration": "2 Years",
+          "originalFee": 3400,
+          "discountFee": 1300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Interior Design",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Information Security Technology",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Hybrid and Electric Vehicle Technology",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Human Resources Management",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Health Institutions Management",
+          "duration": "2 Years",
+          "originalFee": 3400,
+          "discountFee": 1300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Foreign Trade",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1300,
+          "language": "Turkish"
+        },
+        {
+          "name": "First Aid and Emergency Care",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Fashion Design",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Environmental Measurement and Monitoring Systems Tech",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Electroneurophysiology",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Dialysis",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Dental Prosthetics Technology",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Court Services",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Cooking",
+          "duration": "2 Years",
+          "originalFee": 3810,
+          "discountFee": 1300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Construction Technology",
+          "duration": "2 Years",
+          "originalFee": 3810,
+          "discountFee": 1300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Technology",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Programming",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "CNC Programming and Operation",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Civil Aviation Cabin Services",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Civil Air Transport Management",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Child Development",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Building Insulation Technology",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Biomedical Device Technology",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Banking and Insurance",
+          "duration": "2 Years",
+          "originalFee": 3810,
+          "discountFee": 1300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Automotive Technology",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Audiometry",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "Artificial Intelligence Operator",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Architectural Restoration",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "language": "Turkish"
+        },
+        {
+          "name": "Applied English and Translation",
+          "duration": "2 Years",
+          "originalFee": 3810,
+          "discountFee": 1300,
+          "language": "English"
+        },
+        {
+          "name": "Anaesthesia",
+          "duration": "2 Years",
+          "originalFee": 2613,
+          "discountFee": 1900,
+          "language": "Turkish"
+        },
+        {
+          "name": "3D Modelling and Animation",
+          "duration": "2 Years",
+          "originalFee": 3400,
+          "discountFee": 1300,
+          "language": "Turkish"
+        }
+      ],
+      "bachelors": [
+        {
+          "name": "Visual Communication and Design",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Translation and Interpretation",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Sociology",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Radio, Cinema and TV",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Psychology",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Political Science and Public Administration",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "New Media",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Mechanical Engineering",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Management Information Systems",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Logistic Management",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "International Trade and Finance",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "International Relations",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Interior Architecture",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Industrial Engineering",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Industrial Design",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Graphic Design",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "English Language and Literature",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Economics",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Digital Game Design",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Civil Engineering",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Cinema and TV",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Banking and Finance",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Architecture",
+          "duration": "4",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4",
+          "originalFee": 4000,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "4",
+          "originalFee": 4000,
+          "discountFee": 2700,
+          "language": "English"
+        },
+        {
+          "name": "Visual Communication and Design",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Turkish Language and Literature",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Translation and Interpretation (Russian)",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Tourism Management",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Software Engineering",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Software Development",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Sociology",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Radio, Cinema and TV",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Political Science and Public Administration",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Physiotherapy and Rehabilitation",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Performing Arts Management",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Nutrition and Dietetics",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Nursing",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2700,
+          "language": "Turkish"
+        },
+        {
+          "name": "New Media",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Midwifery",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medicine",
+          "duration": "4 Years",
+          "originalFee": 18000,
+          "discountFee": 11000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Media and Communication",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Mathematics",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Management Information Systems",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Logistics Management",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Law",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "International Trade and Finance",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Interior Architecture",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Information Systems and Technologies",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Industrial Engineering",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Industrial Design",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "History",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Health Management",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Gastronomy and Culinary Arts",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Fashion and Textile Design",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Electrical and Electronics Engineering",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Economics",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Digital Game Design",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Dentistry",
+          "duration": "4 Years",
+          "originalFee": 18000,
+          "discountFee": 11000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Communication and Design",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Civil Engineering",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Chemical Engineering",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Capital Markets",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Banking and Finance",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Architecture",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Acting",
+          "duration": "4 Years",
+          "originalFee": 3500,
+          "discountFee": 2500,
+          "language": "Turkish"
+        }
+      ],
+      "masters": [
+        {
+          "name": "Business Administration - MBA",
+          "duration": "1.5",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "English Language and Literature",
+          "duration": "2",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Economics and Finance",
+          "duration": "2",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Business Administration - MBA",
+          "duration": "2",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "History (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "History (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Gastronomy and Culinary Arts (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Gastronomy and Culinary Arts (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Finance (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Finance (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Economics and Finance (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Economics and Finance (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Economics (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Economics (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Earthquake Risky Structures & Urban Transportation (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Engineering (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Engineering (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Communication Arts Design (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Clinical Psychology (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 16500,
+          "discountFee": 12000,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Civil Engineering (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Civil Engineering (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Cinema and TV (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration - MBA (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration - MBA (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Banking and Finance (Non-Thesis) (D.E)",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1400,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Architecture (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Architectural Design (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2200,
+          "discountFee": 1600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Accounting and Auditing (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 2900,
+          "discountFee": 2100,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        }
+      ],
+      "phd": [
+        {
+          "name": "Sociology",
+          "duration": "4 Years",
+          "originalFee": 6200,
+          "discountFee": 4500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Political Science and International Relations",
+          "duration": "4 Years",
+          "originalFee": 6200,
+          "discountFee": 4500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Media and Communication",
+          "duration": "4 Years",
+          "originalFee": 6200,
+          "discountFee": 4500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Mathematics",
+          "duration": "4 Years",
+          "originalFee": 6200,
+          "discountFee": 4500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "4 Years",
+          "originalFee": 6200,
+          "discountFee": 4500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Cinema and Television",
+          "duration": "4 Years",
+          "originalFee": 6200,
+          "discountFee": 4500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4 Years",
+          "originalFee": 6200,
+          "discountFee": 4500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Architecture",
+          "duration": "4 Years",
+          "originalFee": 6200,
+          "discountFee": 4500,
+          "language": "Turkish"
+        }
+      ]
+    }
+  },
+  {
+    "_id": "6a88c49008389dc5a533709b",
+    "name": "Beykoz üniversitesi",
+    "location": "Istanbul, Turkey",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMYkRoF-3vxwyfPWO53jrh04s6yqxF2dhAKQ06pi4IMw&s=10",
+    "description": "75% refund in case of visa rejection: Bachelor's Degree Fee List 2025-2026",
+    "programs": {
+      "associate": [
+        {
+          "name": "Civil Aviation Cabin Services",
+          "duration": "2",
+          "originalFee": 3800,
+          "discountFee": 1900,
+          "language": "English"
+        },
+        {
+          "name": "Technology of Information Security",
+          "duration": "2 Years",
+          "originalFee": 3400,
+          "discountFee": 1700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Rail Systems Management",
+          "duration": "2 Years",
+          "originalFee": 3400,
+          "discountFee": 1700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Maritime and Port Management",
+          "duration": "2 Years",
+          "originalFee": 3400,
+          "discountFee": 1700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Logistics",
+          "duration": "2 Years",
+          "originalFee": 3400,
+          "discountFee": 1700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Logistics (D.E)",
+          "duration": "2 Years",
+          "originalFee": 3400,
+          "discountFee": 1700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Foreign Trade",
+          "duration": "2 Years",
+          "originalFee": 3400,
+          "discountFee": 1700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Foreign Trade (D.E)",
+          "duration": "2 Years",
+          "originalFee": 3400,
+          "discountFee": 1700,
+          "language": "Turkish"
+        },
+        {
+          "name": "E-Trade and Marketing",
+          "duration": "2 Years",
+          "originalFee": 3400,
+          "discountFee": 1700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Programming",
+          "duration": "2 Years",
+          "originalFee": 3400,
+          "discountFee": 1700,
+          "language": "Turkish"
+        },
+        {
+          "name": "Civil Aviation Cabin Services",
+          "duration": "2 Years",
+          "originalFee": 3400,
+          "discountFee": 1700,
+          "language": "Turkish"
+        }
+      ],
+      "bachelors": [
+        {
+          "name": "Psychology",
+          "duration": "4",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "language": "English"
+        },
+        {
+          "name": "Political Science and International Relations",
+          "duration": "4",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "language": "English"
+        },
+        {
+          "name": "Logistics Management",
+          "duration": "4",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "language": "English"
+        },
+        {
+          "name": "International Trade and Finance",
+          "duration": "4",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "language": "English"
+        },
+        {
+          "name": "Industrial Engineering",
+          "duration": "4",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "language": "English"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "language": "English"
+        },
+        {
+          "name": "Aviation Management",
+          "duration": "4",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "language": "English"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "4",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "language": "English"
+        },
+        {
+          "name": "Software Engineering",
+          "duration": "4 Years",
+          "originalFee": 4600,
+          "discountFee": 2300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Radio, Television and Cinema",
+          "duration": "4 Years",
+          "originalFee": 4600,
+          "discountFee": 2300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Public Relations and Advertising",
+          "duration": "4 Years",
+          "originalFee": 4600,
+          "discountFee": 2300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology",
+          "duration": "4 Years",
+          "originalFee": 4600,
+          "discountFee": 2300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Interior Architecture and Environmental Design",
+          "duration": "4 Years",
+          "originalFee": 4600,
+          "discountFee": 2300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design",
+          "duration": "4 Years",
+          "originalFee": 4600,
+          "discountFee": 2300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Gastronomy and Culinary Arts",
+          "duration": "4 Years",
+          "originalFee": 4600,
+          "discountFee": 2300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Digital Game Design",
+          "duration": "4 Years",
+          "originalFee": 4600,
+          "discountFee": 2300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Communication and Design",
+          "duration": "4 Years",
+          "originalFee": 4600,
+          "discountFee": 2300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Cartoon and Animation",
+          "duration": "4 Years",
+          "originalFee": 4600,
+          "discountFee": 2300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4 Years",
+          "originalFee": 4600,
+          "discountFee": 2300,
+          "language": "Turkish"
+        },
+        {
+          "name": "Architecture",
+          "duration": "4 Years",
+          "originalFee": 4600,
+          "discountFee": 2300,
+          "language": "Turkish"
+        }
+      ],
+      "masters": [
+        {
+          "name": "Technology and Innovation Management",
+          "duration": "2",
+          "originalFee": 7000,
+          "discountFee": 3500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Global Politics and International Relations",
+          "duration": "2",
+          "originalFee": 7000,
+          "discountFee": 3500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "2",
+          "originalFee": 7000,
+          "discountFee": 3500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Business Administration - MBA",
+          "duration": "2",
+          "originalFee": 7000,
+          "discountFee": 3500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Artificial Intelligence",
+          "duration": "2",
+          "originalFee": 7000,
+          "discountFee": 3500,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Technology and Innovation Management",
+          "duration": "1.5",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Marketing and Brand Management",
+          "duration": "1.5",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Global Politics and International Relations",
+          "duration": "1.5",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Entrepreneurship and Innovation Management",
+          "duration": "1.5",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "1.5",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Business Administration - MBA",
+          "duration": "1.5",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Artificial Intelligence",
+          "duration": "1.5",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Business Administration - MBA",
+          "duration": "1.5",
+          "originalFee": 4200,
+          "discountFee": 2100,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Work and Organizational Psychology (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5200,
+          "discountFee": 2600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Visual Arts and Visual Communication Design (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Visual Arts and Visual Communication Design (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5200,
+          "discountFee": 2600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5200,
+          "discountFee": 2600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Marketing and Brand Management (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5200,
+          "discountFee": 2600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "International Trade and Logistics (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "International Trade and Logistics (Non-Thesis) (D.E)",
+          "duration": "2 Years",
+          "originalFee": 4200,
+          "discountFee": 2100,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "International Trade and Logistics (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5200,
+          "discountFee": 2600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Human Resources Management (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Financial Economics (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Financial Economics (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5200,
+          "discountFee": 2600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration - MBA (Thesis)",
+          "duration": "2 Years",
+          "originalFee": 6000,
+          "discountFee": 3000,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration - MBA (Non-Thesis) (D.E)",
+          "duration": "2 Years",
+          "originalFee": 4200,
+          "discountFee": 2100,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration - MBA (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5200,
+          "discountFee": 2600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Accounting and Auditing (Non-Thesis)",
+          "duration": "2 Years",
+          "originalFee": 5200,
+          "discountFee": 2600,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        }
+      ],
+      "phd": []
+    }
+  },
+  {
+    "_id": "6a88be2ed2b9481cdb6e52a0",
+    "name": "ISTANBUL TOPKAPI UNIVERSITY",
+    "location": "Istanbul, Turkey",
+    "image": "https://i.ytimg.com/vi/UDRwKmhbJUg/maxresdefault.jpg",
+    "description": "75% refund in case of visa Rejection (Cash Payment = 5% off discounted) Bachelor's Degree Fee List 2025-2026",
+    "programs": {
+      "associate": [
+        {
+          "name": "Graphic Design",
+          "duration": "2",
+          "originalFee": 3500,
+          "discountFee": 1750,
+          "language": "English"
+        },
+        {
+          "name": "Web Design and Coding",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Tourist Guiding",
+          "duration": "2 Years",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Tourist Guiding (Distance Learning)",
+          "duration": "2 Years",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Telehealth Technician",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Physiotherapy",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Pharmacy Services",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Pathology Laboratory Techniques",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Oral and Dental Health",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Opticianry",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Operating Room Services",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Mobile Technologies",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Laboratory Techniques",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Imaging Techniques",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Documentation and Secretarial",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Data Processing Technician",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Mapping and Cadastre",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Internet and Network Technologies",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 1750,
+          "language": "Turkish"
+        },
+        {
+          "name": "Internet and Network Technologies (Distance Learning)",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Interior Design",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Green and Ecological Building Technician",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design (Distance Learning)",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "First and Emergency Aid",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 1750,
+          "language": "Turkish"
+        },
+        {
+          "name": "Fashion Design",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Fashion Design (Distance Learning)",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Electrical",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Elderly Care",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "E-Commerce and Marketing",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 1750,
+          "language": "Turkish"
+        },
+        {
+          "name": "Dental Prosthesis Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Cybersecurity",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 1750,
+          "language": "Turkish"
+        },
+        {
+          "name": "Cooking",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Cooking (Distance Learning)",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Technology",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 1750,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Programming",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 1750,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Programming (Distance Learning)",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Aided Design and Animation",
+          "duration": "2 Years",
+          "originalFee": 3500,
+          "discountFee": 1750,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Aided Design and Animation (Distance Learning)",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Civil Aviation Cabin Services",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Civil Air Transport Management",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Child Development",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Automotive Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Audiology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Architectural Restoration",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Anesthesia",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Aircraft Technology",
+          "duration": "2 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        }
+      ],
+      "bachelors": [
+        {
+          "name": "Sociology",
+          "duration": "4",
+          "originalFee": 3900,
+          "discountFee": 1950,
+          "language": "English"
+        },
+        {
+          "name": "Philosophy",
+          "duration": "4",
+          "originalFee": 3900,
+          "discountFee": 1950,
+          "language": "English"
+        },
+        {
+          "name": "Psychology",
+          "duration": "4",
+          "originalFee": 5000,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Political Science and International Relations",
+          "duration": "4",
+          "originalFee": 5000,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Management Information Systems",
+          "duration": "4",
+          "originalFee": 5000,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "International Trade and Business",
+          "duration": "4",
+          "originalFee": 5000,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "English Translation and Interpreting",
+          "duration": "4",
+          "originalFee": 5000,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "English Language and Literature",
+          "duration": "4",
+          "originalFee": 5000,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Electrical-Electronics Engineering",
+          "duration": "4",
+          "originalFee": 5000,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Economics",
+          "duration": "4",
+          "originalFee": 5000,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "4",
+          "originalFee": 5000,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4",
+          "originalFee": 5000,
+          "discountFee": 2500,
+          "language": "English"
+        },
+        {
+          "name": "Graphic Design",
+          "duration": "4",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Visual Communication Design",
+          "duration": "4",
+          "originalFee": 3900,
+          "discountFee": 1950,
+          "language": "Turkish"
+        },
+        {
+          "name": "Painting",
+          "duration": "4",
+          "originalFee": 3900,
+          "discountFee": 1950,
+          "language": "Turkish"
+        },
+        {
+          "name": "Film Design and Management",
+          "duration": "4",
+          "originalFee": 3900,
+          "discountFee": 1950,
+          "language": "Turkish"
+        },
+        {
+          "name": "Theatre",
+          "duration": "4",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Textile and Fashion Design",
+          "duration": "4",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Sports Management",
+          "duration": "4",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Recreation",
+          "duration": "4",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Radio, Television and Cinema",
+          "duration": "4",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "New Media and Communication",
+          "duration": "4",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Management Information Systems",
+          "duration": "1.5",
+          "originalFee": 7500,
+          "discountFee": 3750,
+          "language": "English"
+        },
+        {
+          "name": "Visual Communication Design",
+          "duration": "4 Years",
+          "originalFee": 3900,
+          "discountFee": 1950,
+          "language": "Turkish"
+        },
+        {
+          "name": "Theatre",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Textile and Fashion Design",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Sports Management",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Software Engineering",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 2250,
+          "language": "Turkish"
+        },
+        {
+          "name": "Recreation",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Radio, Television and Cinema",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 2250,
+          "language": "Turkish"
+        },
+        {
+          "name": "Painting",
+          "duration": "4 Years",
+          "originalFee": 3900,
+          "discountFee": 1950,
+          "language": "Turkish"
+        },
+        {
+          "name": "Occupational Therapy",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Nursing",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "New Media and Communication",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Music",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Midwifery",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Management Information Systems",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 2250,
+          "language": "Turkish"
+        },
+        {
+          "name": "International Trade and Business",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 2250,
+          "language": "Turkish"
+        },
+        {
+          "name": "Interior Architecture and Environmental Design",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Information Systems Engineering",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 2250,
+          "language": "Turkish"
+        },
+        {
+          "name": "Industrial Engineering",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 2250,
+          "language": "Turkish"
+        },
+        {
+          "name": "History",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 2250,
+          "language": "Turkish"
+        },
+        {
+          "name": "Gastronomy and Culinary Arts",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Film Design and Management",
+          "duration": "4 Years",
+          "originalFee": 3900,
+          "discountFee": 1950,
+          "language": "Turkish"
+        },
+        {
+          "name": "Electrical-Electronics Engineering",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 2250,
+          "language": "Turkish"
+        },
+        {
+          "name": "Economics",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 2250,
+          "language": "Turkish"
+        },
+        {
+          "name": "Digital Game Design",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Data Science and Analytics",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 2250,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 2250,
+          "language": "Turkish"
+        },
+        {
+          "name": "Coaching Education",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Cartoon and Animation",
+          "duration": "4 Years",
+          "originalFee": 4000,
+          "discountFee": 2000,
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 2250,
+          "language": "Turkish"
+        },
+        {
+          "name": "Banking and Insurance",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 2250,
+          "language": "Turkish"
+        },
+        {
+          "name": "Aviation Management",
+          "duration": "4 Years",
+          "originalFee": 4500,
+          "discountFee": 2250,
+          "language": "Turkish"
+        },
+        {
+          "name": "Architecture",
+          "duration": "4 Years",
+          "originalFee": 5000,
+          "discountFee": 2500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design",
+          "duration": "4 Years",
+          "originalFee": 3000,
+          "discountFee": 1500,
+          "language": "Turkish"
+        }
+      ],
+      "masters": [
+        {
+          "name": "Management Information Systems",
+          "duration": "2",
+          "originalFee": 7500,
+          "discountFee": 3750,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Management Information Systems",
+          "duration": "1.5",
+          "originalFee": 7500,
+          "discountFee": 3750,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Psychology (Thesis) Thesis",
+          "duration": "2 Years",
+          "originalFee": 17000,
+          "discountFee": 8500,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Marketing Communication (Thesis) Thesis",
+          "duration": "2 Years",
+          "originalFee": 6500,
+          "discountFee": 3250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Management Information Systems (Thesis) Thesis",
+          "duration": "2 Years",
+          "originalFee": 6500,
+          "discountFee": 3250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Management Information Systems (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 5500,
+          "discountFee": 2750,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "History (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 5500,
+          "discountFee": 2750,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design (Thesis) Thesis",
+          "duration": "2 Years",
+          "originalFee": 6500,
+          "discountFee": 3250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Gastronomy and Culinary Arts (Thesis) Thesis",
+          "duration": "2 Years",
+          "originalFee": 6500,
+          "discountFee": 3250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Gastronomy and Culinary Arts (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 5500,
+          "discountFee": 2750,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration (Thesis) Thesis",
+          "duration": "2 Years",
+          "originalFee": 6500,
+          "discountFee": 3250,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 5500,
+          "discountFee": 2750,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Architecture (Non-Thesis) Non-Thesis",
+          "duration": "2 Years",
+          "originalFee": 5500,
+          "discountFee": 2750,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        }
+      ],
+      "phd": []
+    }
+  },
+  {
+    "_id": "6a862227d33c006b8ce5eef8",
+    "name": "Halic University",
+    "location": "Istanbul",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpDyYQYYAG7mhqq5lMO1n2e4LxbFYMqATknRQqYIx26g&s=10",
+    "description": "75% refund in case of visa Rejection\n(Cash Payment = 5% off discounted)\nBachelor's Degree Fee List 2025-2026",
+    "programs": {
+      "associate": [
+        {
+          "name": "Anaesthesiology",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Cookery",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Banking and Insurance",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Programming",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Technology",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Information Security Technology",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Cloud Computing Operations",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Big Data Analytics",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Child Development",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Foreign Trade",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Digital Transformation Electronics",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Electricity",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Electronics Technology",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "E-Commerce and Marketing",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Physiotherapy",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Interior Design",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "First and Emergency Aid",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Manufacturing Execution Systems Operations",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Human Resources Management",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Unmanned Vehicle Technology",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Construction Technology",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Management",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Corporate Information Technology",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Logistics",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Court Office Services",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Machinery",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Fashion Design",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Autonomous Systems Technology",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Game Development and Programming",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Rail Systems Management",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Robotics and Artificial Intelligence",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Hair Care and Beauty Services",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Health Tourism Management",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Health Information Systems Technology",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Cyber Security",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medical Imaging Techniques",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Tourism and Hotel Management",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        },
+        {
+          "name": "Artificial Intelligence Operations",
+          "duration": "2",
+          "originalFee": 1690,
+          "discountFee": 1500,
+          "language": "Turkish"
+        }
+      ],
+      "bachelors": [
+        {
+          "name": "American Culture and Literature",
+          "duration": "4",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "language": "English"
+        },
+        {
+          "name": "English Translation and Interpreting",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "English"
+        },
+        {
+          "name": "Mathematics",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Molecular Biology and Genetics",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "English"
+        },
+        {
+          "name": "Molecular Biology and Genetics",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "English"
+        },
+        {
+          "name": "History",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Turkish Language and Literature",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Cartoon and Animation",
+          "duration": "4",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "language": "Turkish"
+        },
+        {
+          "name": "Digital Game Design",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Gastronomy and Culinary Arts",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Visual Communication Design",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Textile and Fashion Design",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Economics",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Public Relations and Publicity",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "English"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Logistics Management",
+          "duration": "4",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "language": "English"
+        },
+        {
+          "name": "Political Science and International Relations",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "International Trade and Business",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "English"
+        },
+        {
+          "name": "Management Information Systems",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "English"
+        },
+        {
+          "name": "Industrial Design",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Interior Architecture and Environmental Design",
+          "duration": "4",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "language": "Turkish"
+        },
+        {
+          "name": "Architecture",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "English"
+        },
+        {
+          "name": "Electrical and Electronics Engineering",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "English"
+        },
+        {
+          "name": "Industrial Engineering",
+          "duration": "4",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "language": "English"
+        },
+        {
+          "name": "Mechanical Engineering",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "English"
+        },
+        {
+          "name": "Software Engineering",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "English"
+        },
+        {
+          "name": "Nutrition and Dietetics",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "English"
+        },
+        {
+          "name": "Nutrition and Dietetics",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Speech and Language Therapy",
+          "duration": "4",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "language": "Turkish"
+        },
+        {
+          "name": "Midwifery",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Physiotherapy and Rehabilitation",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Physiotherapy and Rehabilitation",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "English"
+        },
+        {
+          "name": "Nursing",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "English"
+        },
+        {
+          "name": "Nursing",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Coaching Education",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Physical Education and Sports Teaching",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Recreation",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Sports Management",
+          "duration": "4",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "language": "English"
+        },
+        {
+          "name": "Sports Management",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Opera",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Theatre",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Turkish Music",
+          "duration": "4",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medicine",
+          "duration": "6",
+          "originalFee": 23540,
+          "discountFee": 16050,
+          "language": "Turkish"
+        },
+        {
+          "name": "Medicine",
+          "duration": "6",
+          "originalFee": 26400,
+          "discountFee": 18000,
+          "language": "English"
+        }
+      ],
+      "masters": [
+        {
+          "name": "Physical Education and Sports",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Nutrition and Dietetics",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Computer Engineering",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Electrical and Electronics Engineering",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Electrical and Electronics Engineering",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Industrial Engineering",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Industrial Engineering",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Industrial Engineering",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Industrial Engineering",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Mechanical Engineering",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Industrial Design",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Industrial Design",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Physiotherapy and Rehabilitation",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Graphic Design",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Hospital and Health Institutions Management",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Hospital and Health Institutions Management",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Nursing",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Nursing",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Interior Architecture",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Interior Architecture",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Human Resources Management",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Human Resources Management",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Artificial Intelligence Engineering",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Artificial Intelligence Engineering",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Management Information Systems",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Management Information Systems",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Digital Media Management",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Digital Media Management",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "2",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "1.5",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "2",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Business Administration",
+          "duration": "1.5",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Clinical Psychology",
+          "duration": "2",
+          "originalFee": 18700,
+          "discountFee": 12750,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Architecture",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Architecture",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Molecular Biology and Genetics",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Molecular Biology and Genetics",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Accounting and Auditing",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Accounting and Auditing",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Psychology",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Textile and Fashion Design",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Textile and Fashion Design",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Theatre",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Theatre",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Tourism Management",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Tourism Management",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Turkish Language and Literature",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Turkish Language and Literature",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Turkish Music",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Turkish Music",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "International Trade and Business",
+          "duration": "2",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "International Trade and Business",
+          "duration": "1.5",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "International Business Management",
+          "duration": "1.5",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "thesisType": "Non-Thesis",
+          "language": "English"
+        },
+        {
+          "name": "International Business Management",
+          "duration": "2",
+          "originalFee": 5170,
+          "discountFee": 3525,
+          "thesisType": "Thesis",
+          "language": "English"
+        },
+        {
+          "name": "Applied Mathematics",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Applied Mathematics",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Applied Psychology",
+          "duration": "1.5",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Non-Thesis",
+          "language": "Turkish"
+        },
+        {
+          "name": "Applied Psychology",
+          "duration": "2",
+          "originalFee": 2970,
+          "discountFee": 2025,
+          "thesisType": "Thesis",
+          "language": "Turkish"
+        }
+      ],
+      "phd": []
+    }
   }
 ];
 
