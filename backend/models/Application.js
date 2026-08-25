@@ -54,17 +54,17 @@ const applicationSchema = new mongoose.Schema(
 
     fatherName: {
       type: String,
-      required: true
+      default: ""
     },
 
     motherName: {
       type: String,
-      required: true
+      default: ""
     },
 
     passportNumber: {
       type: String,
-      required: true
+      default: ""
     },
 
     universityId: {

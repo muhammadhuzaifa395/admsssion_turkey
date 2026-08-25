@@ -27,41 +27,23 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use("/uploads", express.static(uploadsDir));
 
-const ATLAS_URI = process.env.MONGO_URI || "mongodb+srv://huzaifarasheed2006:Fcc986108@huzaifaauth.ylrg6rk.mongodb.net/admission_turkey?retryWrites=true&w=majority&appName=HuzaifaAuth";
-let PRIMARY_URI = ATLAS_URI;
+const connectDB = require("./config/db");
 
-let cachedPromise = null;
-
-const connectDB = async () => {
-  if (mongoose.connection.readyState === 1) {
-    return mongoose.connection;
+const initDB = async () => {
+  try {
+    const db = await connectDB();
+    ensureDefaultAdmin().catch((err) => console.error("Admin seed note:", err.message));
+    return db;
+  } catch (err) {
+    console.error("DB Initialization Error:", err.message);
+    throw err;
   }
-
-  if (!cachedPromise) {
-    cachedPromise = mongoose.connect(PRIMARY_URI, {
-      serverSelectionTimeoutMS: 8000,
-      connectTimeoutMS: 15000,
-      family: 4, // Force IPv4 to eliminate Vercel serverless IPv6 connection drops
-      maxPoolSize: 10,
-      minPoolSize: 1
-    }).then((db) => {
-      console.log("MongoDB Atlas Connected Successfully");
-      ensureDefaultAdmin().catch((err) => console.error("Admin seed note:", err.message));
-      return db;
-    }).catch(async (err) => {
-      cachedPromise = null;
-      console.error(`MongoDB Connection Note: ${err.message}`);
-      throw err;
-    });
-  }
-
-  return cachedPromise;
 };
 
 app.use(async (req, res, next) => {
   if (req.path.startsWith("/api")) {
     try {
-      await connectDB();
+      await initDB();
     } catch (error) {
       console.error("DB Connection Middleware Note:", error.message);
       // Non-blocking: continue so local fail-safe storage can serve student data smoothly
@@ -93,7 +75,7 @@ if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
-  connectDB().catch((err) => {
+  initDB().catch((err) => {
     console.error("Initial DB Connection Error:", err.message);
   });
 }

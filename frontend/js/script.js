@@ -6,7 +6,7 @@ const API_BASE_URL = (window.location.hostname && window.location.hostname.inclu
   : "http://localhost:5000";
 
 // Helper: Fast Fetch with Timeout (prevents page hanging on unreachable servers)
-async function fetchWithTimeout(resource, options = {}, timeoutMs = 1500) {
+async function fetchWithTimeout(resource, options = {}, timeoutMs = 8000) {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeoutMs);
   try {
@@ -32,6 +32,7 @@ if (window.location.pathname.toLowerCase().includes("/admin")) {
 
   if (!adminUserRaw) {
     window.location.href = loginRedirectPath;
+  } else {
     try {
       const adminUser = JSON.parse(adminUserRaw);
       const userRole = adminUser ? adminUser.role : "";
@@ -1578,7 +1579,7 @@ async function loadUniversities() {
 
   // 1. FAST BACKGROUND FETCH for real backend DB universities added via Admin Panel
   try {
-    const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities`, {}, 2500);
+    const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities`, {}, 8000);
     if (response && response.ok) {
       const data = await response.json();
       const fetchedUnis = data.universities || [];
@@ -4629,7 +4630,7 @@ async function initHomeUniversitySlider() {
 
   // 2. FAST BACKGROUND FETCH (1.5s timeout)
   try {
-    const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities`, {}, 1500);
+    const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities`, {}, 8000);
     if (response && response.ok) {
       const data = await response.json();
       const fetchedUnis = data.universities || [];
