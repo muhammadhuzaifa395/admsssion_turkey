@@ -1585,6 +1585,10 @@ async function loadUniversities() {
       const fetchedUnis = data.universities || [];
 
       if (fetchedUnis.length > 0) {
+        try {
+          localStorage.setItem("cached_universities_atlas", JSON.stringify(fetchedUnis));
+        } catch(e) {}
+
         const groupedMap = new Map();
         const getArray = val => (Array.isArray(val) ? val : []);
 
@@ -1625,7 +1629,42 @@ async function loadUniversities() {
     console.warn("Fetch universities error:", error);
   }
 
-  // Render default universities if database is empty
+  // Fallback to cached Atlas universities if offline / server disconnected
+  try {
+    const cachedRaw = localStorage.getItem("cached_universities_atlas");
+    if (cachedRaw) {
+      const cachedUnis = JSON.parse(cachedRaw);
+      if (Array.isArray(cachedUnis) && cachedUnis.length > 0) {
+        const groupedMap = new Map();
+        const getArray = val => (Array.isArray(val) ? val : []);
+        cachedUnis.forEach((uni) => {
+          const key = (uni.name || "").trim().toLowerCase();
+          if (!groupedMap.has(key)) {
+            groupedMap.set(key, {
+              _id: uni._id,
+              name: uni.name,
+              location: uni.location || "Türkiye",
+              description: uni.description,
+              image: uni.image,
+              programs: {
+                associate: [...getArray(uni.programs?.associate)],
+                bachelors: [...getArray(uni.programs?.bachelors)],
+                masters: [...getArray(uni.programs?.masters)],
+                phd: [...getArray(uni.programs?.phd)]
+              }
+            });
+          }
+        });
+        const displayUnis = Array.from(groupedMap.values());
+        if (displayUnis.length > 0) {
+          renderUniversityGridCards(universityList, displayUnis);
+          return;
+        }
+      }
+    }
+  } catch (e) {}
+
+  // Render default universities if database and cache are empty
   if (typeof defaultTurkishUniversities !== "undefined") {
     renderUniversityGridCards(universityList, defaultTurkishUniversities);
   }
@@ -5678,16 +5717,28 @@ async function initSubPortalDashboard() {
   const totalAppsTextEl = document.getElementById("totalAppsText");
   const recentTbody = document.getElementById("subRecentAppsBody");
 
-  if (!totalEl) return;
+  if (!totalEl && !recentTbody) return;
 
   try {
     const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
     const headers = {};
     if (user && user.token) headers["Authorization"] = `Bearer ${user.token}`;
 
-    const res = await fetch(`${API_BASE_URL}/api/applications`, { headers });
-    const data = await res.json();
-    const apps = data.applications || (Array.isArray(data) ? data : []);
+    let remoteApps = [];
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/applications`, { headers });
+      if (res.ok) {
+        const data = await res.json();
+        remoteApps = data.applications || (Array.isArray(data) ? data : []);
+      }
+    } catch (netErr) {
+      console.warn("Sub-portal network fetch note:", netErr);
+    }
+
+    const offlineApps = typeof getOfflineApplications === "function" ? getOfflineApplications() : [];
+    const remoteIds = new Set(remoteApps.map(a => a._id));
+    const uniqueOffline = offlineApps.filter(a => !remoteIds.has(a._id));
+    const apps = [...remoteApps, ...uniqueOffline];
 
     const total = apps.length;
     let pending = 0;
