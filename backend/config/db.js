@@ -14,18 +14,18 @@ const connectDB = async () => {
 
   if (!cachedPromise) {
     const opts = {
-      serverSelectionTimeoutMS: 8000,
-      connectTimeoutMS: 15000,
-      maxPoolSize: 10,
-      minPoolSize: 1
+      serverSelectionTimeoutMS: 5000,
+      connectTimeoutMS: 10000,
+      maxPoolSize: 10
     };
 
     cachedPromise = mongoose.connect(PRIMARY_URI, opts)
       .then((db) => {
-        console.log("MongoDB Connected Successfully:", PRIMARY_URI.includes("mongodb+srv") ? "Atlas Cloud DB" : "Local DB");
+        console.log("MongoDB Connected Successfully");
         return db;
       })
       .catch(async (err) => {
+        cachedPromise = null;
         console.error(`Primary DB Connection Note (${PRIMARY_URI}):`, err.message);
         if (PRIMARY_URI !== ATLAS_URI) {
           console.log("Attempting fallback connection to MongoDB Atlas Cloud...");
@@ -34,7 +34,6 @@ const connectDB = async () => {
             return db;
           });
         }
-        cachedPromise = null;
         throw err;
       })
       .catch((err) => {

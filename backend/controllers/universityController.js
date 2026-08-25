@@ -29,7 +29,8 @@ exports.getAllUniversities = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: "Failed to load universities."
+      message: "Failed to load universities.",
+      error: error ? error.message : "Unknown DB error"
     });
 
   }
