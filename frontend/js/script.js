@@ -13452,8 +13452,30 @@ function renderDegreeTabs(university) {
       if (this.disabled) return;
       buttons.forEach((btn) => btn.classList.remove("active"));
       this.classList.add("active");
-      const selectedLanguage = document.querySelector(".language-tab.active")?.getAttribute("data-language") || "English";
-      renderProgramList(university, this.getAttribute("data-degree"), selectedLanguage);
+
+      const clickedDegree = this.getAttribute("data-degree");
+      const degreeProgs = university.programs[clickedDegree] || [];
+
+      let selectedLanguage = document.querySelector(".language-tab.active")?.getAttribute("data-language") || "English";
+      const hasSelectedLangProgs = degreeProgs.some(p => {
+        const pl = (p.language || "").toLowerCase();
+        return selectedLanguage.toLowerCase() === "english" ? (pl.includes("english") || pl.includes("en")) : (pl.includes("turkish") || pl.includes("tr") || pl.includes("türk"));
+      });
+
+      if (!hasSelectedLangProgs && degreeProgs.length > 0) {
+        const otherLang = selectedLanguage.toLowerCase() === "english" ? "Turkish" : "English";
+        const langBtns = document.querySelectorAll(".language-tab");
+        langBtns.forEach(lb => {
+          if (lb.getAttribute("data-language")?.toLowerCase() === otherLang.toLowerCase()) {
+            lb.classList.add("active");
+          } else {
+            lb.classList.remove("active");
+          }
+        });
+        selectedLanguage = otherLang;
+      }
+
+      renderProgramList(university, clickedDegree, selectedLanguage);
     });
   });
 
@@ -13534,17 +13556,19 @@ function renderProgramList(university, degreeType, language) {
   const selectedLanguage =
     language || "English";
 
-  const filteredPrograms = programs.filter((program) => {
-
-    const programLanguage =
-      (program.language || "English").toString();
-
-    return (
-      programLanguage.toLowerCase() ===
-      selectedLanguage.toLowerCase()
-    );
-
+  let filteredPrograms = programs.filter((program) => {
+    const progLang = (program.language || "").toString().trim().toLowerCase();
+    const selLang = selectedLanguage.toLowerCase();
+    if (!progLang) return true;
+    if (selLang === "english") return progLang.includes("english") || progLang.includes("en");
+    if (selLang === "turkish") return progLang.includes("turkish") || progLang.includes("tr") || progLang.includes("türk");
+    return progLang.includes(selLang);
   });
+
+  // Smart Fallback: If no programs match the exact language filter, but programs exist for this degree level:
+  if (filteredPrograms.length === 0 && programs.length > 0) {
+    filteredPrograms = programs; // Display all programs for this degree level so NO data is ever hidden!
+  }
 
   if (filteredPrograms.length === 0) {
 
