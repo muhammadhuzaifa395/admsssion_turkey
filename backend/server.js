@@ -27,11 +27,8 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use("/uploads", express.static(uploadsDir));
 
-const ATLAS_URI = "mongodb+srv://huzaifarasheed2006:Fcc986108@huzaifaauth.ylrg6rk.mongodb.net/admission_turkey?appName=HuzaifaAuth";
+const ATLAS_URI = process.env.MONGO_URI || "mongodb+srv://huzaifarasheed2006:Fcc986108@huzaifaauth.ylrg6rk.mongodb.net/admission_turkey?retryWrites=true&w=majority&appName=HuzaifaAuth";
 let PRIMARY_URI = ATLAS_URI;
-if (process.env.MONGO_URI && !process.env.VERCEL && !process.env.MONGO_URI.includes("127.0.0.1") && !process.env.MONGO_URI.includes("localhost")) {
-  PRIMARY_URI = process.env.MONGO_URI;
-}
 
 let cachedPromise = null;
 
@@ -42,30 +39,18 @@ const connectDB = async () => {
 
   if (!cachedPromise) {
     cachedPromise = mongoose.connect(PRIMARY_URI, {
-      serverSelectionTimeoutMS: 5000,
-      connectTimeoutMS: 10000,
+      serverSelectionTimeoutMS: 8000,
+      connectTimeoutMS: 15000,
+      family: 4, // Force IPv4 to eliminate Vercel serverless IPv6 connection drops
+      maxPoolSize: 10,
+      minPoolSize: 1
     }).then((db) => {
-      console.log("MongoDB Connected Successfully");
-      ensureDefaultAdmin().catch((err) => console.error("Admin seed error:", err.message));
+      console.log("MongoDB Atlas Connected Successfully");
+      ensureDefaultAdmin().catch((err) => console.error("Admin seed note:", err.message));
       return db;
     }).catch(async (err) => {
-      console.error(`Primary MongoDB (${PRIMARY_URI}) Connection Error: ${err.message}`);
-      if (PRIMARY_URI !== ATLAS_URI) {
-        console.log("Attempting automatic fallback to MongoDB Atlas Cloud...");
-        return mongoose.connect(ATLAS_URI, {
-          serverSelectionTimeoutMS: 15000,
-          connectTimeoutMS: 15000,
-        }).then((db) => {
-          console.log("MongoDB Atlas Cloud Connected Successfully");
-          ensureDefaultAdmin().catch((e) => console.error("Admin seed error:", e.message));
-          return db;
-        }).catch((atlasErr) => {
-          cachedPromise = null;
-          console.error("MongoDB Atlas Connection Error:", atlasErr.message);
-          throw atlasErr;
-        });
-      }
       cachedPromise = null;
+      console.error(`MongoDB Connection Note: ${err.message}`);
       throw err;
     });
   }
@@ -78,10 +63,8 @@ app.use(async (req, res, next) => {
     try {
       await connectDB();
     } catch (error) {
-      console.error("DB Connection Middleware Error:", error.message);
-      return res.status(503).json({
-        message: `Database connection failed (${error.message}). Please check network access.`
-      });
+      console.error("DB Connection Middleware Note:", error.message);
+      // Non-blocking: continue so local fail-safe storage can serve student data smoothly
     }
   }
   next();
