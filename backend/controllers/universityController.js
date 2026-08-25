@@ -1,4 +1,5 @@
 const University = require("../models/University");
+const connectDB = require("../config/db");
 
 
 // ========================================
@@ -9,6 +10,7 @@ const University = require("../models/University");
 exports.getAllUniversities = async (req, res) => {
 
   try {
+    await connectDB();
 
     const universities =
       await University

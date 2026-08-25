@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
+mongoose.set('bufferCommands', false);
+
 const ATLAS_URI = "mongodb+srv://huzaifarasheed2006:Fcc986108@huzaifaauth.ylrg6rk.mongodb.net/admission_turkey?retryWrites=true&w=majority&appName=HuzaifaAuth";
 const PRIMARY_URI = process.env.MONGO_URI || ATLAS_URI;
 
