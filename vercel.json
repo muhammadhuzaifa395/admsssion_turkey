@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "cleanUrls": true,
   "rewrites": [
     {
       "source": "/api/(.*)",
@@ -14,11 +15,11 @@
       "destination": "/api"
     },
     {
-      "source": "/frontend/(.*)",
-      "destination": "/frontend/$1"
+      "source": "/admin",
+      "destination": "/frontend/admin/admin.html"
     },
     {
-      "source": "/admin",
+      "source": "/admin/",
       "destination": "/frontend/admin/admin.html"
     },
     {
@@ -26,7 +27,7 @@
       "destination": "/frontend/admin/$1"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!frontend|api|uploads).*)",
       "destination": "/frontend/$1"
     }
   ]

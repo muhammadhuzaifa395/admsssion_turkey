@@ -69,6 +69,8 @@ app.get("/", (req, res) => {
 
 // Serve frontend files locally if needed
 app.use("/frontend", express.static(path.join(__dirname, "../frontend")));
+app.use("/admin", express.static(path.join(__dirname, "../frontend/admin")));
+app.use(express.static(path.join(__dirname, "../frontend")));
 
 if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
   const PORT = process.env.PORT || 5000;
