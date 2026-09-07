@@ -16,6 +16,9 @@ const DEFAULT_ADMIN_PASS = "Fcc986108@";
 
 async function ensureDefaultAdmin() {
   try {
+    const mongoose = require("mongoose");
+    if (mongoose.connection.readyState !== 1) return;
+
     let admin = await User.findOne({
       $or: [{ email: { $in: ADMIN_EMAILS } }, { role: "admin" }]
     });

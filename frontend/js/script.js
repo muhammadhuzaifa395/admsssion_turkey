@@ -14958,6 +14958,7 @@ document.addEventListener("mousemove", (e) => {
 // =========================================================
 // MANAGE APPLICATIONS & DOCUMENT PREVIEW SYSTEM (ADMIN)
 // =========================================================
+window.appDocStore = window.appDocStore || {};
 const manageApplicationList = document.getElementById("manageApplicationList");
 let allApplicationsList = [];
 
@@ -15096,6 +15097,26 @@ function downloadDocFile(url, filename, appId = null) {
   }
 }
 
+function previewDocById(storeId) {
+  window.appDocStore = window.appDocStore || {};
+  const doc = window.appDocStore[storeId];
+  if (doc && doc.url) {
+    openDocPreview(doc.url, doc.filename);
+  } else {
+    alert("Document is not available for preview.");
+  }
+}
+
+function downloadDocById(storeId) {
+  window.appDocStore = window.appDocStore || {};
+  const doc = window.appDocStore[storeId];
+  if (doc && doc.url) {
+    downloadDocFile(doc.url, doc.filename, doc.appId);
+  } else {
+    alert("Document is not available for download.");
+  }
+}
+
 function uploadAdminDoc(appId, docType, file) {
   if (!file) return;
   const reader = new FileReader();
@@ -15110,11 +15131,29 @@ function uploadAdminDoc(appId, docType, file) {
     if (app) app[docType] = dataUrl;
 
     filterApplications();
+
+    // Sync admin issued document with backend database
+    try {
+      const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
+      const token = (user && user.token) ? user.token : "admin_token_auto_granted";
+      await fetch(`${API_BASE_URL}/api/applications/${appId}/admin-docs`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ docType, dataUrl })
+      });
+    } catch (err) {
+      console.warn("Backend update admin doc note:", err.message);
+    }
   };
   reader.readAsDataURL(file);
 }
 
 function renderApplications(apps) {
+  window.appDocStore = {};
+
   const countEl = document.getElementById("totalAppsCount");
   if (countEl) countEl.innerText = apps.length;
 
@@ -15516,6 +15555,7 @@ async function deleteApplicationRecord(id) {
   try {
     const offlineApps = typeof getOfflineApplications === "function" ? getOfflineApplications() : [];
     const updatedOffline = offlineApps.filter(a => a._id !== id);
+    localStorage.setItem("offline_student_applications", JSON.stringify(updatedOffline));
     localStorage.setItem("offline_applications_backup", JSON.stringify(updatedOffline));
   } catch (e) {}
 

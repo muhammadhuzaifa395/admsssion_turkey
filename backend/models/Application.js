@@ -120,6 +120,21 @@ const applicationSchema = new mongoose.Schema(
     status: {
       type: String,
       default: "Pending"
+    },
+
+    offerLetter: {
+      type: String,
+      default: ""
+    },
+
+    feeSlip: {
+      type: String,
+      default: ""
+    },
+
+    finalAcceptanceLetter: {
+      type: String,
+      default: ""
     }
   },
 

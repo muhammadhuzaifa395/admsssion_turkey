@@ -163,6 +163,38 @@ router.put("/:id/status", verifyToken, isAdmin, async (req, res) => {
   }
 });
 
+// Update Admin Issued Documents (Offer Letter, Fee Slip, Final Acceptance Letter)
+router.put("/:id/admin-docs", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { docType, dataUrl } = req.body;
+    if (!docType || !dataUrl) {
+      return res.status(400).json({ success: false, message: "docType and dataUrl are required." });
+    }
+
+    const updateField = {};
+    updateField[docType] = dataUrl;
+
+    const application = await Application.findByIdAndUpdate(
+      req.params.id,
+      updateField,
+      { new: true }
+    );
+
+    if (!application) {
+      return res.status(404).json({ success: false, message: "Application not found." });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `${docType} updated successfully!`,
+      application
+    });
+  } catch (error) {
+    console.log("Update Admin Doc Error:", error);
+    res.status(500).json({ success: false, message: "Server error updating document." });
+  }
+});
+
 // Delete Application (Admin Only)
 router.delete("/:id", verifyToken, isAdmin, async (req, res) => {
   try {
