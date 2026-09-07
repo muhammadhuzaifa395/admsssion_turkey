@@ -806,13 +806,38 @@ if (applicationForm) {
       formData.set("level", applicationLevel.value);
     }
     if (applicationOriginalFee) formData.set("originalFee", applicationOriginalFee.value);
-    if (applicationDiscountFee) formData.set("discountFee", applicationDiscountFee.value);
-
-    // Save local backup copy before sending so NO application or document is EVER lost
+    if (applicationDiscountFee) formData.set("discountFee", applicationDiscountFee.value);    // Save local backup copy with full document Data URLs before sending so NO application or document is EVER lost
     const appObj = {};
+    const filePromises = [];
+
     formData.forEach((val, key) => {
-      if (typeof val === "string") appObj[key] = val;
+      if (typeof val === "string") {
+        appObj[key] = val;
+      } else if (val instanceof File && val.size > 0) {
+        const promise = new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = function (evt) {
+            if (key === "additionalDocuments") {
+              appObj.additionalDocuments = appObj.additionalDocuments || [];
+              appObj.additionalDocuments.push(evt.target.result);
+            } else {
+              appObj[key] = evt.target.result;
+            }
+            resolve();
+          };
+          reader.onerror = resolve;
+          reader.readAsDataURL(val);
+        });
+        filePromises.push(promise);
+      }
     });
+
+    if (filePromises.length > 0) {
+      try {
+        await Promise.all(filePromises);
+      } catch (err) {}
+    }
+
     if (typeof saveOfflineApplication === "function") {
       saveOfflineApplication(appObj);
     }
@@ -13362,22 +13387,75 @@ async function loadUniversityDetails() {
     return;
   }
 
-  const universityId = getQueryParam("id");
-  if (!universityId) {
-    detailContainer.innerHTML = `<p class="empty-program">University not selected.</p>`;
+  const universityId = typeof getQueryParam === "function" ? getQueryParam("id") : new URLSearchParams(window.location.search).get("id");
+  let university = null;
+
+  if (universityId) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/universities/${universityId}`);
+      if (response && response.ok) {
+        const data = await response.json();
+        if (data && data.university) {
+          university = data.university;
+        }
+      }
+    } catch (e) {
+      console.warn("API university fetch notice:", e);
+    }
+  }
+
+  if (!university && universityId) {
+    try {
+      const cachedRaw = localStorage.getItem("cached_universities_atlas");
+      if (cachedRaw) {
+        const cachedUnis = JSON.parse(cachedRaw);
+        if (Array.isArray(cachedUnis)) {
+          const cleanSearchId = decodeURIComponent(universityId).toLowerCase().trim();
+          university = cachedUnis.find(u => 
+            (u._id && u._id.toString() === universityId) ||
+            (u.id && u.id.toString() === universityId) ||
+            (u.name && u.name.toLowerCase().trim() === cleanSearchId) ||
+            (u.name && cleanSearchId.includes(u.name.toLowerCase().trim()))
+          );
+        }
+      }
+    } catch (e) {}
+  }
+
+  if (!university) {
+    if (typeof defaultTurkishUniversities !== "undefined" && Array.isArray(defaultTurkishUniversities)) {
+      if (universityId) {
+        const cleanSearchId = decodeURIComponent(universityId).toLowerCase().trim();
+        university = defaultTurkishUniversities.find(u => 
+          (u._id && u._id.toString() === universityId) ||
+          (u.id && u.id.toString() === universityId) ||
+          (u.name && u.name.toLowerCase().trim() === cleanSearchId) ||
+          (u.name && cleanSearchId.includes(u.name.toLowerCase().trim())) ||
+          (cleanSearchId.includes(u.name.toLowerCase().trim()))
+        );
+      }
+      if (!university && defaultTurkishUniversities.length > 0) {
+        university = defaultTurkishUniversities[0];
+      }
+    }
+  }
+
+  if (!university) {
+    detailContainer.innerHTML = `<p class="empty-program">University details unavailable.</p>`;
     return;
   }
 
+  // Normalize programs object to guarantee array safety
+  if (!university.programs || typeof university.programs !== "object") {
+    university.programs = { associate: [], bachelors: [], masters: [], phd: [] };
+  } else {
+    university.programs.associate = Array.isArray(university.programs.associate) ? university.programs.associate : [];
+    university.programs.bachelors = Array.isArray(university.programs.bachelors) ? university.programs.bachelors : [];
+    university.programs.masters = Array.isArray(university.programs.masters) ? university.programs.masters : [];
+    university.programs.phd = Array.isArray(university.programs.phd) ? university.programs.phd : [];
+  }
+
   try {
-    const response = await fetch(`${API_BASE_URL}/api/universities/${universityId}`);
-    const data = await response.json();
-    const university = data.university;
-
-    if (!university) {
-      detailContainer.innerHTML = `<p class="empty-program">University not found.</p>`;
-      return;
-    }
-
     detailContainer.innerHTML = `
       <div class="university-detail-card">
         <div class="university-image">
@@ -13385,15 +13463,16 @@ async function loadUniversityDetails() {
         </div>
         <div class="university-detail-info">
           <h2>${university.name}</h2>
-          <p><i class="fas fa-location-dot"></i> ${university.location}</p>
+          <p><i class="fas fa-location-dot"></i> ${university.location || "Türkiye"}</p>
           <p>${university.description || "No description available."}</p>
         </div>
       </div>
     `;
 
-    const programs = Object.entries(university.programs)
+    const safePrograms = university.programs;
+    const programs = Object.entries(safePrograms)
       .flatMap(([degreeType, list]) =>
-        list.map((program) => ({ degreeType, program }))
+        (Array.isArray(list) ? list : []).map((program) => ({ degreeType, program }))
       );
 
     if (programs.length === 0) {
@@ -13406,7 +13485,7 @@ async function loadUniversityDetails() {
     if (activeDegree && activeLanguage) {
       renderProgramList(university, activeDegree, activeLanguage);
     } else {
-      const fallbackDegree = Object.keys(university.programs).find((type) => (university.programs[type] || []).length > 0) || "bachelors";
+      const fallbackDegree = Object.keys(safePrograms).find((type) => (safePrograms[type] || []).length > 0) || "bachelors";
       renderProgramList(university, fallbackDegree, activeLanguage || "English");
     }
   } catch (error) {
@@ -13523,37 +13602,19 @@ function renderLanguageTabs(university) {
   return "English";
 }
 
-
-
-
-
-
-
-
-
-
-
 function renderProgramList(university, degreeType, language) {
-  const programListContainer =
-    document.getElementById("programListContainer");
+  const programListContainer = document.getElementById("programListContainer");
+  if (!programListContainer) return;
 
-  if (!programListContainer) {
-    return;
-  }
-
-  const programs = university.programs[degreeType] || [];
-
+  const programs = (university.programs && university.programs[degreeType]) || [];
   const degreeNames = {
     associate: "Associate",
     bachelors: "Bachelor",
     masters: "Master",
     phd: "PhD"
   };
-
-  const displayLevel =
-    degreeNames[degreeType] || "Program";
-
-  const selectedLanguage =
+  const displayLevel = degreeNames[degreeType] || "Program";
+  const selectedLanguage = language || "English";
     language || "English";
 
   let filteredPrograms = programs.filter((program) => {
@@ -15117,26 +15178,53 @@ function renderApplications(apps) {
     const feeSlipUrl = app.feeSlip || storedAdminDocs.feeSlip || null;
     const finalAcceptanceUrl = app.finalAcceptanceLetter || storedAdminDocs.finalAcceptanceLetter || null;
 
+    const safeAppName = (app.name || "Student").replace(/['"]/g, "");
+
+    // Register Admin Issued Documents in window.appDocStore
+    let offerLetterDocId = "";
+    if (offerLetterUrl) {
+      offerLetterDocId = `doc_admin_offer_${app._id}_${index}`;
+      window.appDocStore[offerLetterDocId] = { url: offerLetterUrl, filename: `OfferLetter-${safeAppName}`, appId: app._id };
+    }
+
+    let feeSlipDocId = "";
+    if (feeSlipUrl) {
+      feeSlipDocId = `doc_admin_feeslip_${app._id}_${index}`;
+      window.appDocStore[feeSlipDocId] = { url: feeSlipUrl, filename: `FeeSlip-${safeAppName}`, appId: app._id };
+    }
+
+    let finalAcceptanceDocId = "";
+    if (finalAcceptanceUrl) {
+      finalAcceptanceDocId = `doc_admin_final_${app._id}_${index}`;
+      window.appDocStore[finalAcceptanceDocId] = { url: finalAcceptanceUrl, filename: `FinalAcceptanceLetter-${safeAppName}`, appId: app._id };
+    }
+
     // Render HTML for student documents
     let docsHTML = "";
     if (docList.length === 0) {
       docsHTML = `<p class="no-docs-text"><i class="fas fa-exclamation-circle"></i> No user documents uploaded for this application.</p>`;
     } else {
       docsHTML = `<div class="docs-grid">`;
-      docList.forEach((doc) => {
+      docList.forEach((doc, dIdx) => {
         const rawUrl = doc.url || "";
         const isDataUrl = rawUrl.startsWith("data:");
         const isHttp = rawUrl.startsWith("http://") || rawUrl.startsWith("https://");
         const fullUrl = (isDataUrl || isHttp) ? rawUrl : `${API_BASE_URL}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`;
 
-        const isPdf = rawUrl.toLowerCase().includes("pdf");
+        const isPdf = rawUrl.toLowerCase().includes("pdf") || rawUrl.includes("application/pdf");
         const isImg = rawUrl.toLowerCase().includes("image/") || /\.(jpg|jpeg|png|webp|gif|svg)$/i.test(rawUrl);
         const fileExt = isPdf ? "PDF" : (isImg ? "IMAGE" : "DOC");
 
         const iconClass = isPdf ? "pdf" : (isImg ? "image" : "");
         const displayIcon = isPdf ? "fa-file-pdf" : (isImg ? "fa-file-image" : "fa-file-alt");
-        const safeDocLabel = doc.label.replace(/'/g, "\\'");
-        const safeAppName = (app.name || "").replace(/'/g, "\\'");
+        const safeDocLabel = doc.label;
+
+        const docStoreId = `doc_${app._id || index}_${dIdx}_${Math.random().toString(36).substring(2, 6)}`;
+        window.appDocStore[docStoreId] = {
+          url: fullUrl,
+          filename: `${safeDocLabel}-${safeAppName}`,
+          appId: app._id
+        };
 
         docsHTML += `
           <div class="doc-card-item">
@@ -15145,15 +15233,15 @@ function renderApplications(apps) {
                 <i class="fas ${displayIcon}"></i>
               </div>
               <div class="doc-details">
-                <h5>${doc.label}</h5>
+                <h5>${escapeHtml(doc.label)}</h5>
                 <p>${fileExt} File</p>
               </div>
             </div>
             <div class="doc-actions">
-              <button type="button" class="doc-btn doc-btn-preview" onclick="openDocPreview(allApplicationsList[${index}].${doc.key}, '${safeDocLabel} - ${safeAppName}')">
+              <button type="button" class="doc-btn doc-btn-preview" onclick="previewDocById('${docStoreId}')">
                 <i class="fas fa-eye"></i> Preview
               </button>
-              <button type="button" class="doc-btn doc-btn-download" onclick="downloadDocFile(allApplicationsList[${index}].${doc.key}, '${safeDocLabel}-${safeAppName}', '${app._id}')">
+              <button type="button" class="doc-btn doc-btn-download" onclick="downloadDocById('${docStoreId}')">
                 <i class="fas fa-download"></i> Download
               </button>
             </div>
@@ -15163,14 +15251,12 @@ function renderApplications(apps) {
       docsHTML += `</div>`;
     }
 
-    const safeAppName = (app.name || "").replace(/'/g, "\\'");
-
     // Build Card HTML
     manageApplicationList.innerHTML += `
       <div class="app-card" id="appCard-${app._id}">
         <div class="app-card-header">
           <div class="app-card-title">
-            <h3><i class="fas fa-user-graduate" style="color: var(--blue);"></i> ${app.name}</h3>
+            <h3><i class="fas fa-user-graduate" style="color: var(--blue);"></i> ${escapeHtml(app.name || "N/A")}</h3>
             <p><i class="far fa-clock"></i> Submitted: ${dateStr}</p>
           </div>
           <div class="app-card-status-box">
@@ -15187,27 +15273,27 @@ function renderApplications(apps) {
         <div class="app-meta-grid">
           <div class="meta-item">
             <strong>Email</strong>
-            <span>${app.email || "N/A"}</span>
+            <span>${escapeHtml(app.email || "N/A")}</span>
           </div>
           <div class="meta-item">
             <strong>Phone / WhatsApp</strong>
-            <span>${app.phone || "N/A"}</span>
+            <span>${escapeHtml(app.phone || "N/A")}</span>
           </div>
           <div class="meta-item">
             <strong>Passport Number</strong>
-            <span>${app.passportNumber || "N/A"}</span>
+            <span>${escapeHtml(app.passportNumber || "N/A")}</span>
           </div>
           <div class="meta-item">
             <strong>Country / Nationality</strong>
-            <span>${app.country || "N/A"} / ${app.nationality || "N/A"}</span>
+            <span>${escapeHtml(app.country || "N/A")} / ${escapeHtml(app.nationality || "N/A")}</span>
           </div>
           <div class="meta-item">
             <strong>Target University</strong>
-            <span>${app.university || "N/A"}</span>
+            <span>${escapeHtml(app.university || "N/A")}</span>
           </div>
           <div class="meta-item">
             <strong>Program & Level</strong>
-            <span>${app.program || "N/A"} (${app.level || "N/A"})</span>
+            <span>${escapeHtml(app.program || "N/A")} (${escapeHtml(app.level || "N/A")})</span>
           </div>
           <div class="meta-item">
             <strong>Tuition Fee</strong>
@@ -15215,21 +15301,21 @@ function renderApplications(apps) {
           </div>
           <div class="meta-item">
             <strong>Father's Name</strong>
-            <span>${app.fatherName || "N/A"}</span>
+            <span>${escapeHtml(app.fatherName || "N/A")}</span>
           </div>
           <div class="meta-item">
             <strong>Mother's Name</strong>
-            <span>${app.motherName || "N/A"}</span>
+            <span>${escapeHtml(app.motherName || "N/A")}</span>
           </div>
           <div class="meta-item">
             <strong>DOB / Gender</strong>
-            <span>${app.dob || "N/A"} / ${app.gender || "N/A"}</span>
+            <span>${escapeHtml(app.dob || "N/A")} / ${escapeHtml(app.gender || "N/A")}</span>
           </div>
         </div>
 
         ${app.message ? `
           <div style="background: #fff8e6; padding: 12px 16px; border-radius: 8px; border-left: 4px solid #f59e0b; margin-bottom: 16px; font-size: 14px;">
-            <strong><i class="fas fa-comment-dots"></i> Student Note:</strong> ${app.message}
+            <strong><i class="fas fa-comment-dots"></i> Student Note:</strong> ${escapeHtml(app.message)}
           </div>
         ` : ""}
 
@@ -15253,10 +15339,10 @@ function renderApplications(apps) {
               </strong>
               ${offerLetterUrl ? `
                 <div style="display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;">
-                  <button type="button" class="doc-btn doc-btn-preview" onclick="openDocPreview('${offerLetterUrl}', 'Offer Letter - ${safeAppName}')">
+                  <button type="button" class="doc-btn doc-btn-preview" onclick="previewDocById('${offerLetterDocId}')">
                     <i class="fas fa-eye"></i> Preview
                   </button>
-                  <button type="button" class="doc-btn doc-btn-download" onclick="downloadDocFile('${offerLetterUrl}', 'OfferLetter-${safeAppName}')">
+                  <button type="button" class="doc-btn doc-btn-download" onclick="downloadDocById('${offerLetterDocId}')">
                     <i class="fas fa-download"></i> Download
                   </button>
                 </div>
@@ -15272,10 +15358,10 @@ function renderApplications(apps) {
               </strong>
               ${feeSlipUrl ? `
                 <div style="display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;">
-                  <button type="button" class="doc-btn doc-btn-preview" onclick="openDocPreview('${feeSlipUrl}', 'Fee Slip - ${safeAppName}')">
+                  <button type="button" class="doc-btn doc-btn-preview" onclick="previewDocById('${feeSlipDocId}')">
                     <i class="fas fa-eye"></i> Preview
                   </button>
-                  <button type="button" class="doc-btn doc-btn-download" onclick="downloadDocFile('${feeSlipUrl}', 'FeeSlip-${safeAppName}')">
+                  <button type="button" class="doc-btn doc-btn-download" onclick="downloadDocById('${feeSlipDocId}')">
                     <i class="fas fa-download"></i> Download
                   </button>
                 </div>
@@ -15291,10 +15377,10 @@ function renderApplications(apps) {
               </strong>
               ${finalAcceptanceUrl ? `
                 <div style="display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;">
-                  <button type="button" class="doc-btn doc-btn-preview" onclick="openDocPreview('${finalAcceptanceUrl}', 'Final Acceptance Letter - ${safeAppName}')">
+                  <button type="button" class="doc-btn doc-btn-preview" onclick="previewDocById('${finalAcceptanceDocId}')">
                     <i class="fas fa-eye"></i> Preview
                   </button>
-                  <button type="button" class="doc-btn doc-btn-download" onclick="downloadDocFile('${finalAcceptanceUrl}', 'FinalAcceptanceLetter-${safeAppName}')">
+                  <button type="button" class="doc-btn doc-btn-download" onclick="downloadDocById('${finalAcceptanceDocId}')">
                     <i class="fas fa-download"></i> Download
                   </button>
                 </div>
