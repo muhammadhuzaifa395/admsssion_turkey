@@ -15127,7 +15127,7 @@ function downloadDocById(storeId) {
 function uploadAdminDoc(appId, docType, file) {
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = async function(e) {
     const dataUrl = e.target.result;
     const adminDocsKey = `admin_app_docs_${appId}`;
     const storedAdminDocs = JSON.parse(localStorage.getItem(adminDocsKey) || "{}");
@@ -16101,37 +16101,108 @@ const i18nTranslations = {
     nav_home: "Home",
     nav_services: "Services",
     nav_universities: "Universities",
-    nav_about: "About",
+    nav_about: "About Us",
     nav_contact: "Contact",
     nav_login: "Login",
     nav_signup: "Sign Up",
     nav_admin: "Admin Panel",
     nav_logout: "Logout",
     
-    hero_label: "YOUR GATEWAY TO WORLD-CLASS EDUCATION",
-    hero_title: "Study in <span>Turkey</span><br>Build Your Future",
-    hero_desc: "We help international students find the right university, apply for admission, get scholarship guidance and start their educational journey in Turkey.",
-    hero_btn_explore: "Explore Universities",
-    hero_btn_consult: "Book Consultation",
-    hero_card_title: "Start Your Journey",
-    hero_card_desc: "Get expert guidance for studying in Turkey.",
-    stat_students: "Students Guided",
-    stat_options: "University Options",
+    hero_label: "🟠 Admissions Open 2026 Intake | Scholarships Available",
+    hero_title: "Get Admitted to a Top <span>Turkish University</span> — Build Your Future",
+    hero_desc: "Since 2019, Admission Turkey has placed students from over 28 countries into Türkiye's top public and foundation universities — from Medicine in Istanbul to Engineering in Ankara with guaranteed scholarships.",
+    hero_btn_explore: "Apply for Admission",
+    hero_btn_consult: "Talk to an Advisor",
+    hero_card_title: "Discover Türkiye Higher Education",
+    hero_card_desc: "Explore world-class campuses, affordable tuition, and international accreditation.",
+    
+    metric_tag_placement: "PLACEMENT",
+    stat_students: "STUDENTS PLACED",
+    metric_tag_visa: "VISA SUCCESS",
+    stat_visa_ratio: "SUCCESS RATIO",
+    metric_tag_global: "GLOBAL NETWORK",
+    stat_options: "TOP UNIVERSITIES",
 
-    sec_services_title: "Our Services",
-    sec_services_subtitle: "Comprehensive support for your educational journey in Turkey",
+    mindmap_tag: "WHY CHOOSE ADMISSION TURKEY?",
+    mindmap_title: "Your Direct <span>Route</span> To Top <span>Universities</span>",
+    mindmap_desc: "Discover why thousands of international applicants trust Admission Turkey every year.",
+    node1_t: "Fast Admission Process",
+    node1_d: "Get offer letters in 48 hours",
+    node2_t: "Licensed & Registered",
+    node2_d: "Official university representative",
+    node3_t: "End-to-End Student Support",
+    node3_d: "Visa, housing & airport pickup",
+    node4_t: "Experienced Team",
+    node4_d: "10+ years education experts",
+    node5_t: "Based in Turkey",
+    node5_d: "On-the-ground support team in Istanbul",
+    node6_t: "Serving Globally",
+    node6_d: "Trusted by students from 28+ countries",
+
+    top_unis_tag: "TOP RANKED UNIVERSITIES",
+    top_unis_title: "Explore Türkiye's Premier Universities",
+    top_unis_desc: "Discover real universities added in your portal with guaranteed acceptance and tuition discounts.",
+
+    offer_tag: "WHAT WE OFFER",
+    sec_services_title: "Our Professional Services",
+    sec_services_subtitle: "Everything you need to begin your academic journey in Turkey.",
     service_uni_title: "University Admission",
-    service_uni_desc: "Direct application to top Turkish universities with high acceptance rates.",
+    service_uni_desc: "We assist students with university selection, applications and admission procedures.",
+    service_consult_title: "Free Consultancy",
+    service_consult_desc: "Get guidance about universities, programs, fees and admission requirements.",
     service_visa_title: "Student Visa Support",
-    service_visa_desc: "Full guidance on visa documentation, appointments, and procedures.",
+    service_visa_desc: "Get professional guidance throughout your student visa application process.",
+    service_pickup_title: "Airport Pickup & Housing",
+    service_pickup_desc: "We help arrange airport pickup and support students when they arrive in Turkey.",
     service_scholar_title: "Scholarship Guidance",
     service_scholar_desc: "Discover partial and full tuition scholarships tailored for international students.",
+    learn_more: "Learn More →",
+    book_now: "Book Now →",
 
-    footer_tagline: "Empowering international students to achieve academic excellence in Turkey.",
+    why_tag: "WHY CHOOSE US",
+    why_title: "Your Trusted Education Partner in Turkey",
+    why_desc: "Admission Turkey is committed to helping international students achieve their academic goals with reliable, professional and transparent guidance.",
+    why_item1: "Professional Admission Guidance",
+    why_item2: "University Selection Assistance",
+    why_item3: "Scholarship Guidance",
+    why_item4: "Visa & Documentation Support",
+    why_item5: "Airport Pickup Assistance",
+    why_btn: "Learn About Us",
+
+    works_tag: "HOW IT WORKS",
+    works_title: "Start Your Journey in 4 Steps",
+    step1_title: "Consultation",
+    step1_desc: "Talk to our consultants and discuss your goals.",
+    step2_title: "Choose University",
+    step2_desc: "Select the best university and program for you.",
+    step3_title: "Apply",
+    step3_desc: "Submit your documents and complete your application.",
+    step4_title: "Start Your Journey",
+    step4_desc: "Receive your admission and begin your life in Turkey.",
+
+    faq_tag: "GOT QUESTIONS?",
+    faq_title: "Frequently Asked Questions",
+    faq_desc: "Find quick answers to common questions about studying in Türkiye.",
+    faq1_q: "What are the general admission requirements for Turkish Universities?",
+    faq1_a: "International applicants need a High School Diploma or Bachelor's Degree transcript, a valid Passport copy, and passport photos. For English-medium programs, TOEFL or university English placement test is accepted.",
+    faq2_q: "Are partial or full scholarships available for international students?",
+    faq2_a: "Yes! Through Admission Turkey, international students automatically receive guaranteed 25% to 60% partial tuition scholarships at partner universities upon application submission.",
+    faq3_q: "Do I need to take YÖS or SAT exams to study in Turkey?",
+    faq3_a: "No, for private foundation universities in Turkey, YÖS or SAT exams are NOT mandatory. You can apply directly using your high school grades.",
+    faq4_q: "How long does the student visa process take?",
+    faq4_a: "Once you receive your Official Acceptance Letter, the student visa application at the Turkish Embassy/Consulate usually takes between 2 to 4 weeks.",
+
+    cta_title: "Ready to Study in Turkey?",
+    cta_desc: "Take the first step toward your future today.",
+    cta_btn: "Book Your Consultation",
+
+    footer_tagline: "Admission Turkey is your trusted partner for university admissions, scholarships and student support in Turkey.",
     footer_quick_links: "Quick Links",
+    footer_our_services: "Our Services",
     footer_contact_us: "Contact Us",
-    footer_rights: "All Rights Reserved."
+    footer_rights: "© 2026 Admission Turkey. All Rights Reserved."
   },
+
   tr: {
     nav_home: "Ana Sayfa",
     nav_services: "Hizmetler",
@@ -16142,31 +16213,102 @@ const i18nTranslations = {
     nav_signup: "Kayıt Ol",
     nav_admin: "Yönetici Paneli",
     nav_logout: "Çıkış Yap",
-    
-    hero_label: "DÜNYA STANDARTLARINDA EĞİTİME GİDEN YOLUNUZ",
-    hero_title: "<span>Türkiye'de</span> Okuyun<br>Geleceğinizi İnşa Edin",
-    hero_desc: "Uluslararası öğrencilerin doğru üniversiteyi bulmalarına, başvuru yapmalarına, burs rehberliği almalarına ve Türkiye'deki eğitim yolculuklarına başlamalarına yardımcı oluyoruz.",
-    hero_btn_explore: "Üniversiteleri Keşfet",
-    hero_btn_consult: "Danışmanlık Alın",
-    hero_card_title: "Yolculuğunuza Başlayın",
-    hero_card_desc: "Türkiye'de eğitim almak için uzman rehberliği alın.",
-    stat_students: "Rehberlik Edilen Öğrenci",
-    stat_options: "Üniversite Seçeneği",
 
-    sec_services_title: "Hizmetlerimiz",
-    sec_services_subtitle: "Türkiye'deki eğitim yolculuğunuz için kapsamlı destek",
+    hero_label: "🟠 2026 Başvuruları Açıldı | Burs İmkanları Mevcut",
+    hero_title: "En İyi <span>Türk Üniversitesine</span> Kabul Alın — Geleceğinizi İnşa Edin",
+    hero_desc: "2019'dan bu yana Admission Turkey, 28'den fazla ülkeden öğrencileri Türkiye'nin en iyi devlet ve vakıf üniversitelerine yerleştirdi.",
+    hero_btn_explore: "Kabul İçin Başvurun",
+    hero_btn_consult: "Danışmanla Görüşün",
+    hero_card_title: "Türkiye Yükseköğretimini Keşfedin",
+    hero_card_desc: "Dünya standartlarında kampüsleri, uygun harç ücretlerini ve uluslararası akreditasyonları keşfedin.",
+
+    metric_tag_placement: "YERLEŞTİRME",
+    stat_students: "YERLEŞTİRİLEN ÖĞRENCİ",
+    metric_tag_visa: "VİZE BAŞARISI",
+    stat_visa_ratio: "BAŞARI ORANI",
+    metric_tag_global: "KÜRESEL AĞ",
+    stat_options: "EN İYİ ÜNİVERSİTELER",
+
+    mindmap_tag: "NEDEN ADMISSION TURKEY?",
+    mindmap_title: "En İyi <span>Üniversitelere</span> Doğrudan <span>Yolunuz</span>",
+    mindmap_desc: "Her yıl binlerce uluslararası adayın neden Admission Turkey'ye güvendiğini keşfedin.",
+    node1_t: "Hızlı Kabul Süreci",
+    node1_d: "48 saat içinde kabul mektubu alın",
+    node2_t: "Lisanslı ve Kayıtlı",
+    node2_d: "Resmi üniversite temsilcisi",
+    node3_t: "Uçtan Uca Öğrenci Desteği",
+    node3_d: "Vize, konaklama ve karşılama",
+    node4_t: "Deneyimli Ekip",
+    node4_d: "10+ yıllık eğitim uzmanları",
+    node5_t: "Türkiye Merkezli",
+    node5_d: "İstanbul'daki saha destek ekibi",
+    node6_t: "Küresel Hizmet",
+    node6_d: "28+ ülkeden öğrencilerin tercihi",
+
+    top_unis_tag: "EN İYİ ÜNİVERSİTELER",
+    top_unis_title: "Türkiye'nin Seçkin Üniversitelerini Keşfedin",
+    top_unis_desc: "Garantili kabul ve eğitim indirimi sunan üniversiteleri inceleyin.",
+
+    offer_tag: "HİZMETLERİMİZ",
+    sec_services_title: "Profesyonel Hizmetlerimiz",
+    sec_services_subtitle: "Türkiye'deki eğitim yolculuğunuz için ihtiyacınız olan her şey.",
     service_uni_title: "Üniversite Kabulü",
-    service_uni_desc: "Yüksek kabul oranlarıyla en iyi Türk üniversitelerine doğrudan başvuru.",
+    service_uni_desc: "Üniversite seçimi, başvurular ve kabul süreçlerinde danışmanlık sağlıyoruz.",
+    service_consult_title: "Ücretsiz Danışmanlık",
+    service_consult_desc: "Üniversiteler, programlar ve harçlar hakkında detaylı bilgi alın.",
     service_visa_title: "Öğrenci Vizesi Desteği",
-    service_visa_desc: "Vize belgeleri, randevular ve süreçler hakkında tam rehberlik.",
+    service_visa_desc: "Öğrenci vizesi başvuru sürecinizde profesyonel rehberlik alın.",
+    service_pickup_title: "Karşılama ve Konaklama",
+    service_pickup_desc: "Havalimanı karşılaması ve konaklama konularında destek sağlıyoruz.",
     service_scholar_title: "Burs Rehberliği",
-    service_scholar_desc: "Uluslararası öğrenciler için özel kısmi ve tam öğrenim burslarını keşfedin.",
+    service_scholar_desc: "Uluslararası öğrenciler için indirimli eğitim burslarını keşfedin.",
+    learn_more: "Detaylı Bilgi →",
+    book_now: "Randevu Al →",
 
-    footer_tagline: "Uluslararası öğrencilerin Türkiye'de akademik başarıya ulaşmalarını destekliyoruz.",
+    why_tag: "NEDEN BİZ?",
+    why_title: "Türkiye'deki Güvenilir Eğitim Ortağınız",
+    why_desc: "Admission Turkey, uluslararası öğrencilerin akademik hedeflerine ulaşmalarına şeffaf rehberlik ile destek olur.",
+    why_item1: "Profesyonel Kabul Danışmanlığı",
+    why_item2: "Üniversite Seçim Desteği",
+    why_item3: "Burs Rehberliği",
+    why_item4: "Vize ve Belge Desteği",
+    why_item5: "Karşılama Hizmeti",
+    why_btn: "Hakkımızda Detaylı Bilgi",
+
+    works_tag: "NASIL ÇALIŞIR?",
+    works_title: "4 Adımda Yolculuğunuza Başlayın",
+    step1_title: "Danışmanlık",
+    step1_desc: "Danışmanlarımızla görüşün ve hedeflerinizi belirleyin.",
+    step2_title: "Üniversite Seçimi",
+    step2_desc: "Size en uygun üniversiteyi ve bölümü seçin.",
+    step3_title: "Başvuru",
+    step3_desc: "Belgelerinizi gönderin ve başvurunuzu tamamlayın.",
+    step4_title: "Eğitime Başlayın",
+    step4_desc: "Kabul mektubunuzu alın ve Türkiye'deki eğitiminize başlayın.",
+
+    faq_tag: "SORULARINIZ MI VAR?",
+    faq_title: "Sıkça Sorulan Sorular",
+    faq_desc: "Türkiye'de eğitim hakkında merak edilen soruların yanıtlarını bulun.",
+    faq1_q: "Türk Üniversitelerine genel başvuru şartları nelerdir?",
+    faq1_a: "Lise diploması veya lisans transkripti, geçerli pasaport ve fotoğraf gereklidir. İngilizce bölümler için TOEFL veya seviye tespit sınavı kabul edilir.",
+    faq2_q: "Uluslararası öğrenciler için burs imkanı var mı?",
+    faq2_a: "Evet! Admission Turkey aracılığıyla yapılan başvurularda %25 ile %60 arasında garantili harç indirimi sağlanmaktadır.",
+    faq3_q: "Türkiye'de okumak için YÖS veya SAT sınavı gerekli mi?",
+    faq3_a: "Hayır, vakıf üniversiteleri için YÖS veya SAT sınavı zorunlu değildir. Lise not ortalamanız ile doğrudan başvuru yapabilirsiniz.",
+    faq4_q: "Öğrenci vizesi süreci ne kadar sürer?",
+    faq4_a: "Resmi kabul mektubunuz alındıktan sonra vize başvurusu genellikle 2-4 hafta sürer.",
+
+    cta_title: "Türkiye'de Okumaya Hazır mısınız?",
+    cta_desc: "Geleceğiniz için ilk adımı bugün atın.",
+    cta_btn: "Danışmanlık Randevusu Alın",
+
+    footer_tagline: "Admission Turkey, Türkiye'deki üniversite kabulleri ve öğrenci desteğinde güvenilir ortağınızdır.",
     footer_quick_links: "Hızlı Bağlantılar",
+    footer_our_services: "Hizmetlerimiz",
     footer_contact_us: "İletişim",
-    footer_rights: "Tüm Hakları Saklıdır."
+    footer_rights: "© 2026 Admission Turkey. Tüm Hakları Saklıdır."
   },
+
   ar: {
     nav_home: "الرئيسية",
     nav_services: "خدماتنا",
@@ -16177,30 +16319,304 @@ const i18nTranslations = {
     nav_signup: "إنشاء حساب",
     nav_admin: "لوحة التحكم",
     nav_logout: "تسجيل الخروج",
-    
-    hero_label: "بوابتك إلى تعليم عالمي المستوى",
-    hero_title: "ادرس في <span>تركيا</span><br>ابنِ مستقبلك",
-    hero_desc: "نساعد الطلاب الدوليين في العثور على الجامعة المناسبة، والتقديم للقبول، والحصول على التوجيه للمنح الدراسية وبدء رحلتهم التعليمية في تركيا.",
-    hero_btn_explore: "استكشف الجامعات",
-    hero_btn_consult: "احجز استشارة",
-    hero_card_title: "ابدأ رحلتك",
-    hero_card_desc: "احصل على توجيه متخصص للدراسة في تركيا.",
-    stat_students: "طالب تم توجيههم",
-    stat_options: "خيار جامعي",
 
-    sec_services_title: "خدماتنا",
-    sec_services_subtitle: "دعم شامل لرحلتك التعليمية في تركيا",
+    hero_label: "🟠 فتح باب القبول لعام 2026 | منح دراسية متاحة",
+    hero_title: "احصل على القبول في أفضل <span>الجامعات التركية</span> — ابنِ مستقبلك",
+    hero_desc: "منذ عام 2019، قامت Admission Turkey بتسجيل طلاب من أكثر من 28 دولة في أفضل الجامعات الحكومية والخاصة في تركيا مع منح دراسية مضمونة.",
+    hero_btn_explore: "قدم للحصول على القبول",
+    hero_btn_consult: "تحدث مع مستشار",
+    hero_card_title: "اكتشف التعليم العالي في تركيا",
+    hero_card_desc: "استكشف الحرم الجامعي العالمي، والرسوم المناسبة، والاعتمادات الدولية.",
+
+    metric_tag_placement: "التسجيل والقبول",
+    stat_students: "طالب تم تسجيلهم",
+    metric_tag_visa: "نسبة التأشيرة",
+    stat_visa_ratio: "نسبة النجاح",
+    metric_tag_global: "شبكة دولية",
+    stat_options: "جامعة متميزة",
+
+    mindmap_tag: "لماذا تختار ADMISSION TURKEY؟",
+    mindmap_title: "طريقك <span>المباشر</span> إلى أفضل <span>الجامعات</span>",
+    mindmap_desc: "اكتشف لماذا يثق بنا آلاف الطلاب الدوليين سنوياً.",
+    node1_t: "قبول سريع",
+    node1_d: "خطابات قبول خلال 48 ساعة",
+    node2_t: "مرخص ومعتمد",
+    node2_d: "ممثل رسمي للجامعات",
+    node3_t: "دعم شامل للطلاب",
+    node3_d: "التأشيرة، السكن والاستقبال",
+    node4_t: "فريق خبرة",
+    node4_d: "أكثر من 10 سنوات خبرة",
+    node5_t: "مقرنا في تركيا",
+    node5_d: "فريق دعم ميداني في إسطنبول",
+    node6_t: "خدمة عالمية",
+    node6_d: "محل ثقة طلاب من 28+ دولة",
+
+    top_unis_tag: "أفضل الجامعات",
+    top_unis_title: "استكشف أرقى الجامعات التركية",
+    top_unis_desc: "اكتشف الجامعات المتاحة في البوابة مع قبول مضمون وخصومات على الرسوم.",
+
+    offer_tag: "ما نقدمه",
+    sec_services_title: "خدماتنا الاحترافية",
+    sec_services_subtitle: "كل ما تحتاجه لبدء رحلتك الدراسية في تركيا.",
     service_uni_title: "القبول الجامعي",
-    service_uni_desc: "التقديم المباشر لأفضل الجامعات التركية بنسب قبول عالية.",
+    service_uni_desc: "نساعد الطلاب في اختيار الجامعة والتقديم وإجراءات القبول.",
+    service_consult_title: "استشارة مجانية",
+    service_consult_desc: "احصل على توجيه شامل حول الجامعات والتخصصات والرسوم.",
     service_visa_title: "دعم التأشيرة الدراسية",
-    service_visa_desc: "توجيه كامل حول وثائق التأشيرة والمواعيد والإجراءات.",
+    service_visa_desc: "توجيه كامل خلال مرحلة التقديم على التأشيرة الدراسية.",
+    service_pickup_title: "الاستقبال والسكن",
+    service_pickup_desc: "نساعد في ترتيب الاستقبال من المطار وتوفير السكن المناسب.",
     service_scholar_title: "توجيه المنح الدراسية",
-    service_scholar_desc: "اكتشف المنح الجزئية والكاملة المصممة للطلاب الدوليين.",
+    service_scholar_desc: "اكتشف المنح الدراسية والخصومات المخصصة للطلاب الدوليين.",
+    learn_more: "اقرأ المزيد ←",
+    book_now: "احجز الآن ←",
 
-    footer_tagline: "تمكين الطلاب الدوليين لتحقيق التميز الأكاديمي في تركيا.",
+    why_tag: "لماذا نحن؟",
+    why_title: "شريكك التعليمي الموثوق في تركيا",
+    why_desc: "تلتزم Admission Turkey بمساعدة الطلاب الدوليين لتحقيق أهدافهم الأكاديمية بتوجيه شفاف ومحترف.",
+    why_item1: "توجيه قبول محترف",
+    why_item2: "مساعدة في اختيار الجامعة",
+    why_item3: "توجيه المنح الدراسية",
+    why_item4: "دعم التأشيرة والوثائق",
+    why_item5: "خدمة الاستقبال في المطار",
+    why_btn: "تعرف علينا",
+
+    works_tag: "كيف نعمل؟",
+    works_title: "ابدأ رحلتك في 4 خطوات",
+    step1_title: "الاستشارة",
+    step1_desc: "تحدث مع مستشارينا وناقش أهدافك.",
+    step2_title: "اختيار الجامعة",
+    step2_desc: "اختر أفضل جامعة وتخصص يناسبك.",
+    step3_title: "التقديم",
+    step3_desc: "قدم وثائقك وأكمل طلب القبول.",
+    step4_title: "ابدأ الرحلة",
+    step4_desc: "احصل على القبول وابدأ حياتك في تركيا.",
+
+    faq_tag: "لديك أسئلة؟",
+    faq_title: "الأسئلة الشائعة",
+    faq_desc: "إجابات سريعة على الأسئلة الأكثر تكراراً عن الدراسة في تركيا.",
+    faq1_q: "ما هي شروط القبول العامة في الجامعات التركية؟",
+    faq1_a: "الشهادة الثانوية أو كشف درجات البكالوريوس، صورة الجواز، وصور شخصية. وللبرامج الإنجليزية يقبل اختبار التوفل أو اختبار اللغة بالجامعة.",
+    faq2_q: "هل تتوفر منح جزئية أو كاملة للطلاب الدوليين؟",
+    faq2_a: "نعم! يحصل الطلاب عند التقديم عبر Admission Turkey على خصومات وحصص منح دراسية مضمونة من 25% إلى 60%.",
+    faq3_q: "هل يجب إجراء اختبار YÖS أو SAT للدراسة في تركيا؟",
+    faq3_a: "لا، بالنسبة للجامعات الخاصة في تركيا، اختبار YÖS أو SAT ليس إجبارياً، ويمكن التقديم بمعدل الثانوية مباشرة.",
+    faq4_q: "كم تستغرق عملية الحصول على التأشيرة الدراسية؟",
+    faq4_a: "بعد استلام خطاب القبول الرسمي، يستغرق طلب التأشيرة لدى السفارة أو القنصلية التركية عادة من أسبوعين إلى 4 أسابيع.",
+
+    cta_title: "هل أنت مستعد للدراسة في تركيا؟",
+    cta_desc: "اتخذ الخطوة الأولى نحو مستقبلك اليوم.",
+    cta_btn: "احجز استشارتك الآن",
+
+    footer_tagline: "Admission Turkey هي شريكك الموثوق للقبولات الجامعية والمنح والدعم الطلابي في تركيا.",
     footer_quick_links: "روابط سريعة",
+    footer_our_services: "خدماتنا",
     footer_contact_us: "تواصل معنا",
-    footer_rights: "جميع الحقوق محفوظة."
+    footer_rights: "© 2026 Admission Turkey. جميع الحقوق محفوظة."
+  },
+
+  af: {
+    nav_home: "صفحه اصلی",
+    nav_services: "خدمات ما",
+    nav_universities: "پوهنتون‌ها",
+    nav_about: "درباره ما",
+    nav_contact: "تماس با ما",
+    nav_login: "ورود به سیستم",
+    nav_signup: "ثبت نام",
+    nav_admin: "پنل مدیریت",
+    nav_logout: "خروج",
+
+    hero_label: "🟠 آغاز ثبت نام سال ۲۰۲۶ | بورسیه‌های تحصیلی موجود است",
+    hero_title: "پذیرش در بهترین <span>پوهنتون‌های ترکیه</span> — آینده خود را بسازید",
+    hero_desc: "از سال ۲۰۱۹ بدینسو، Admission Turkey محصلین زیادی را از بیش از ۲۸ کشور در بهترین پوهنتون‌های ترکیه با بورسیه‌های تضمین شده ثبت نام نموده است.",
+    hero_btn_explore: "ثبت نام برای پذیرش",
+    hero_btn_consult: "صحبت با مشاور",
+    hero_card_title: "تحصیلات عالی در ترکیه را کشف کنید",
+    hero_card_desc: "کمپوس‌های مدرن، فیس مناسب و اسناد معتبر بین‌المللی.",
+
+    metric_tag_placement: "ثبت نام محصلین",
+    stat_students: "محصلین پذیرفته شده",
+    metric_tag_visa: "کامیابی ویزه",
+    stat_visa_ratio: "فیصدی موفقیت",
+    metric_tag_global: "شبکه جهانی",
+    stat_options: "پوهنتون‌های برتر",
+
+    mindmap_tag: "چرا ADMISSION TURKEY را انتخاب کنید؟",
+    mindmap_title: "راه <span>مستقیم</span> شما به سوی <span>پوهنتون‌های</span> برتر",
+    mindmap_desc: "دلیل اعتماد هزاران محصل بین‌المللی به Admission Turkey را بدانید.",
+    node1_t: "پروسه سریع پذیرش",
+    node1_d: "دریافت مکتوب قبولیت در ۴۸ ساعت",
+    node2_t: "رسمی و راجستر شده",
+    node2_d: "نماینده رسمی پوهنتون‌ها",
+    node3_t: "حمایت مکمل محصلین",
+    node3_d: "ویزه، خوابگاه و انتقال از میدان هوایی",
+    node4_t: "تیم با تجربه",
+    node4_d: "بیش از ۱۰ سال تجربه آموزشی",
+    node5_t: "مستقر در ترکیه",
+    node5_d: "تیم حمایتی حضوری در استانبول",
+    node6_t: "خدمات جهانی",
+    node6_d: "مورد اعتماد محصلین از ۲۸+ کشور",
+
+    top_unis_tag: "پوهنتون‌های برتر",
+    top_unis_title: "پوهنتون‌های ممتاز ترکیه را جستجو کنید",
+    top_unis_desc: "پوهنتون‌های معتبر را با تخفیف‌های ویژه فیس تحصیلی پیدا کنید.",
+
+    offer_tag: "خدمات ما",
+    sec_services_title: "خدمات مسلکی ما",
+    sec_services_subtitle: "هر آنچه برای آغاز تحصیل در ترکیه نیاز دارید.",
+    service_uni_title: "پذیرش پوهنتون",
+    service_uni_desc: "کمک در انتخاب پوهنتون، ثبت نام و مراحل پذیرش.",
+    service_consult_title: "مشاوره رایگان",
+    service_consult_desc: "رهنمایی در مورد پوهنتون‌ها، رشته‌ها و فیس تحصیلی.",
+    service_visa_title: "ویزای تحصیلی",
+    service_visa_desc: "رهنمایی کامل در پروسه درخواست ویزای تحصیلی.",
+    service_pickup_title: "انتقال از میدان هوایی",
+    service_pickup_desc: "استقبال در میدان هوایی و اسکان محصلین در ترکیه.",
+    service_scholar_title: "بورسیه‌های تحصیلی",
+    service_scholar_desc: "کشف بورسیه‌های تحصیلی قسمی و مکمل برای محصلین.",
+    learn_more: "بیشتر بدانید ←",
+    book_now: "ریزرف مشاوره ←",
+
+    why_tag: "چرا ما؟",
+    why_title: "همکار قابل اعتماد آموزشی شما در ترکیه",
+    why_desc: "Admission Turkey متعهد به حمایت از محصلین برای رسیدن به اهداف تحصیلی‌شان می‌باشد.",
+    why_item1: "رهنمایی مسلکی پذیرش",
+    why_item2: "کمک در انتخاب پوهنتون",
+    why_item3: "بورسیه‌های تحصیلی",
+    why_item4: "حمایت اسناد و ویزه",
+    why_item5: "انتقال از میدان هوایی",
+    why_btn: "درباره ما بیشتر بدانید",
+
+    works_tag: "چگونه کار می‌کند؟",
+    works_title: "آغاز سفر در ۴ مرحله",
+    step1_title: "مشاوره",
+    step1_desc: "با مشاورین ما صحبت کرده و اهداف خود را مشخص کنید.",
+    step2_title: "انتخاب پوهنتون",
+    step2_desc: "بهترین پوهنتون و رشته را انتخاب کنید.",
+    step3_title: "ثبت نام",
+    step3_desc: "اسناد خود را ارسال کرده و ثبت نام کنید.",
+    step4_title: "آغاز تحصیل",
+    step4_desc: "پذیرش خود را دریافت کرده و زندگی در ترکیه را آغاز کنید.",
+
+    faq_tag: "سوالات عام",
+    faq_title: "سوالات متداول",
+    faq_desc: "پاسخ سریع به سوالات عام در مورد تحصیل در ترکیه.",
+    faq1_q: "شرایط عمومی پذیرش در پوهنتون‌های ترکیه چیست؟",
+    faq1_a: "شهادتنامه مکتب یا ترانسکرپت، کاپی پاسپورت معتبر و عکس. برای رشته‌های انگلیسی، تافل یا امتحان سویه پوهنتون قبول می‌شود.",
+    faq2_q: "آیا بورسیه‌های تحصیلی موجود است؟",
+    faq2_a: "بلی! از طریق Admission Turkey محصلین از ۲۵٪ الی ۶۰٪ تخفیف تضمین شده فیس تحصیلی بهره‌مند می‌شوند.",
+    faq3_q: "آیا امتحان YÖS یا SAT ضروری است؟",
+    faq3_a: "نخیر، برای پوهنتون‌های خصوصی ترکیه امتحانات YÖS یا SAT حتمی نیست و با نمرات مکتب پذیرش داده می‌شود.",
+    faq4_q: "پروسه ویزه تحصیلی چقدر زمان می‌برد؟",
+    faq4_a: "پس از دریافت مکتوب پذیرش رسمی، درخواست ویزه معمولاً ۲ الی ۴ هفته را در بر می‌گیرد.",
+
+    cta_title: "آیا آماده تحصیل در ترکیه هستید؟",
+    cta_desc: "اولین قدم را برای آینده خود امروز بردارید.",
+    cta_btn: "مشاوره خود را ریزرف کنید",
+
+    footer_tagline: "Admission Turkey همکار قابل اعتماد شما برای پذیرش پوهنتون، بورسیه و خدمات محصلین در ترکیه است.",
+    footer_quick_links: "لینک‌های سریع",
+    footer_our_services: "خدمات ما",
+    footer_contact_us: "تماس با ما",
+    footer_rights: "© ۲۰۲۶ Admission Turkey. تمام حقوق محفوظ است."
+  },
+
+  ru: {
+    nav_home: "Главная",
+    nav_services: "Услуги",
+    nav_universities: "Университеты",
+    nav_about: "О нас",
+    nav_contact: "Контакты",
+    nav_login: "Войти",
+    nav_signup: "Регистрация",
+    nav_admin: "Панель администратора",
+    nav_logout: "Выйти",
+
+    hero_label: "🟠 Открыт набор 2026 | Доступны стипендии и гранты",
+    hero_title: "Поступите в ведущий <span>университет Турции</span> — Постройте будущее",
+    hero_desc: "С 2019 года Admission Turkey помогла студентам из более чем 28 стран поступить в топовые государственные и частные университеты Турции с гарантированными скидками.",
+    hero_btn_explore: "Подать заявку",
+    hero_btn_consult: "Консультация",
+    hero_card_title: "Высшее образование в Турции",
+    hero_card_desc: "Современные кампусы, доступное обучение и международная аккредитация.",
+
+    metric_tag_placement: "ЗАЧИСЛЕНИЕ",
+    stat_students: "СТУДЕНТОВ ПОСТУПИЛО",
+    metric_tag_visa: "ВИЗОВЫЙ УСПЕХ",
+    stat_visa_ratio: "УСПЕШНЫХ ВИЗ",
+    metric_tag_global: "СЕТЬ ВУЗОВ",
+    stat_options: "ТОП УНИВЕРСИТЕТОВ",
+
+    mindmap_tag: "ПОЧЕМУ ADMISSION TURKEY?",
+    mindmap_title: "Ваш <span>прямой путь</span> в лучшие <span>университеты</span>",
+    mindmap_desc: "Узнайте, почему тысячи абитуриентов выбирают Admission Turkey каждый год.",
+    node1_t: "Быстрое зачисление",
+    node1_d: "Официальное приглашение за 48 часов",
+    node2_t: "Лицензировано и надежно",
+    node2_d: "Официальный представитель университетов",
+    node3_t: "Полная поддержка",
+    node3_d: "Виза, проживание и трансфер из аэропорта",
+    node4_t: "Опытная команда",
+    node4_d: "Более 10 лет опыта в образовании",
+    node5_t: "Офис в Турции",
+    node5_d: "Команда поддержки в Стамбуле",
+    node6_t: "Международный охват",
+    node6_d: "Студенты из 28+ стран мира",
+
+    top_unis_tag: "ВЕДУЩИЕ УНИВЕРСИТЕТЫ",
+    top_unis_title: "Исследуйте лучшие университеты Турции",
+    top_unis_desc: "Университеты с гарантированным зачислением и скидками на обучение.",
+
+    offer_tag: "НАШИ УСЛУГИ",
+    sec_services_title: "Профессиональные Услуги",
+    sec_services_subtitle: "Все необходимое для начала вашей учебы в Турции.",
+    service_uni_title: "Поступление в вузы",
+    service_uni_desc: "Помощь в выборе университета, специальности и оформлении документов.",
+    service_consult_title: "Бесплатная консультация",
+    service_consult_desc: "Полная информация о ценах, факультетах и правилах приема.",
+    service_visa_title: "Студенческая виза",
+    service_scholar_title: "Стипендии и гранты",
+    service_scholar_desc: "Помощь в получении частичных и полных стипендий для иностранных студентов.",
+
+    footer_tagline: "Помогаем иностранным студентам получать качественное образование в Турции.",
+    footer_quick_links: "Быстрые ссылки",
+    footer_contact_us: "Контакты",
+    footer_rights: "Все права защищены."
+  },
+  zh: {
+    nav_home: "首页",
+    nav_services: "服务项目",
+    nav_universities: "合作大学",
+    nav_about: "关于我们",
+    nav_contact: "联系我们",
+    nav_login: "登录",
+    nav_signup: "注册账号",
+    nav_admin: "管理面板",
+    nav_logout: "退出登录",
+
+    hero_label: "通往世界级教育的大门",
+    hero_title: "留学 <span>土耳其</span><br>成就美好未来",
+    hero_desc: "我们致力于帮助国际学生选择合适的土耳其大学、申请录取通知书、获取奖学金指导并开启留学之旅。",
+    hero_btn_explore: "探索大学",
+    hero_btn_consult: "预约咨询",
+    hero_card_title: "开启留学之旅",
+    hero_card_desc: "获取土耳其留学的专业指导与支持。",
+    stat_students: "服务学生人数",
+    stat_options: "合作大学数量",
+
+    sec_services_title: "我们的服务",
+    sec_services_subtitle: "为您在土耳其的留学之旅提供全方位支持",
+    service_uni_title: "大学录取申请",
+    service_uni_desc: "直接申请土耳其顶尖大学，录取成功率高。",
+    service_visa_title: "学生签证支持",
+    service_visa_desc: "提供签证材料准备、预约及办理的全程指导。",
+    service_scholar_title: "奖学金申请指导",
+    service_scholar_desc: "为国际学生寻找符合条件的全额与半额学费奖学金。",
+
+    footer_tagline: "助力国际学生在土耳其取得卓越的学术成就。",
+    footer_quick_links: "快速链接",
+    footer_contact_us: "联系我们",
+    footer_rights: "版权所有 保留所有权利。"
   }
 };
 
@@ -16260,7 +16676,7 @@ function setLanguage(lang) {
   if (!i18nTranslations[lang]) lang = "en";
   
   document.documentElement.setAttribute("lang", lang);
-  if (lang === "ar") {
+  if (lang === "ar" || lang === "af") {
     document.documentElement.setAttribute("dir", "rtl");
   } else {
     document.documentElement.setAttribute("dir", "ltr");
@@ -17919,21 +18335,23 @@ window.openSubPortalRequestModal = openSubPortalRequestModal;
 window.closeSubPortalRequestModal = closeSubPortalRequestModal;
 window.handlePublicSubPortalRequest = handlePublicSubPortalRequest;
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => {
-    enforceSubPortalNavigation();
-    if (document.getElementById("existingUniSelect")) {
-      initImportUniversityPage();
-    }
-    if (document.getElementById("subTotalApps")) {
-      initSubPortalDashboard();
-    }
-    if (document.getElementById("subAdminPendingTable") || document.getElementById("subAdminApprovedTable")) {
-      loadSubAdminsList();
-    }
-  });
-} else {
-  enforceSubPortalNavigation();
+function initPage() {
+  try { enforceSubPortalNavigation(); } catch (e) {}
+  if (document.getElementById("universityList")) {
+    loadUniversities();
+  }
+  if (document.getElementById("selectExistingUniversity")) {
+    initAddUniversityPage();
+  }
+  if (document.getElementById("manageUniversityList")) {
+    loadManageUniversities();
+  }
+  if (document.getElementById("manageApplicationList")) {
+    loadManageApplications();
+  }
+  if (document.getElementById("universityCount")) {
+    loadAdminDashboard();
+  }
   if (document.getElementById("existingUniSelect")) {
     initImportUniversityPage();
   }
@@ -17945,7 +18363,8 @@ if (document.readyState === "loading") {
   }
 }
 
-
-
-
-
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initPage);
+} else {
+  initPage();
+}

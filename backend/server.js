@@ -69,14 +69,29 @@ app.get(["/api", "/api/health"], (req, res) => {
   res.json({ status: "success", message: "Admission Turkey Backend is Running!" });
 });
 
-app.get("/", (req, res) => {
-  res.send("Admission Turkey Backend is Running!");
+// Serve Admin Panel routes & static assets
+app.use("/admin", express.static(path.join(__dirname, "../frontend/admin")));
+app.get(["/admin", "/admin/"], (req, res) => {
+  const adminHtmlPath = path.join(__dirname, "../frontend/admin/admin.html");
+  if (fs.existsSync(adminHtmlPath)) {
+    res.sendFile(adminHtmlPath);
+  } else {
+    res.status(404).send("Admin Panel page not found.");
+  }
 });
 
-// Serve frontend files locally if needed
+// Serve Frontend static assets & root index.html
 app.use("/frontend", express.static(path.join(__dirname, "../frontend")));
-app.use("/admin", express.static(path.join(__dirname, "../frontend/admin")));
 app.use(express.static(path.join(__dirname, "../frontend")));
+
+app.get("/", (req, res) => {
+  const indexPath = path.join(__dirname, "../frontend/index.html");
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.json({ status: "success", message: "Admission Turkey Backend is Running!" });
+  }
+});
 
 if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
   const PORT = process.env.PORT || 5000;
