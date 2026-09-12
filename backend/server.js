@@ -41,26 +41,32 @@ const initDB = async () => {
 };
 
 app.use(async (req, res, next) => {
-  if (req.path.startsWith("/api")) {
+  const isApiReq = req.path.startsWith("/api") || req.url.startsWith("/api") || (req.originalUrl && req.originalUrl.startsWith("/api")) || req.path.includes("auth") || req.path.includes("applications") || req.path.includes("universities");
+  if (isApiReq) {
     try {
       await initDB();
     } catch (error) {
       console.error("DB Connection Middleware Note:", error.message);
-      // Non-blocking: continue so local fail-safe storage can serve student data smoothly
     }
   }
   next();
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/auth", authRoutes);
 app.use("/api/applications", applicationRoutes);
+app.use("/applications", applicationRoutes);
 app.use("/api/universities", universityRoutes);
+app.use("/universities", universityRoutes);
 app.use("/api/bookings", bookingRoutes);
+app.use("/bookings", bookingRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/payment", paymentRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/contact", contactRoutes);
 
-app.get("/api", (req, res) => {
-  res.send("Admission Turkey Backend is Running!");
+app.get(["/api", "/api/health"], (req, res) => {
+  res.json({ status: "success", message: "Admission Turkey Backend is Running!" });
 });
 
 app.get("/", (req, res) => {

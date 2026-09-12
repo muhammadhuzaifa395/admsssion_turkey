@@ -1,9 +1,16 @@
 // =========================================================
 // API BASE URL CONFIGURATION
 // =========================================================
-const API_BASE_URL = (window.location.hostname && window.location.hostname.includes("vercel.app"))
-  ? window.location.origin
-  : "http://localhost:5000";
+const isLocalHost = Boolean(
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1" ||
+  window.location.hostname === "[::1]"
+);
+const API_BASE_URL = (isLocalHost && window.location.port !== "5000" && window.location.port !== "")
+  ? "http://localhost:5000"
+  : (isLocalHost && window.location.port === "5000")
+    ? "http://localhost:5000"
+    : window.location.origin;
 
 // Helper: Fast Fetch with Timeout (prevents page hanging on unreachable servers)
 async function fetchWithTimeout(resource, options = {}, timeoutMs = 8000) {
