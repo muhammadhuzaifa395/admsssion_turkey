@@ -29,6 +29,34 @@ async function fetchWithTimeout(resource, options = {}, timeoutMs = 8000) {
   }
 }
 
+async function parseResponseJson(response) {
+  if (!response) {
+    throw new Error("No response received from server.");
+  }
+  const text = await response.text();
+  let data = null;
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch (e) {
+    if (!response.ok) {
+      throw new Error(`Server returned HTTP ${response.status} (${response.statusText || 'Error'}).`);
+    }
+    throw new Error("Server returned an invalid non-JSON response.");
+  }
+
+  if (!response.ok) {
+    const message = (data && (data.message || data.error))
+      ? (data.message || data.error)
+      : `Request failed with HTTP ${response.status}`;
+    const err = new Error(message);
+    err.status = response.status;
+    err.data = data;
+    throw err;
+  }
+
+  return data;
+}
+
 // ===============================
 // ADMIN PAGE PROTECTION
 // ===============================
@@ -17200,7 +17228,7 @@ async function initImportUniversityPage() {
 
   try {
     const res = await fetch(`${API_BASE_URL}/api/universities`);
-    const data = await res.json();
+    const data = await parseResponseJson(res);
     const universities = data.universities || (Array.isArray(data) ? data : []);
 
     existingSelect.innerHTML = `<option value="">-- Create New University --</option>` +
