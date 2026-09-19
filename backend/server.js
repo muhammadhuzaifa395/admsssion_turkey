@@ -69,20 +69,24 @@ app.get(["/api", "/api/health"], (req, res) => {
   res.json({ status: "success", message: "Admission Turkey Backend is Running!" });
 });
 
-// Serve Admin Panel routes & static assets
-app.use("/admin", express.static(path.join(__dirname, "../frontend/admin")));
-app.get(["/admin", "/admin/"], (req, res) => {
-  const adminHtmlPath = path.join(__dirname, "../frontend/admin/admin.html");
-  if (fs.existsSync(adminHtmlPath)) {
-    res.sendFile(adminHtmlPath);
+// Serve Admin Panel routes & static assets with clean URLs extension support
+app.use("/admin", express.static(path.join(__dirname, "../frontend/admin"), { extensions: ["html"] }));
+app.use("/admin", (req, res, next) => {
+  const reqPath = req.path.replace(/^\//, "");
+  if (!reqPath || reqPath === "admin") {
+    const adminHtmlPath = path.join(__dirname, "../frontend/admin/admin.html");
+    if (fs.existsSync(adminHtmlPath)) return res.sendFile(adminHtmlPath);
   } else {
-    res.status(404).send("Admin Panel page not found.");
+    const targetFile = reqPath.endsWith(".html") ? reqPath : `${reqPath}.html`;
+    const targetPath = path.join(__dirname, "../frontend/admin", targetFile);
+    if (fs.existsSync(targetPath)) return res.sendFile(targetPath);
   }
+  next();
 });
 
 // Serve Frontend static assets & root index.html
-app.use("/frontend", express.static(path.join(__dirname, "../frontend")));
-app.use(express.static(path.join(__dirname, "../frontend")));
+app.use("/frontend", express.static(path.join(__dirname, "../frontend"), { extensions: ["html"] }));
+app.use(express.static(path.join(__dirname, "../frontend"), { extensions: ["html"] }));
 
 app.get("/", (req, res) => {
   const indexPath = path.join(__dirname, "../frontend/index.html");

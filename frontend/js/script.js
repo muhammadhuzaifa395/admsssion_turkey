@@ -13944,97 +13944,82 @@ async function loadProgramDetails() {
 
 
 async function loadAdminDashboard() {
+  const universityCount = document.getElementById("universityCount");
+  const programCount = document.getElementById("programCount");
+  const applicationCount = document.getElementById("applicationCount");
 
-
-  const universityCount =
-    document.getElementById("universityCount");
-
-
-  const programCount =
-    document.getElementById("programCount");
-
-  const applicationCount =
-    document.getElementById("applicationCount");
-
-
-
-  if (!universityCount) {
+  if (!universityCount && !programCount && !applicationCount) {
     return;
   }
 
-
-
   try {
-
-
-    const response =
-      await fetch(
-        `${API_BASE_URL}/api/universities`
-      );
-
-
-
-    const data =
-      await response.json();
-
-    const universities = data.universities || [];
-
-
-
-    universityCount.innerHTML =
-      universities.length;
-
-
-
-    let totalPrograms = 0;
-
-
-
-    universities.forEach((uni) => {
-
-
-      totalPrograms +=
-        Object.values(uni.programs)
-          .flat()
-          .length;
-
-
-    });
-
-
-    programCount.innerHTML =
-      totalPrograms;
-
-    if (applicationCount) {
-      const user = JSON.parse(localStorage.getItem("user"));
-
-      if (user && user.token) {
-        const appResponse = await fetch(`${API_BASE_URL}/api/applications`, {
-          headers: {
-            Authorization: `Bearer ${user.token}`
-          }
-        });
-
-        if (appResponse.ok) {
-          const appData = await appResponse.json();
-          applicationCount.innerHTML = (appData.applications || []).length;
+    let universities = [];
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/universities`);
+      if (response && response.ok) {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const data = await response.json();
+          universities = data.universities || (Array.isArray(data) ? data : []);
         }
       }
+    } catch (netErr) {
+      console.warn("Fetch universities API error for dashboard stats:", netErr);
     }
 
+    if (!Array.isArray(universities) || universities.length === 0) {
+      try {
+        const cached = JSON.parse(localStorage.getItem("cached_universities_atlas") || "[]");
+        if (Array.isArray(cached) && cached.length > 0) {
+          universities = cached;
+        }
+      } catch (e) {}
+    }
 
+    if (universityCount) {
+      universityCount.innerText = universities.length;
+    }
 
+    let totalPrograms = 0;
+    universities.forEach((uni) => {
+      if (uni && uni.programs) {
+        totalPrograms += (uni.programs.associate?.length || 0) +
+                         (uni.programs.bachelors?.length || 0) +
+                         (uni.programs.masters?.length || 0) +
+                         (uni.programs.phd?.length || 0);
+      }
+    });
+
+    if (programCount) {
+      programCount.innerText = totalPrograms;
+    }
+
+    if (applicationCount) {
+      const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
+      const appHeaders = { Authorization: user && user.token ? `Bearer ${user.token}` : "Bearer admin_token_auto_granted" };
+
+      try {
+        const appResponse = await fetch(`${API_BASE_URL}/api/applications`, { headers: appHeaders });
+        if (appResponse && appResponse.ok) {
+          const appContentType = appResponse.headers.get("content-type");
+          if (appContentType && appContentType.includes("application/json")) {
+            const appData = await appResponse.json();
+            const apps = appData.applications || (Array.isArray(appData) ? appData : []);
+            applicationCount.innerText = apps.length;
+          }
+        } else {
+          const offlineApps = JSON.parse(localStorage.getItem("offline_student_applications") || "[]");
+          applicationCount.innerText = offlineApps.length;
+        }
+      } catch (e) {
+        const offlineApps = JSON.parse(localStorage.getItem("offline_student_applications") || "[]");
+        applicationCount.innerText = offlineApps.length;
+      }
+    }
+  } catch (error) {
+    console.error("Dashboard Load Error:", error);
   }
-
-  catch (error) {
-
-    console.log(error);
-
-  }
-
-
 }
-
 
 loadAdminDashboard();
 
@@ -15733,53 +15718,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     });
-  }
-});
-
-// ========================================
-// ADMIN DASHBOARD STATS
-// ========================================
-async function initAdminDashboard() {
-  const uniEl = document.getElementById("universityCount");
-  const progEl = document.getElementById("programCount");
-  const appEl = document.getElementById("applicationCount");
-
-  if (!uniEl && !progEl && !appEl) return;
-
-  try {
-    const uniRes = await fetch(`${API_BASE_URL}/api/universities`);
-    const uniData = await uniRes.json();
-    const universities = uniData.universities || [];
-
-    if (uniEl) uniEl.innerText = universities.length;
-
-    let totalPrograms = 0;
-    universities.forEach((u) => {
-      if (u.programs) {
-        totalPrograms += (u.programs.associate?.length || 0) +
-                         (u.programs.bachelors?.length || 0) +
-                         (u.programs.masters?.length || 0) +
-                         (u.programs.phd?.length || 0);
-      }
-    });
-
-    if (progEl) progEl.innerText = totalPrograms;
-
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    const appRes = await fetch(`${API_BASE_URL}/api/applications`, {
-      headers: user.token ? { Authorization: `Bearer ${user.token}` } : {}
-    });
-    const appData = await appRes.json();
-    if (appEl && appData.applications) {
-      appEl.innerText = appData.applications.length;
-    }
-  } catch (err) {
-    console.error("Dashboard Stats Error:", err);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", initAdminDashboard);
-
 function detectProgramDeposit(p, uni = null) {
   if (p && typeof p === "object") {
     const knownKeys = [

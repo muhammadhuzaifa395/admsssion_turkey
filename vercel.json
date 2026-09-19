@@ -15,6 +15,18 @@
       "destination": "/api/index.js"
     },
     {
+      "source": "/admin/css/(.*)",
+      "destination": "/frontend/css/$1"
+    },
+    {
+      "source": "/admin/js/(.*)",
+      "destination": "/frontend/js/$1"
+    },
+    {
+      "source": "/admin/images/(.*)",
+      "destination": "/frontend/images/$1"
+    },
+    {
       "source": "/admin",
       "destination": "/frontend/admin/admin.html"
     },
