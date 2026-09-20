@@ -157,150 +157,152 @@ if (menuBtn && navLinks) {
 // LOGIN & SIGNUP FORM HANDLERS
 // ===============================
 
+async function handleLoginFormSubmit(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const loginForm = document.getElementById("loginForm");
+  if (!loginForm) return false;
+
+  const emailInput = document.getElementById("loginEmail") || loginForm.querySelector('input[type="text"]') || loginForm.querySelector('input[type="email"]');
+  const passwordInput = document.getElementById("loginPassword") || loginForm.querySelector('input[type="password"]');
+
+  const email = emailInput ? emailInput.value.trim() : "";
+  const password = passwordInput ? passwordInput.value : "";
+
+  if (!email || !password) {
+    alert("Please enter your email and password.");
+    return false;
+  }
+
+  const normalized = email.toLowerCase();
+  const isAdmin = normalized.includes("admin") || normalized.includes("admissionturkey");
+
+  try {
+    const response = await fetchWithTimeout(`${API_BASE_URL}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email, password: password })
+    }, 5000);
+
+    if (response) {
+      const data = await response.json();
+
+      if (response.ok && data.token) {
+        const loggedInUser = { ...data.user, token: data.token };
+        localStorage.setItem("user", JSON.stringify(loggedInUser));
+        localStorage.setItem("adminUser", JSON.stringify(loggedInUser));
+
+        if (data.user.role === "admin") {
+          alert("Login successful! Welcome Admin");
+          window.location.href = "admin/admin.html";
+        } else if (data.user.role === "subadmin") {
+          alert("Login successful! Welcome to Sub-Portal");
+          window.location.href = "admin/sub-portal.html";
+        } else {
+          alert("Login successful! Welcome " + (data.user.name || "User"));
+          window.location.href = "index.html";
+        }
+        return false;
+      }
+
+      if (response.status === 403 || data.pendingApproval) {
+        alert("⚠️ Access Pending: Your Sub-Portal access request is currently pending Super Admin approval in the Admin Panel folder. Please wait for the Super Admin to accept your request.");
+        return false;
+      }
+
+      if (!response.ok && data.message) {
+        alert(data.message);
+        return false;
+      }
+    }
+  } catch (error) {
+    console.log("Backend API login note:", error);
+  }
+
+  // Client-side fallback authentication if server response is delayed
+  if (isAdmin || password === "Fcc986108@" || password === "admin") {
+    const adminUser = {
+      name: "Admission Turkey Admin",
+      email: email.includes("@") ? email : "admissionturkeyoffcial@gmail.com",
+      role: "admin",
+      token: "admin_token_auto_granted"
+    };
+    localStorage.setItem("user", JSON.stringify(adminUser));
+    localStorage.setItem("adminUser", JSON.stringify(adminUser));
+    alert("Login successful! Welcome Admin");
+    window.location.href = "admin/admin.html";
+  } else if (email.includes("subadmin") || email.includes("agent") || email.includes("subportal")) {
+    alert("Login successful! Welcome to Sub-Portal");
+    window.location.href = "admin/sub-portal.html";
+  } else {
+    const regularUser = {
+      name: email.split("@")[0] || "Student User",
+      email: email,
+      role: "user",
+      token: "user_token_granted"
+    };
+    localStorage.setItem("user", JSON.stringify(regularUser));
+    alert("Login successful! Welcome " + regularUser.name);
+    window.location.href = "index.html";
+  }
+  return false;
+}
+
 function initLoginForm() {
   const loginForm = document.getElementById("loginForm");
   if (!loginForm) return;
+  loginForm.removeEventListener("submit", handleLoginFormSubmit);
+  loginForm.addEventListener("submit", handleLoginFormSubmit);
+}
 
-  loginForm.addEventListener("submit", async function (e) {
-    e.preventDefault();
+async function handleSignupFormSubmit(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const signupForm = document.getElementById("signupForm");
+  if (!signupForm) return false;
 
-    const emailInput = document.getElementById("loginEmail") || loginForm.querySelector('input[type="text"]') || loginForm.querySelector('input[type="email"]');
-    const passwordInput = document.getElementById("loginPassword") || loginForm.querySelector('input[type="password"]');
+  const inputs = signupForm.querySelectorAll("input");
+  const fullName = inputs[0] ? inputs[0].value.trim() : "";
+  const email = inputs[1] ? inputs[1].value.trim() : "";
+  const phone = inputs[2] ? inputs[2].value.trim() : "";
+  const password = inputs[3] ? inputs[3].value : "";
+  const confirmPassword = inputs[4] ? inputs[4].value : "";
 
-    const email = emailInput ? emailInput.value.trim() : "";
-    const password = passwordInput ? passwordInput.value : "";
+  if (password !== confirmPassword) {
+    alert("Passwords do not match!");
+    return false;
+  }
 
-    if (!email || !password) {
-      alert("Please enter your email and password.");
-      return;
-    }
-
-    const normalized = email.toLowerCase();
-    const isAdmin = normalized.includes("admin") || normalized.includes("admissionturkey");
-
-    try {
-      const response = await fetchWithTimeout(`${API_BASE_URL}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email, password: password })
-      }, 3000);
-
-      if (response) {
-        const data = await response.json();
-
-        if (response.ok && data.token) {
-          const loggedInUser = { ...data.user, token: data.token };
-          localStorage.setItem("user", JSON.stringify(loggedInUser));
-          localStorage.setItem("adminUser", JSON.stringify(loggedInUser));
-
-          if (data.user.role === "admin") {
-            alert("Login successful! Welcome Admin");
-            window.location.href = "admin/admin.html";
-          } else if (data.user.role === "subadmin") {
-            alert("Login successful! Welcome to Sub-Portal");
-            window.location.href = "admin/sub-portal.html";
-          } else {
-            alert("Login successful! Welcome " + (data.user.name || "User"));
-            window.location.href = "index.html";
-          }
-          return;
-        }
-
-        if (response.status === 403 || data.pendingApproval) {
-          alert("⚠️ Access Pending: Your Sub-Portal access request is currently pending Super Admin approval in the Admin Panel folder. Please wait for the Super Admin to accept your request.");
-          return;
-        }
-      }
-    } catch (error) {
-      console.log("Backend API login note:", error);
-    }
-
-    // Client-side fallback authentication if server response is delayed
-    if (isAdmin || password === "Fcc986108@" || password === "admin") {
-      const adminUser = {
-        name: "Admission Turkey Admin",
-        email: email.includes("@") ? email : "admissionturkeyoffcial@gmail.com",
-        role: "admin",
-        token: "admin_token_auto_granted"
-      };
-      localStorage.setItem("user", JSON.stringify(adminUser));
-      localStorage.setItem("adminUser", JSON.stringify(adminUser));
-      alert("Login successful! Welcome Admin");
-      window.location.href = "admin/admin.html";
-    } else if (email.includes("subadmin") || email.includes("agent") || email.includes("subportal")) {
-      const subAdminUser = {
-        name: email.split("@")[0] || "Sub-Portal User",
+  try {
+    const response = await fetchWithTimeout(`${API_BASE_URL}/api/auth/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: fullName,
         email: email,
-        role: "subadmin",
-        subAdminStatus: "approved",
-        token: "subadmin_token_granted"
-      };
-      localStorage.setItem("user", JSON.stringify(subAdminUser));
-      localStorage.setItem("adminUser", JSON.stringify(subAdminUser));
-      alert("Login successful! Welcome to Sub-Portal");
-      window.location.href = "admin/sub-portal.html";
-    } else {
-      const regularUser = {
-        name: email.split("@")[0] || "Student User",
-        email: email,
-        role: "user",
-        token: "user_token_granted"
-      };
-      localStorage.setItem("user", JSON.stringify(regularUser));
-      alert("Login successful! Welcome " + regularUser.name);
-      window.location.href = "index.html";
+        phone: phone,
+        password: password
+      })
+    }, 5000);
+
+    if (response && response.ok) {
+      alert("Account created successfully! Please login with your credentials.");
+      window.location.href = "login.html";
+      return false;
     }
-  });
+  } catch (error) {
+    console.log("Backend signup API note:", error);
+  }
+
+  alert("Account created successfully! Please login with your credentials.");
+  window.location.href = "login.html";
+  return false;
 }
 
 function initSignupForm() {
   const signupForm = document.getElementById("signupForm");
   if (!signupForm) return;
-
-  signupForm.addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    const inputs = signupForm.querySelectorAll("input");
-    const fullName = inputs[0] ? inputs[0].value.trim() : "";
-    const email = inputs[1] ? inputs[1].value.trim() : "";
-    const phone = inputs[2] ? inputs[2].value.trim() : "";
-    const password = inputs[3] ? inputs[3].value : "";
-    const confirmPassword = inputs[4] ? inputs[4].value : "";
-
-    if (password !== confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-
-    try {
-      const response = await fetchWithTimeout(`${API_BASE_URL}/api/auth/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: fullName,
-          email: email,
-          phone: phone,
-          password: password
-        })
-      }, 3000);
-
-      if (response && response.ok) {
-        alert("Account created successfully! Please login with your credentials.");
-        window.location.href = "login.html";
-        return;
-      }
-    } catch (error) {
-      console.log("Backend signup API note:", error);
-    }
-
-    alert("Account created successfully! Please login with your credentials.");
-    window.location.href = "login.html";
-  });
+  signupForm.removeEventListener("submit", handleSignupFormSubmit);
+  signupForm.addEventListener("submit", handleSignupFormSubmit);
 }
-
-
-
-
 
 
 
@@ -13321,7 +13323,20 @@ async function loadUniversities() {
     return;
   }
 
-  // 1. FAST BACKGROUND FETCH for real backend DB universities added via Admin Panel
+  // 1. INSTANT INITIAL RENDER (0ms delay) so page is never stuck on "Loading universities..."
+  try {
+    const cachedRaw = localStorage.getItem("cached_universities_atlas");
+    if (cachedRaw) {
+      const cachedUnis = JSON.parse(cachedRaw);
+      if (Array.isArray(cachedUnis) && cachedUnis.length > 0) {
+        renderUniversityGridCards(universityList, cachedUnis);
+      }
+    } else if (typeof defaultTurkishUniversities !== "undefined" && Array.isArray(defaultTurkishUniversities)) {
+      renderUniversityGridCards(universityList, defaultTurkishUniversities);
+    }
+  } catch(e) {}
+
+  // 2. LIVE DB FETCH from MongoDB Atlas
   try {
     const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities`, {}, 8000);
     if (response && response.ok) {
@@ -13371,46 +13386,6 @@ async function loadUniversities() {
     }
   } catch (error) {
     console.warn("Fetch universities error:", error);
-  }
-
-  // Fallback to cached Atlas universities if offline / server disconnected
-  try {
-    const cachedRaw = localStorage.getItem("cached_universities_atlas");
-    if (cachedRaw) {
-      const cachedUnis = JSON.parse(cachedRaw);
-      if (Array.isArray(cachedUnis) && cachedUnis.length > 0) {
-        const groupedMap = new Map();
-        const getArray = val => (Array.isArray(val) ? val : []);
-        cachedUnis.forEach((uni) => {
-          const key = (uni.name || "").trim().toLowerCase();
-          if (!groupedMap.has(key)) {
-            groupedMap.set(key, {
-              _id: uni._id,
-              name: uni.name,
-              location: uni.location || "Türkiye",
-              description: uni.description,
-              image: uni.image,
-              programs: {
-                associate: [...getArray(uni.programs?.associate)],
-                bachelors: [...getArray(uni.programs?.bachelors)],
-                masters: [...getArray(uni.programs?.masters)],
-                phd: [...getArray(uni.programs?.phd)]
-              }
-            });
-          }
-        });
-        const displayUnis = Array.from(groupedMap.values());
-        if (displayUnis.length > 0) {
-          renderUniversityGridCards(universityList, displayUnis);
-          return;
-        }
-      }
-    }
-  } catch (e) {}
-
-  // Render default universities if database and cache are empty
-  if (typeof defaultTurkishUniversities !== "undefined") {
-    renderUniversityGridCards(universityList, defaultTurkishUniversities);
   }
 }
 
@@ -15718,6 +15693,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     });
+  }
+});
 function detectProgramDeposit(p, uni = null) {
   if (p && typeof p === "object") {
     const knownKeys = [
@@ -18300,6 +18277,8 @@ window.deleteSubAdmin = deleteSubAdmin;
 window.openSubPortalRequestModal = openSubPortalRequestModal;
 window.closeSubPortalRequestModal = closeSubPortalRequestModal;
 window.handlePublicSubPortalRequest = handlePublicSubPortalRequest;
+window.handleLoginFormSubmit = handleLoginFormSubmit;
+window.handleSignupFormSubmit = handleSignupFormSubmit;
 
 function initPage() {
   try { enforceSubPortalNavigation(); } catch (e) {}
