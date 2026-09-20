@@ -16024,23 +16024,7 @@ async function initFeeStructureExporter() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  initLoginForm();
-  initSignupForm();
-  initAdminDashboard();
-  initFeeStructureExporter();
-  initThemeEngine();
-  initI18nEngine();
-  initAnimations();
-  initFaqAccordion();
-  initHomeUniversitySlider();
-  initMindmapSection();
-  initVideoModal();
-  // initReviewSystem(); -- Review system eliminated as requested
-  loadUniversities();
-  loadUniversityDetails();
-  loadProgramDetails();
-});
+// Centralized initialization executed via initPage() below
 
 /* =========================================================
    THEME, I18N & ANIMATION ENGINES FOR FRONTEND
@@ -16660,8 +16644,8 @@ function setLanguage(lang) {
 
 function initAnimations() {
   const observerOptions = {
-    threshold: 0.12,
-    rootMargin: "0px 0px -40px 0px"
+    threshold: 0.05,
+    rootMargin: "50px 0px"
   };
 
   const revealObserver = new IntersectionObserver((entries, observer) => {
@@ -16681,8 +16665,16 @@ function initAnimations() {
   }, observerOptions);
 
   document.querySelectorAll(".reveal-on-scroll, .reveal-fade-up, .reveal-slide-left, .reveal-slide-right, .reveal-scale").forEach(el => {
-    el.classList.add("reveal-on-scroll");
-    revealObserver.observe(el);
+    const rect = el.getBoundingClientRect();
+    if (rect.top < (window.innerHeight || document.documentElement.clientHeight) + 100) {
+      el.classList.add("reveal-visible");
+      const countElements = el.querySelectorAll("[data-count]");
+      countElements.forEach(c => animateCounter(c));
+      if (el.hasAttribute("data-count")) animateCounter(el);
+    } else {
+      el.classList.add("reveal-on-scroll");
+      revealObserver.observe(el);
+    }
   });
 
   initHeroParticles();
@@ -18289,11 +18281,26 @@ window.handleSignupFormSubmit = handleSignupFormSubmit;
 
 function initPage() {
   try { enforceSubPortalNavigation(); } catch (e) {}
+  try { initThemeEngine(); } catch (e) {}
+  try { initI18nEngine(); } catch (e) {}
+  try { initLoginForm(); } catch (e) {}
+  try { initSignupForm(); } catch (e) {}
+  try { initAdminDashboard(); } catch (e) {}
+  try { initFeeStructureExporter(); } catch (e) {}
+  try { initAnimations(); } catch (e) {}
+  try { initFaqAccordion(); } catch (e) {}
+  try { initHomeUniversitySlider(); } catch (e) {}
+  try { initMindmapSection(); } catch (e) {}
+  try { initVideoModal(); } catch (e) {}
+
   if (document.getElementById("universityList")) {
     loadUniversities();
   }
   if (document.getElementById("universityDetail")) {
     loadUniversityDetails();
+  }
+  if (document.getElementById("programDetailContainer")) {
+    loadProgramDetails();
   }
   if (document.getElementById("selectExistingUniversity")) {
     initAddUniversityPage();
