@@ -17140,22 +17140,42 @@ async function initImportUniversityPage() {
   const existingSelect = document.getElementById("existingUniSelect");
   if (!existingSelect) return;
 
+  let universities = [];
   try {
     const res = await fetch(`${API_BASE_URL}/api/universities`);
-    const data = await parseResponseJson(res);
-    const universities = data.universities || (Array.isArray(data) ? data : []);
-
-    existingSelect.innerHTML = `<option value="">-- Create New University --</option>` +
-      universities.map(u => `<option value="${u._id}">${escapeHtml(u.name)} (${[u.city, u.country].filter(Boolean).join(", ")})</option>`).join("");
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const editId = urlParams.get("editId") || urlParams.get("id");
-    if (editId) {
-      existingSelect.value = editId;
-      await handleSelectExistingUniversity(editId);
+    if (res && res.ok) {
+      const data = await parseResponseJson(res);
+      universities = data.universities || (Array.isArray(data) ? data : []);
     }
   } catch (err) {
-    console.error("Error loading existing universities for dropdown:", err);
+    console.warn("API universities fetch note:", err);
+  }
+
+  // Fallback to cached Atlas universities or default dataset if offline / 404
+  if (universities.length === 0) {
+    try {
+      const cachedRaw = localStorage.getItem("cached_universities_atlas");
+      if (cachedRaw) {
+        const cachedUnis = JSON.parse(cachedRaw);
+        if (Array.isArray(cachedUnis) && cachedUnis.length > 0) {
+          universities = cachedUnis;
+        }
+      }
+    } catch (e) {}
+  }
+
+  if (universities.length === 0 && typeof defaultTurkishUniversities !== "undefined" && Array.isArray(defaultTurkishUniversities)) {
+    universities = defaultTurkishUniversities;
+  }
+
+  existingSelect.innerHTML = `<option value="">-- Create New University --</option>` +
+    universities.map(u => `<option value="${u._id || u.id}">${escapeHtml(u.name)} (${[u.city || u.location, u.country || "Turkey"].filter(Boolean).join(", ")})</option>`).join("");
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const editId = urlParams.get("editId") || urlParams.get("id");
+  if (editId) {
+    existingSelect.value = editId;
+    await handleSelectExistingUniversity(editId);
   }
 }
 
@@ -17191,12 +17211,12 @@ async function handleSelectExistingUniversity(uniId) {
       saveBtn.innerHTML = `<i class="fas fa-cloud-arrow-up"></i> Save & Publish University`;
       saveBtn.style.background = "#10b981";
     }
-    showImportAlert("Creating a new university record.", "info");
+    const alertBox = document.getElementById("importAlertBox");
+    if (alertBox) alertBox.style.display = "none";
     return;
   }
 
   currentImportUniId = uniId;
-  showImportAlert("Loading existing university details...", "info");
 
   let uni = null;
 
@@ -17232,10 +17252,6 @@ async function handleSelectExistingUniversity(uniId) {
     }
   } catch (err) {
     console.warn("Error fetching live university details:", err);
-  }
-
-  if (!uni) {
-    showImportAlert("Selected university details unavailable.", "error");
   }
 }
 
