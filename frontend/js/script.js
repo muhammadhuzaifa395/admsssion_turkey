@@ -13389,73 +13389,12 @@ async function loadUniversities() {
   }
 }
 
-async function loadUniversityDetails() {
+function renderUniversityDetailView(university) {
   const detailContainer = document.getElementById("universityDetail");
   const programListContainer = document.getElementById("programListContainer");
 
-  if (!detailContainer || !programListContainer) {
-    return;
-  }
+  if (!detailContainer || !programListContainer || !university) return;
 
-  const universityId = typeof getQueryParam === "function" ? getQueryParam("id") : new URLSearchParams(window.location.search).get("id");
-  let university = null;
-
-  if (universityId) {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/universities/${universityId}`);
-      if (response && response.ok) {
-        const data = await response.json();
-        if (data && data.university) {
-          university = data.university;
-        }
-      }
-    } catch (e) {
-      console.warn("API university fetch notice:", e);
-    }
-  }
-
-  if (!university && universityId) {
-    try {
-      const cachedRaw = localStorage.getItem("cached_universities_atlas");
-      if (cachedRaw) {
-        const cachedUnis = JSON.parse(cachedRaw);
-        if (Array.isArray(cachedUnis)) {
-          const cleanSearchId = decodeURIComponent(universityId).toLowerCase().trim();
-          university = cachedUnis.find(u => 
-            (u._id && u._id.toString() === universityId) ||
-            (u.id && u.id.toString() === universityId) ||
-            (u.name && u.name.toLowerCase().trim() === cleanSearchId) ||
-            (u.name && cleanSearchId.includes(u.name.toLowerCase().trim()))
-          );
-        }
-      }
-    } catch (e) {}
-  }
-
-  if (!university) {
-    if (typeof defaultTurkishUniversities !== "undefined" && Array.isArray(defaultTurkishUniversities)) {
-      if (universityId) {
-        const cleanSearchId = decodeURIComponent(universityId).toLowerCase().trim();
-        university = defaultTurkishUniversities.find(u => 
-          (u._id && u._id.toString() === universityId) ||
-          (u.id && u.id.toString() === universityId) ||
-          (u.name && u.name.toLowerCase().trim() === cleanSearchId) ||
-          (u.name && cleanSearchId.includes(u.name.toLowerCase().trim())) ||
-          (cleanSearchId.includes(u.name.toLowerCase().trim()))
-        );
-      }
-      if (!university && defaultTurkishUniversities.length > 0) {
-        university = defaultTurkishUniversities[0];
-      }
-    }
-  }
-
-  if (!university) {
-    detailContainer.innerHTML = `<p class="empty-program">University details unavailable.</p>`;
-    return;
-  }
-
-  // Normalize programs object to guarantee array safety
   if (!university.programs || typeof university.programs !== "object") {
     university.programs = { associate: [], bachelors: [], masters: [], phd: [] };
   } else {
@@ -13500,7 +13439,75 @@ async function loadUniversityDetails() {
     }
   } catch (error) {
     console.error("Load university details error:", error);
-    detailContainer.innerHTML = `<p class="empty-program">Unable to load university details.</p>`;
+  }
+}
+
+async function loadUniversityDetails() {
+  const detailContainer = document.getElementById("universityDetail");
+  const programListContainer = document.getElementById("programListContainer");
+
+  if (!detailContainer || !programListContainer) {
+    return;
+  }
+
+  const universityId = typeof getQueryParam === "function" ? getQueryParam("id") : new URLSearchParams(window.location.search).get("id");
+  let university = null;
+
+  // 1. INSTANT RENDER (0ms delay) from cache or default dataset
+  if (universityId) {
+    try {
+      const cachedRaw = localStorage.getItem("cached_universities_atlas");
+      if (cachedRaw) {
+        const cachedUnis = JSON.parse(cachedRaw);
+        if (Array.isArray(cachedUnis)) {
+          const cleanSearchId = decodeURIComponent(universityId).toLowerCase().trim();
+          university = cachedUnis.find(u => 
+            (u._id && u._id.toString() === universityId) ||
+            (u.id && u.id.toString() === universityId) ||
+            (u.name && u.name.toLowerCase().trim() === cleanSearchId) ||
+            (u.name && cleanSearchId.includes(u.name.toLowerCase().trim())) ||
+            (cleanSearchId.includes(u.name.toLowerCase().trim()))
+          );
+        }
+      }
+    } catch (e) {}
+  }
+
+  if (!university && typeof defaultTurkishUniversities !== "undefined" && Array.isArray(defaultTurkishUniversities)) {
+    if (universityId) {
+      const cleanSearchId = decodeURIComponent(universityId).toLowerCase().trim();
+      university = defaultTurkishUniversities.find(u => 
+        (u._id && u._id.toString() === universityId) ||
+        (u.id && u.id.toString() === universityId) ||
+        (u.name && u.name.toLowerCase().trim() === cleanSearchId) ||
+        (u.name && cleanSearchId.includes(u.name.toLowerCase().trim())) ||
+        (cleanSearchId.includes(u.name.toLowerCase().trim()))
+      );
+    }
+    if (!university && defaultTurkishUniversities.length > 0) {
+      university = defaultTurkishUniversities[0];
+    }
+  }
+
+  if (university) {
+    renderUniversityDetailView(university);
+  }
+
+  // 2. LIVE FETCH from MongoDB Atlas backend
+  if (universityId) {
+    try {
+      const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities/${universityId}`, {}, 8000);
+      if (response && response.ok) {
+        const data = await response.json();
+        if (data && data.university) {
+          renderUniversityDetailView(data.university);
+        }
+      }
+    } catch (e) {
+      console.warn("API university fetch notice:", e);
+    }
+  } else if (!university) {
+    detailContainer.innerHTML = `<p class="empty-program">University details unavailable.</p>`;
   }
 }
 
@@ -18284,6 +18291,9 @@ function initPage() {
   try { enforceSubPortalNavigation(); } catch (e) {}
   if (document.getElementById("universityList")) {
     loadUniversities();
+  }
+  if (document.getElementById("universityDetail")) {
+    loadUniversityDetails();
   }
   if (document.getElementById("selectExistingUniversity")) {
     initAddUniversityPage();
