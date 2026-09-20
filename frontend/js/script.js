@@ -17198,71 +17198,111 @@ async function handleSelectExistingUniversity(uniId) {
   currentImportUniId = uniId;
   showImportAlert("Loading existing university details...", "info");
 
+  let uni = null;
+
+  // 1. Try local cache / default dataset first for instant 0ms dropdown selection
+  try {
+    const cachedRaw = localStorage.getItem("cached_universities_atlas");
+    if (cachedRaw) {
+      const cachedUnis = JSON.parse(cachedRaw);
+      if (Array.isArray(cachedUnis)) {
+        uni = cachedUnis.find(u => (u._id && u._id.toString() === uniId) || (u.id && u.id.toString() === uniId));
+      }
+    }
+  } catch (e) {}
+
+  if (!uni && typeof defaultTurkishUniversities !== "undefined" && Array.isArray(defaultTurkishUniversities)) {
+    uni = defaultTurkishUniversities.find(u => (u._id && u._id.toString() === uniId) || (u.id && u.id.toString() === uniId));
+  }
+
+  if (uni) {
+    populateImportFormFromUni(uni);
+  }
+
+  // 2. Fetch live data from backend MongoDB Atlas safely
   try {
     const res = await fetch(`${API_BASE_URL}/api/universities/${uniId}`);
-    const data = await res.json();
-    const uni = data.university || data;
+    if (res && res.ok) {
+      const data = await parseResponseJson(res);
+      const fetchedUni = data.university || data;
+      if (fetchedUni && (fetchedUni._id || fetchedUni.name)) {
+        uni = fetchedUni;
+        populateImportFormFromUni(uni);
+      }
+    }
+  } catch (err) {
+    console.warn("Error fetching live university details:", err);
+  }
 
-    if (!uni || (!uni._id && !uni.name)) throw new Error("University details not found.");
+  if (!uni) {
+    showImportAlert("Selected university details unavailable.", "error");
+  }
+}
 
-    if (nameInput) nameInput.value = uni.name || "";
-    if (countryInput) countryInput.value = uni.country || "Turkey";
-    if (cityInput) cityInput.value = uni.city || "";
-    if (typeSelect) typeSelect.value = uni.type || "Public";
-    if (websiteInput) websiteInput.value = uni.website || "";
-    if (imageInput) imageInput.value = uni.image || "";
-    if (descTextarea) descTextarea.value = uni.description || "";
+function populateImportFormFromUni(uni) {
+  const nameInput = document.getElementById("importUniName");
+  const countryInput = document.getElementById("importUniCountry");
+  const cityInput = document.getElementById("importUniCity");
+  const typeSelect = document.getElementById("importUniType");
+  const websiteInput = document.getElementById("importUniWebsite");
+  const imageInput = document.getElementById("importUniImage");
+  const descTextarea = document.getElementById("importUniDescription");
+  const saveBtn = document.getElementById("saveImportUniBtn");
 
-    const flattened = [];
-    const progsObj = uni.programs || {};
-    const degreeMap = {
-      associate: "Associate",
-      bachelors: "Bachelor's",
-      masters: "Master's",
-      phd: "PhD"
-    };
+  if (nameInput) nameInput.value = uni.name || "";
+  if (countryInput) countryInput.value = uni.country || "Turkey";
+  if (cityInput) cityInput.value = uni.city || uni.location || "";
+  if (typeSelect) typeSelect.value = uni.type || "Public";
+  if (websiteInput) websiteInput.value = uni.website || "";
+  if (imageInput) imageInput.value = uni.image || "";
+  if (descTextarea) descTextarea.value = uni.description || "";
 
-    Object.keys(degreeMap).forEach(degKey => {
-      const arr = progsObj[degKey] || [];
-      arr.forEach((p, i) => {
-        flattened.push({
-          id: p._id || `existing_${degKey}_${i}`,
-          name: p.name || "",
-          degreeLevel: p.degreeLevel || degreeMap[degKey],
-          faculty: p.faculty || "",
-          language: p.language || "English",
-          duration: p.duration || "",
-          originalFee: p.originalFee || 0,
-          discountFee: p.discountFee || p.originalFee || 0,
-          initialDeposit: p.initialDeposit ?? p.depositFee ?? p.deposit ?? 1000,
-          currency: p.currency || "$",
-          applicationFee: p.applicationFee || "",
-          requirements: p.requirements || "",
-          documents: p.documents || "",
-          additionalRequirements: p.additionalRequirements || "",
-          intake: p.intake || "",
-          description: p.description || "",
-          thesisType: p.thesisType || "N/A"
-        });
+  const flattened = [];
+  const progsObj = uni.programs || {};
+  const degreeMap = {
+    associate: "Associate",
+    bachelors: "Bachelor's",
+    masters: "Master's",
+    phd: "PhD"
+  };
+
+  Object.keys(degreeMap).forEach(degKey => {
+    const arr = progsObj[degKey] || [];
+    arr.forEach((p, i) => {
+      flattened.push({
+        id: p._id || `existing_${degKey}_${i}`,
+        name: p.name || "",
+        degreeLevel: p.degreeLevel || degreeMap[degKey],
+        faculty: p.faculty || "",
+        language: p.language || "English",
+        duration: p.duration || "",
+        originalFee: p.originalFee || 0,
+        discountFee: p.discountFee || p.originalFee || 0,
+        initialDeposit: p.initialDeposit ?? p.depositFee ?? p.deposit ?? 1000,
+        currency: p.currency || "$",
+        applicationFee: p.applicationFee || "",
+        requirements: p.requirements || "",
+        documents: p.documents || "",
+        additionalRequirements: p.additionalRequirements || "",
+        intake: p.intake || "",
+        description: p.description || "",
+        thesisType: p.thesisType || "N/A"
       });
     });
+  });
 
-    parsedProgramsState = flattened;
-    renderImportPreview();
+  parsedProgramsState = flattened;
+  renderImportPreview();
 
-    const previewSec = document.getElementById("importPreviewSection");
-    if (previewSec) previewSec.style.display = "block";
+  const previewSec = document.getElementById("importPreviewSection");
+  if (previewSec) previewSec.style.display = "block";
 
-    if (saveBtn) {
-      saveBtn.innerHTML = `<i class="fas fa-cloud-arrow-up"></i> Update & Publish University`;
-      saveBtn.style.background = "#0284c7";
-    }
-
-    showImportAlert(`Loaded "${uni.name}" with ${parsedProgramsState.length} existing program(s). You can edit them or paste new data below to append programs.`, "success");
-  } catch (err) {
-    console.error("Error loading existing university:", err);
-    showImportAlert(`Failed to load university: ${err.message}`, "error");
+  if (saveBtn) {
+    saveBtn.innerHTML = `<i class="fas fa-cloud-arrow-up"></i> Update & Publish University`;
+    saveBtn.style.background = "#0284c7";
   }
+
+  showImportAlert(`Loaded "${uni.name}" with ${parsedProgramsState.length} existing program(s). You can edit them or paste new data below to append programs.`, "success");
 }
 
 async function handleParseData() {
@@ -17309,7 +17349,9 @@ async function handleParseData() {
           }
         })
       });
-      data = await response.json();
+      if (response && response.ok) {
+        data = await parseResponseJson(response);
+      }
     } catch (netErr) {
       console.warn("Backend parse fetch error, using client-side parser fallback:", netErr);
     }
@@ -17756,21 +17798,23 @@ async function handleSaveImportedUniversity() {
       body: JSON.stringify({ name: uniName })
     });
 
-    const checkData = await checkRes.json();
+    if (checkRes && checkRes.ok) {
+      const checkData = await parseResponseJson(checkRes);
 
-    if (checkData.exists) {
-      detectedDuplicateUniId = checkData.universityId;
-      const modal = document.getElementById("duplicateWarningModal");
-      const msg = document.getElementById("duplicateModalMessage");
-      if (msg) {
-        msg.innerText = `A university named "${uniName}" already exists in the database. Choose whether to update & merge programs into the existing record or create a separate duplicate.`;
+      if (checkData && checkData.exists) {
+        detectedDuplicateUniId = checkData.universityId;
+        const modal = document.getElementById("duplicateWarningModal");
+        const msg = document.getElementById("duplicateModalMessage");
+        if (msg) {
+          msg.innerText = `A university named "${uniName}" already exists in the database. Choose whether to update & merge programs into the existing record or create a separate duplicate.`;
+        }
+        if (modal) modal.style.display = "flex";
+        if (saveBtn) {
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = `<i class="fas fa-cloud-arrow-up"></i> Save & Publish University`;
+        }
+        return;
       }
-      if (modal) modal.style.display = "flex";
-      if (saveBtn) {
-        saveBtn.disabled = false;
-        saveBtn.innerHTML = `<i class="fas fa-cloud-arrow-up"></i> Save & Publish University`;
-      }
-      return;
     }
 
     await confirmAndExecuteSave();
@@ -17834,9 +17878,9 @@ async function confirmAndExecuteSave(forceDuplicate = false) {
       body: JSON.stringify(pendingSaveImportPayload)
     });
 
-    const data = await response.json();
+    const data = await parseResponseJson(response);
 
-    if (!response.ok || !data.success) {
+    if (!data.success) {
       throw new Error(data.message || "Failed to save university into MongoDB.");
     }
 
