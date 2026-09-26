@@ -18383,6 +18383,68 @@ function initPage() {
   if (document.getElementById("subAdminPendingTable") || document.getElementById("subAdminApprovedTable")) {
     loadSubAdminsList();
   }
+  if (document.getElementById("homeScholarshipsPreview")) {
+    initHomeScholarshipsPreview();
+  }
+}
+
+async function initHomeScholarshipsPreview() {
+  const container = document.getElementById("homeScholarshipsPreview");
+  if (!container) return;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/scholarships`);
+    const result = await res.json();
+
+    if (result.success && Array.isArray(result.data) && result.data.length > 0) {
+      // Show first 4 scholarships on homepage
+      const previewItems = result.data.slice(0, 4);
+
+      container.innerHTML = previewItems.map(item => {
+        const isSoldOut = Boolean(item.isSoldOut);
+        const cardClass = isSoldOut ? 'scholarship-card sold-out-card' : 'scholarship-card';
+        const badgeClass = isSoldOut ? 'onetime-badge sold-out-badge-pill' : 'onetime-badge';
+
+        const logoHtml = item.image 
+          ? `<img src="${item.image}" alt="${item.universityName}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?w=150&auto=format&fit=crop&q=80';">`
+          : `<i class="fas fa-university"></i>`;
+
+        const waMsg = encodeURIComponent(`Hello Admission Turkey! I am interested in applying for the Scholarship offer at ${item.universityName} (One-Time Payment: ${Number(item.oneTimeFee).toLocaleString()} USD).`);
+        const waUrl = `https://wa.me/905514840804?text=${waMsg}`;
+
+        const actionBtnHtml = isSoldOut
+          ? `<button class="btn-scholarship-disabled" disabled>Sold Out</button>`
+          : `<a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn-scholarship-request"><i class="fab fa-whatsapp"></i> Request</a>`;
+
+        return `
+          <div class="${cardClass}">
+            ${isSoldOut ? `<div class="sold-out-stamp">SOLD OUT</div>` : ''}
+            <div class="scholarship-card-left">
+              <div class="scholarship-logo-box">
+                ${logoHtml}
+              </div>
+              <div class="scholarship-info">
+                <h3 class="scholarship-uni-name">${item.universityName}</h3>
+                <div class="scholarship-program-name">${item.programName || 'All Bachelor Programs'}</div>
+                <div class="scholarship-pricing-row">
+                  ${item.normalPrice ? `<span class="scholarship-normal-price">Normal price ${Number(item.normalPrice).toLocaleString()} USD</span>` : ''}
+                  <div class="${badgeClass}">
+                    <span class="badge-label">ONE-TIME PAYMENT</span>
+                    <span class="badge-amount">${Number(item.oneTimeFee).toLocaleString()} USD</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="scholarship-card-right">
+              ${actionBtnHtml}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  } catch (err) {
+    console.error("Error loading home scholarships preview:", err);
+  }
 }
 
 if (document.readyState === "loading") {

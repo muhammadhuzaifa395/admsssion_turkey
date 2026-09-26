@@ -14,6 +14,7 @@ const universityRoutes = require("./routes/universityRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const scholarshipRoutes = require("./routes/scholarshipRoutes");
 
 const app = express();
 const uploadsDir = path.join(__dirname, "uploads");
@@ -41,7 +42,7 @@ const initDB = async () => {
 };
 
 app.use(async (req, res, next) => {
-  const isApiReq = req.path.startsWith("/api") || req.url.startsWith("/api") || (req.originalUrl && req.originalUrl.startsWith("/api")) || req.path.includes("auth") || req.path.includes("applications") || req.path.includes("universities");
+  const isApiReq = req.path.startsWith("/api") || req.url.startsWith("/api") || (req.originalUrl && req.originalUrl.startsWith("/api")) || req.path.includes("auth") || req.path.includes("applications") || req.path.includes("universities") || req.path.includes("scholarships");
   if (isApiReq) {
     try {
       await initDB();
@@ -64,6 +65,8 @@ app.use("/api/payment", paymentRoutes);
 app.use("/payment", paymentRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/contact", contactRoutes);
+app.use("/api/scholarships", scholarshipRoutes);
+app.use("/scholarships", scholarshipRoutes);
 
 app.get(["/api", "/api/health"], (req, res) => {
   res.json({ status: "success", message: "Admission Turkey Backend is Running!" });
