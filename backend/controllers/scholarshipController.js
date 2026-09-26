@@ -1,85 +1,9 @@
 const Scholarship = require("../models/Scholarship");
 const ScholarshipRequest = require("../models/ScholarshipRequest");
 
-// Initial seed dataset matching prompt screenshots
-const initialScholarships = [
-  {
-    universityName: "Istanbul Atlas University",
-    programName: "All Bachelor Programs",
-    normalPrice: 19280,
-    oneTimeFee: 8500,
-    currency: "USD",
-    image: "https://images.unsplash.com/photo-1562774053-701939374585?w=200&auto=format&fit=crop&q=80",
-    isSoldOut: false,
-    note: "Exclusive one-time payment offer"
-  },
-  {
-    universityName: "Bahcesehir University",
-    programName: "All Bachelor Programs",
-    normalPrice: 36000,
-    oneTimeFee: 23000,
-    currency: "USD",
-    image: "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?w=200&auto=format&fit=crop&q=80",
-    isSoldOut: false,
-    note: "Exclusive one-time payment offer"
-  },
-  {
-    universityName: "Uskudar University",
-    programName: "All Bachelor Programs",
-    normalPrice: 18000,
-    oneTimeFee: 8000,
-    currency: "USD",
-    image: "https://images.unsplash.com/photo-1592280771190-3e2e4d571952?w=200&auto=format&fit=crop&q=80",
-    isSoldOut: false,
-    note: "Exclusive one-time payment offer"
-  },
-  {
-    universityName: "Antalya Bilim University",
-    programName: "All Bachelor Programs",
-    normalPrice: 13250,
-    oneTimeFee: 7500,
-    currency: "USD",
-    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=200&auto=format&fit=crop&q=80",
-    isSoldOut: true,
-    note: "Exclusive one-time payment offer"
-  },
-  {
-    universityName: "Istanbul Topkapi University",
-    programName: "Bachelor Programs",
-    normalPrice: 10000,
-    oneTimeFee: 4000,
-    currency: "USD",
-    image: "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?w=200&auto=format&fit=crop&q=80",
-    isSoldOut: false,
-    note: "Exclusive one-time payment offer"
-  }
-];
-
-// Seed default data if database has no scholarships or update existing seed entries
-const ensureInitialScholarships = async () => {
-  try {
-    const count = await Scholarship.countDocuments();
-    if (count === 0) {
-      console.log("Seeding initial scholarships into MongoDB...");
-      await Scholarship.insertMany(initialScholarships);
-    } else {
-      // Update seed items to ensure exact prices match Rule 9
-      for (const item of initialScholarships) {
-        await Scholarship.updateOne(
-          { universityName: item.universityName },
-          { $set: { normalPrice: item.normalPrice, oneTimeFee: item.oneTimeFee, programName: item.programName } }
-        );
-      }
-    }
-  } catch (err) {
-    console.error("Error seeding initial scholarships:", err.message);
-  }
-};
-
-// GET all scholarships
+// GET all scholarships (Fetches active database records only, without re-seeding)
 exports.getAllScholarships = async (req, res) => {
   try {
-    await ensureInitialScholarships();
     const scholarships = await Scholarship.find().sort({ createdAt: -1 });
     res.status(200).json({
       success: true,
