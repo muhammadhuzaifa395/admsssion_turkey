@@ -68,13 +68,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: auto;
-  padding: 10px 25px;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 60px;
+  min-height: 64px;
+  gap: 16px;
 }
 
 .logo {
@@ -86,12 +87,14 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: none !important;
   border-radius: 0 !important;
   padding: 0 !important;
+  margin-right: 16px;
+  flex-shrink: 0;
 }
 
 .logo img {
-  height: 52px;
-  width: 52px;
-  max-height: 56px;
+  height: 48px;
+  width: 48px;
+  max-height: 48px;
   object-fit: cover;
   display: block;
   background: transparent !important;
@@ -108,18 +111,20 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-links {
   display: flex;
-  gap: 28px;
+  gap: 20px;
   list-style: none;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .nav-links a {
   text-decoration: none;
   color: var(--navy);
-  font-weight: 600;
-  font-size: 15.5px;
+  font-weight: 700;
+  font-size: 14.5px;
   position: relative;
   padding: 6px 0;
+  white-space: nowrap;
   transition: color 0.3s ease;
 }
 
@@ -129,7 +134,7 @@ h1, h2, h3, h4, h5, h6 {
   bottom: 0;
   left: 0;
   width: 0%;
-  height: 2px;
+  height: 2.5px;
   background: var(--red);
   transition: width 0.3s ease;
   border-radius: 2px;
@@ -151,16 +156,31 @@ h1, h2, h3, h4, h5, h6 {
 .nav-buttons {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+#welcomeUser {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .login-btn,
 .signup-btn {
-  padding: 8px 18px;
-  border-radius: 7px;
+  padding: 7px 14px;
+  border-radius: 8px;
   text-decoration: none;
-  font-weight: 700;
-  font-size: 14.5px;
+  font-weight: 800;
+  font-size: 13.5px;
+  white-space: nowrap;
   transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
   display: inline-flex;
   align-items: center;
