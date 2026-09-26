@@ -268,42 +268,42 @@
         const isSoldOut = Boolean(item.isSoldOut);
 
         const logoHtml = item.image 
-          ? `<img src="${item.image}" alt="${item.universityName}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?w=200&auto=format&fit=crop&q=80';">`
-          : `<i class="fas fa-university"></i>`;
+          ? `<img src="${item.image}" alt="${item.universityName}" style="width: 100% !important; height: 100% !important; max-width: 100% !important; max-height: 100% !important; object-fit: contain !important; display: block !important;" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?w=200&auto=format&fit=crop&q=80';">`
+          : `<i class="fas fa-university" style="font-size: 28px !important; color: #0645d8 !important;"></i>`;
 
         // DIRECT WHATSAPP LINK (NO POP-UP)
         const waMsg = encodeURIComponent(`Hello Admission Turkey! I am interested in applying for the Scholarship offer at ${item.universityName} (One-Time Payment: $${oneTimeFeeFormatted} ${currency}).`);
         const waUrl = `https://wa.me/905514840804?text=${waMsg}`;
 
         return `
-          <div class="scholarship-card ${isSoldOut ? 'sold-out' : ''}">
-            ${isSoldOut ? '<div class="sold-out-badge">SOLD OUT</div>' : ''}
+          <div class="scholarship-card ${isSoldOut ? 'sold-out' : ''}" style="display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; width: 100% !important; background: #ffffff !important; border: 1px solid #dfe5ee !important; border-radius: 14px !important; padding: 22px 28px !important; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important; margin-bottom: 18px !important; position: relative !important; box-sizing: border-box !important; gap: 24px !important; min-height: 120px !important;">
+            ${isSoldOut ? '<div class="sold-out-badge" style="position: absolute !important; top: 16px !important; right: 20px !important; border: 1.5px solid #ef4444 !important; color: #ef4444 !important; background: #ffffff !important; padding: 3px 10px !important; border-radius: 6px !important; font-size: 11px !important; font-weight: 800 !important; letter-spacing: 0.5px !important; text-transform: uppercase !important;">SOLD OUT</div>' : ''}
             
             <!-- LEFT: LOGO BOX -->
-            <div class="university-logo-box">
+            <div class="university-logo-box" style="width: 72px !important; height: 72px !important; min-width: 72px !important; max-width: 72px !important; max-height: 72px !important; border-radius: 12px !important; border: 1px solid #e2e8f0 !important; background: #ffffff !important; display: flex !important; align-items: center !important; justify-content: center !important; overflow: hidden !important; padding: 6px !important; box-sizing: border-box !important; flex-shrink: 0 !important;">
               ${logoHtml}
             </div>
 
             <!-- CENTER: CONTENT & PRICING -->
-            <div class="scholarship-content">
-              <div class="university-name">${item.universityName}</div>
-              <div class="program-name">${item.programName || 'All Bachelor Programs'}</div>
+            <div class="scholarship-content" style="flex: 1 !important; display: flex !important; flex-direction: column !important; gap: 4px !important; min-width: 0 !important;">
+              <div class="university-name" style="font-size: 18px !important; font-weight: 800 !important; color: #0645d8 !important; margin: 0 !important; line-height: 1.3 !important;">${item.universityName}</div>
+              <div class="program-name" style="font-size: 15.5px !important; font-weight: 800 !important; color: #0f172a !important; margin-bottom: 6px !important;">${item.programName || 'All Bachelor Programs'}</div>
               
-              <div class="price-row">
-                ${normalPriceFormatted ? `<span class="normal-price">Normal price $${normalPriceFormatted} ${currency}</span>` : ''}
+              <div class="price-row" style="display: flex !important; align-items: center !important; gap: 16px !important; flex-wrap: wrap !important;">
+                ${normalPriceFormatted ? `<span class="normal-price" style="font-size: 13.5px !important; color: #64748b !important; text-decoration: line-through !important; font-weight: 700 !important;">Normal price $${normalPriceFormatted} ${currency}</span>` : ''}
                 
-                <div class="one-time-badge ${isSoldOut ? 'sold-out' : ''}">
-                  <span class="badge-label">ONE-TIME PAYMENT</span>
-                  <span class="badge-amount">$${oneTimeFeeFormatted} ${currency}</span>
+                <div class="one-time-badge ${isSoldOut ? 'sold-out' : ''}" style="background: ${isSoldOut ? '#cbd5e1 !important;' : '#f9a400 !important;'}; color: ${isSoldOut ? '#64748b !important;' : '#ffffff !important;'}; border-radius: 12px !important; padding: 8px 18px !important; display: inline-flex !important; flex-direction: column !important; align-items: flex-start !important; box-shadow: ${isSoldOut ? 'none !important;' : '0 3px 10px rgba(249, 164, 0, 0.25) !important;'};">
+                  <span class="badge-label" style="font-size: 10px !important; font-weight: 900 !important; letter-spacing: 0.9px !important; text-transform: uppercase !important; line-height: 1.2 !important; opacity: 0.95;">ONE-TIME PAYMENT</span>
+                  <span class="badge-amount" style="font-size: 18px !important; font-weight: 900 !important; line-height: 1.1 !important;">$${oneTimeFeeFormatted} ${currency}</span>
                 </div>
               </div>
             </div>
 
             <!-- FAR RIGHT: REQUEST BUTTON -->
-            <div class="request-action-box">
+            <div class="request-action-box" style="flex-shrink: 0 !important; display: flex !important; align-items: center !important; justify-content: flex-end !important; margin-left: auto !important;">
               ${isSoldOut 
                 ? '' 
-                : `<a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="request-button">Request</a>`
+                : `<a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="request-button" style="background: #4055e8 !important; color: #ffffff !important; border: none !important; border-radius: 10px !important; padding: 11px 26px !important; font-weight: 800 !important; font-size: 14.5px !important; cursor: pointer !important; text-decoration: none !important; display: inline-block !important; box-shadow: 0 4px 12px rgba(64, 85, 232, 0.3) !important;">Request</a>`
               }
             </div>
           </div>
