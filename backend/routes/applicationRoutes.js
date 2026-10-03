@@ -216,5 +216,144 @@ router.delete("/:id", verifyToken, isAdmin, async (req, res) => {
   }
 });
 
+// Student API: Fetch My Applications (by email or user token)
+router.get("/my-applications", async (req, res) => {
+  try {
+    const { email } = req.query;
+    if (!email) {
+      return res.status(400).json({ success: false, message: "Email query parameter is required." });
+    }
+
+    const applications = await Application.find({ email: new RegExp("^" + email + "$", "i") }).sort({ createdAt: -1 });
+    res.status(200).json({
+      success: true,
+      applications
+    });
+  } catch (error) {
+    console.log("Get My Applications Error:", error);
+    res.status(500).json({ success: false, message: "Error fetching student applications." });
+  }
+});
+
+// Student API: Track Specific Application by ID
+router.get("/track/:id", async (req, res) => {
+  try {
+    const mongoose = require("mongoose");
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(404).json({ success: false, message: "Invalid application tracking ID." });
+    }
+
+    const application = await Application.findById(req.params.id);
+    if (!application) {
+      return res.status(404).json({ success: false, message: "Application not found." });
+    }
+
+    res.status(200).json({
+      success: true,
+      application
+    });
+  } catch (error) {
+    console.log("Track Application Error:", error);
+    res.status(500).json({ success: false, message: "Error tracking application." });
+  }
+});
+
+// Student API: Re-upload missing/flagged document
+router.put("/:id/reupload-doc", upload.single("documentFile"), async (req, res) => {
+  try {
+    const { fieldName } = req.body;
+    if (!fieldName || !req.file) {
+      return res.status(400).json({ success: false, message: "fieldName and documentFile are required." });
+    }
+
+    const fileDataUrl = bufferToDataUrl(req.file);
+    const updatePayload = {};
+    updatePayload[fieldName] = fileDataUrl;
+    
+    // Reset status of reuploaded document to 'Under Review'
+    const docKey = fieldName.replace("Document", "");
+    if (docKey) {
+      updatePayload[`documentStatuses.${docKey}`] = "Under Review";
+      updatePayload[`documentNotes.${docKey}`] = "Updated file uploaded by student. Verification pending.";
+    }
+
+    const updatedApp = await Application.findByIdAndUpdate(req.params.id, updatePayload, { new: true });
+    if (!updatedApp) {
+      return res.status(404).json({ success: false, message: "Application not found." });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `${fieldName} updated successfully!`,
+      application: updatedApp
+    });
+  } catch (error) {
+    console.log("Reupload Document Error:", error);
+    res.status(500).json({ success: false, message: "Server error re-uploading document." });
+  }
+});
+
+// Student/Admin API: Send Message to Counselor / Admission Team
+router.post("/:id/message", async (req, res) => {
+  try {
+    const { sender, text } = req.body;
+    if (!text) {
+      return res.status(400).json({ success: false, message: "Message text is required." });
+    }
+
+    const application = await Application.findById(req.params.id);
+    if (!application) {
+      return res.status(404).json({ success: false, message: "Application not found." });
+    }
+
+    application.counselorMessages.push({
+      sender: sender || "Student",
+      text: text,
+      date: new Date()
+    });
+
+    await application.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Message sent successfully!",
+      counselorMessages: application.counselorMessages
+    });
+  } catch (error) {
+    console.log("Counselor Message Error:", error);
+    res.status(500).json({ success: false, message: "Server error sending message." });
+  }
+});
+
+// Admin API: Update Document Verification Status
+router.put("/:id/doc-status", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { docKey, status, note } = req.body;
+    if (!docKey || !status) {
+      return res.status(400).json({ success: false, message: "docKey and status are required." });
+    }
+
+    const updatePayload = {};
+    updatePayload[`documentStatuses.${docKey}`] = status;
+    if (note !== undefined) {
+      updatePayload[`documentNotes.${docKey}`] = note;
+    }
+
+    const application = await Application.findByIdAndUpdate(req.params.id, updatePayload, { new: true });
+    if (!application) {
+      return res.status(404).json({ success: false, message: "Application not found." });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `Document '${docKey}' status updated to ${status}!`,
+      application
+    });
+  } catch (error) {
+    console.log("Update Doc Status Error:", error);
+    res.status(500).json({ success: false, message: "Server error updating document status." });
+  }
+});
+
 module.exports = router;
 

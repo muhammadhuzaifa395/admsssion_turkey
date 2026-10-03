@@ -135,7 +135,41 @@ const applicationSchema = new mongoose.Schema(
     finalAcceptanceLetter: {
       type: String,
       default: ""
-    }
+    },
+
+    documentStatuses: {
+      passport: { type: String, default: "Under Review" },
+      certificate: { type: String, default: "Under Review" },
+      diploma: { type: String, default: "Under Review" },
+      transcript: { type: String, default: "Under Review" },
+      master: { type: String, default: "Under Review" }
+    },
+
+    documentNotes: {
+      passport: { type: String, default: "" },
+      certificate: { type: String, default: "" },
+      diploma: { type: String, default: "" },
+      transcript: { type: String, default: "" },
+      master: { type: String, default: "" }
+    },
+
+    timeline: [
+      {
+        title: { type: String },
+        description: { type: String },
+        date: { type: Date, default: Date.now },
+        completed: { type: Boolean, default: false },
+        current: { type: Boolean, default: false }
+      }
+    ],
+
+    counselorMessages: [
+      {
+        sender: { type: String, default: "Counselor" },
+        text: { type: String, required: true },
+        date: { type: Date, default: Date.now }
+      }
+    ]
   },
 
   {

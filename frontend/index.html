@@ -41,6 +41,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 <li><a href="scholarships.html" data-i18n="nav_scholarships">Scholarships</a></li>
 
+<li><a href="tracker.html" data-i18n="nav_tracker"><i class="fas fa-tasks"></i> Track Application</a></li>
+
 <li><a href="about.html" data-i18n="nav_about">About</a></li>
 
 <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
@@ -259,6 +261,81 @@ Apply for Admission
   </div>
 </section>
 
+<!-- AI UNIVERSITY MATCHMAKER SECTION -->
+<section class="section ai-matchmaker-section" id="aiMatchmaker">
+  <div class="ai-matchmaker-wrapper">
+    <div class="section-heading text-center">
+      <span class="ai-badge-pill"><i class="fas fa-robot"></i> AI-POWERED ENGINE</span>
+      <h2>Smart University <span class="accent-gradient">Matchmaker</span></h2>
+      <p style="color: #cbd5e1; max-width: 600px; margin: 8px auto 0;">Answer 4 quick preferences to instantly discover your ideal Turkish universities & guaranteed scholarship matches.</p>
+    </div>
+
+    <div class="matchmaker-card glassmorphism-card">
+      <form id="aiMatchmakerForm" class="matchmaker-grid">
+        <div class="form-group">
+          <label><i class="fas fa-graduation-cap"></i> Target Degree Level</label>
+          <select id="matchDegree" class="form-control">
+            <option value="bachelor">Bachelor's Degree (Lisans)</option>
+            <option value="master">Master's Degree (Yüksek Lisans)</option>
+            <option value="phd">Ph.D. / Doctorate (Doktora)</option>
+            <option value="associate">Associate Degree (Önlisans)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-book-open"></i> Field of Study</label>
+          <select id="matchField" class="form-control">
+            <option value="medicine">Medicine & Dentistry (Tıp / Diş Hekimliği)</option>
+            <option value="engineering">Engineering & Technology</option>
+            <option value="cs" selected>Computer Science, Software & AI</option>
+            <option value="business">Business, Finance & MBA</option>
+            <option value="architecture">Architecture & Graphic Design</option>
+            <option value="law">Law & International Relations</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-wallet"></i> Max Annual Budget</label>
+          <select id="matchBudget" class="form-control">
+            <option value="3000">Under $3,000 / year</option>
+            <option value="6000" selected>$3,000 - $6,000 / year</option>
+            <option value="10000">$6,000 - $10,000 / year</option>
+            <option value="20000">$10,000+ / year</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-city"></i> Preferred Location</label>
+          <select id="matchCity" class="form-control">
+            <option value="any">Any Top City in Turkey</option>
+            <option value="istanbul">Istanbul</option>
+            <option value="ankara">Ankara</option>
+            <option value="izmir">Izmir</option>
+            <option value="antalya">Antalya / Coastal</option>
+          </select>
+        </div>
+
+        <div class="form-group full-width text-center">
+          <button type="submit" class="primary-btn matchmaker-btn">
+            <i class="fas fa-wand-magic-sparkles"></i> Calculate AI Matches Now
+          </button>
+        </div>
+      </form>
+
+      <!-- Match Results Area -->
+      <div id="aiMatchResults" class="match-results-container" style="display: none;">
+        <div class="results-header">
+          <h3><i class="fas fa-sparkles" style="color:#f59e0b;"></i> Top AI Recommended Matches</h3>
+          <span class="match-count-badge" id="matchCountBadge">3 Universities Found</span>
+        </div>
+        <div id="matchCardsGrid" class="match-cards-grid">
+          <!-- Dynamic AI Match Cards populated via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- INFINITE MARQUEE SLIDER -->
 <div class="marquee-container">
   <div class="marquee-track">
@@ -316,6 +393,105 @@ Apply for Admission
     <a href="scholarships.html" class="primary-btn" style="padding: 14px 36px; font-weight: 700; border-radius: 12px; font-size: 16px;">
       View All Available Scholarships <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>
     </a>
+  </div>
+</section>
+
+<!-- INTERACTIVE SCHOLARSHIP & TUITION CALCULATOR SECTION -->
+<section class="section scholarship-calc-section" id="scholarshipCalculator">
+  <div class="calculator-wrapper">
+    <div class="section-heading text-center">
+      <span class="calc-badge-pill"><i class="fas fa-calculator"></i> TUITION & SCHOLARSHIP SIMULATOR</span>
+      <h2>Interactive Tuition <span class="accent-gradient">& Living Cost Calculator</span></h2>
+      <p style="color: #cbd5e1; max-width: 650px; margin: 8px auto 0;">Estimate your guaranteed scholarship discount, tuition fees, and living expenses in Türkiye in real-time.</p>
+    </div>
+
+    <div class="calc-grid-layout glassmorphism-card">
+      <div class="calc-inputs-col">
+        <div class="calc-slider-group">
+          <div class="slider-header">
+            <label for="gpaRange"><i class="fas fa-award"></i> Academic Score / GPA Grade:</label>
+            <span id="gpaValDisplay" class="gpa-badge">85% (3.4 / 4.0)</span>
+          </div>
+          <input type="range" id="gpaRange" min="50" max="100" value="85" class="custom-range-slider">
+          <div class="slider-marks">
+            <span>50%</span>
+            <span>70%</span>
+            <span>85%</span>
+            <span>100%</span>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+          <label><i class="fas fa-user-graduate"></i> Academic Field</label>
+          <select id="calcField" class="form-control">
+            <option value="medicine">Medicine & Health ($15,000 - $22,000 standard)</option>
+            <option value="engineering" selected>Engineering & CS ($4,500 - $8,000 standard)</option>
+            <option value="business">Business & Economics ($3,500 - $6,500 standard)</option>
+            <option value="arts">Arts, Design & Humanities ($3,000 - $5,500 standard)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-bed"></i> Accommodation Preference</label>
+          <select id="calcHousing" class="form-control">
+            <option value="dorm_shared">Campus Dormitory - Shared Room (~$180/mo)</option>
+            <option value="dorm_single">Campus Dormitory - Single Room (~$320/mo)</option>
+            <option value="apt_shared">Off-Campus Shared Apartment (~$250/mo)</option>
+            <option value="apt_private">Private Studio Apartment (~$450/mo)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-map-marker-alt"></i> Living City Tier</label>
+          <select id="calcCityTier" class="form-control">
+            <option value="tier1">Tier 1: Istanbul & Ankara (Metropolitan)</option>
+            <option value="tier2">Tier 2: Izmir, Bursa, Antalya, Eskişehir (Budget Friendly)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="calc-summary-col">
+        <div class="summary-card">
+          <h4>Estimated Annual Investment</h4>
+
+          <div class="scholarship-alert-box">
+            <i class="fas fa-gift" style="font-size:24px; color:#10b981;"></i>
+            <div>
+              <span class="scholarship-rate" id="scholarshipRateText">50% Guaranteed Scholarship</span>
+              <small>Based on your 85% academic score</small>
+            </div>
+          </div>
+
+          <div class="calc-cost-rows">
+            <div class="cost-row">
+              <span>Standard Tuition Fee:</span>
+              <span id="baseTuitionText">$6,500 / yr</span>
+            </div>
+            <div class="cost-row discount">
+              <span>Scholarship Savings:</span>
+              <span id="savingsText">-$3,250 / yr</span>
+            </div>
+            <div class="cost-row highlight">
+              <span>Net Annual Tuition:</span>
+              <span id="netTuitionText" class="net-tuition-val">$3,250 / yr</span>
+            </div>
+            <div class="cost-row">
+              <span>Est. Living & Housing (10 mos):</span>
+              <span id="livingCostText">$1,800 / yr</span>
+            </div>
+            <hr class="calc-hr">
+            <div class="cost-row total">
+              <span>Total Estimated Yearly Investment:</span>
+              <span id="totalCostText">$5,050 / yr</span>
+            </div>
+          </div>
+
+          <button type="button" class="primary-btn open-wizard-btn" style="margin-top:20px; width:100%; border-radius:12px; font-weight:700; padding: 14px;">
+            <i class="fas fa-paper-plane"></i> Apply & Claim This Scholarship
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -769,7 +945,223 @@ target="_blank">
 
 
 
+<!-- APPLICATION WIZARD MODAL -->
+<div id="applicationWizardModal" class="wizard-modal-backdrop" style="display: none;">
+  <div class="wizard-modal-container glassmorphism-card">
+    <button class="wizard-close-btn" id="closeWizardBtn" aria-label="Close Wizard"><i class="fas fa-times"></i></button>
+
+    <div class="wizard-header text-center">
+      <div class="wizard-icon-wrap"><i class="fas fa-graduation-cap"></i></div>
+      <h3>Fast Track Application Wizard 2026</h3>
+      <p>Submit your application in 2 minutes & get instant eligibility review</p>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="wizard-progress-bar">
+      <div class="wizard-step-item active" data-step="1">
+        <span class="step-num">1</span>
+        <span class="step-label">Program</span>
+      </div>
+      <div class="wizard-step-line"></div>
+      <div class="wizard-step-item" data-step="2">
+        <span class="step-num">2</span>
+        <span class="step-label">Personal Info</span>
+      </div>
+      <div class="wizard-step-line"></div>
+      <div class="wizard-step-item" data-step="3">
+        <span class="step-num">3</span>
+        <span class="step-label">Academics</span>
+      </div>
+      <div class="wizard-step-line"></div>
+      <div class="wizard-step-item" data-step="4">
+        <span class="step-num">4</span>
+        <span class="step-label">Review & Submit</span>
+      </div>
+    </div>
+
+    <form id="wizardForm" class="wizard-form-body">
+      <!-- STEP 1 -->
+      <div class="wizard-step-panel active" id="wizStep1">
+        <h4><i class="fas fa-compass"></i> Select Target Degree & University</h4>
+        <div class="form-group">
+          <label>Target Degree Level</label>
+          <select id="wizDegree" class="form-control" required>
+            <option value="bachelor">Bachelor's Degree</option>
+            <option value="master">Master's Degree</option>
+            <option value="phd">PhD / Doctorate</option>
+            <option value="associate">Associate Degree</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Desired Field of Study / Major</label>
+          <input type="text" id="wizMajor" class="form-control" placeholder="e.g. Medicine, Computer Science, Business Administration" required>
+        </div>
+        <div class="form-group">
+          <label>Preferred University (Optional)</label>
+          <select id="wizUni" class="form-control">
+            <option value="any">Admission Turkey Top Recommendation</option>
+            <option value="Istanbul Medipol University">Istanbul Medipol University</option>
+            <option value="Bahçeşehir University (BAU)">Bahçeşehir University (BAU)</option>
+            <option value="Istanbul Bilgi University">Istanbul Bilgi University</option>
+            <option value="Istinye University">Istinye University</option>
+            <option value="Sabancı University">Sabancı University</option>
+            <option value="Koç University">Koç University</option>
+          </select>
+        </div>
+        <div class="wizard-nav-btns">
+          <div></div>
+          <button type="button" class="primary-btn wiz-next-btn" data-next="2">Next Step <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="wizard-step-panel" id="wizStep2" style="display: none;">
+        <h4><i class="fas fa-user"></i> Student Personal Contact Details</h4>
+        <div class="form-group">
+          <label>Full Name (As shown in Passport)</label>
+          <input type="text" id="wizFullName" class="form-control" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="wizEmail" class="form-control" placeholder="john@example.com" required>
+        </div>
+        <div class="form-group">
+          <label>WhatsApp / Phone Number</label>
+          <input type="tel" id="wizPhone" class="form-control" placeholder="+90 555 123 4567" required>
+        </div>
+        <div class="form-group">
+          <label>Country of Nationality</label>
+          <input type="text" id="wizCountry" class="form-control" placeholder="e.g. Nigeria, Pakistan, Morocco, Iran" required>
+        </div>
+        <div class="wizard-nav-btns">
+          <button type="button" class="secondary-btn wiz-prev-btn" data-prev="1"><i class="fas fa-arrow-left"></i> Back</button>
+          <button type="button" class="primary-btn wiz-next-btn" data-next="3">Next Step <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="wizard-step-panel" id="wizStep3" style="display: none;">
+        <h4><i class="fas fa-graduation-cap"></i> Academic Qualifications</h4>
+        <div class="form-group">
+          <label>Highest Qualification Achieved</label>
+          <select id="wizGradLevel" class="form-control">
+            <option value="High School Diploma">High School Diploma</option>
+            <option value="Bachelor Degree">Bachelor Degree</option>
+            <option value="Master Degree">Master Degree</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Overall Grade / GPA Score (%)</label>
+          <input type="number" id="wizGpa" class="form-control" min="50" max="100" placeholder="e.g. 85" required>
+        </div>
+        <div class="form-group">
+          <label>Year of Graduation</label>
+          <input type="number" id="wizGradYear" class="form-control" min="2010" max="2026" value="2025" required>
+        </div>
+        <div class="wizard-nav-btns">
+          <button type="button" class="secondary-btn wiz-prev-btn" data-prev="2"><i class="fas fa-arrow-left"></i> Back</button>
+          <button type="button" class="primary-btn wiz-next-btn" data-next="4">Calculate Scorecard & Review <i class="fas fa-sparkles"></i></button>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="wizard-step-panel" id="wizStep4" style="display: none;">
+        <h4><i class="fas fa-clipboard-check"></i> Instant Scorecard & Submission</h4>
+
+        <div class="scorecard-box">
+          <div class="score-radial">
+            <span class="score-num" id="wizScoreNum">96%</span>
+            <small>Admission Prob.</small>
+          </div>
+          <div class="score-details">
+            <h5 id="wizScoreTitle">High Eligibility Candidate</h5>
+            <p id="wizScoreDesc">You qualify for up to <strong>50% - 75% Guaranteed Merit Scholarship</strong> across top partner universities in Turkey!</p>
+          </div>
+        </div>
+
+        <div class="summary-preview-box">
+          <p><strong>Name:</strong> <span id="sumName">-</span></p>
+          <p><strong>Target Major:</strong> <span id="sumMajor">-</span> (<span id="sumDegree">-</span>)</p>
+          <p><strong>University:</strong> <span id="sumUni">-</span></p>
+          <p><strong>Contact:</strong> <span id="sumEmail">-</span> | <span id="sumPhone">-</span></p>
+        </div>
+
+        <div class="wizard-nav-btns">
+          <button type="button" class="secondary-btn wiz-prev-btn" data-prev="3"><i class="fas fa-arrow-left"></i> Back</button>
+          <button type="submit" class="primary-btn wizard-submit-btn" id="wizSubmitBtn">
+            <i class="fas fa-check-circle"></i> Complete & Submit Application
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Success Screen inside wizard -->
+    <div id="wizSuccessState" style="display: none;" class="text-center wizard-success-state">
+      <div class="success-icon-animated"><i class="fas fa-check"></i></div>
+      <h3>Application Submitted Successfully! 🎉</h3>
+      <p>Your official application reference code is:</p>
+      <div class="ref-code-badge" id="wizRefCodeBadge">TR-2026-X89K</div>
+      <p style="font-size:14px; color:var(--text-muted); margin-top:12px;">An admission advisor has been assigned to your profile and will contact you via WhatsApp within 2 hours.</p>
+      <div style="margin-top: 24px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <a href="tracker.html" class="primary-btn"><i class="fas fa-tasks"></i> Track Application Status</a>
+        <button type="button" class="secondary-btn" id="wizDoneBtn">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AI FLOATING SUPPORT CHATBOT WIDGET -->
+<div class="ai-chatbot-widget-wrap">
+  <!-- Launcher Button -->
+  <button id="aiChatToggleBtn" class="ai-chat-launcher" aria-label="Open AI Assistant">
+    <span class="ai-chat-badge">AI Assistant</span>
+    <i class="fas fa-robot open-icon"></i>
+    <i class="fas fa-times close-icon" style="display: none;"></i>
+    <span class="pulse-ring"></span>
+  </button>
+
+  <!-- Chat Window Modal -->
+  <div id="aiChatWindow" class="ai-chat-window glassmorphism-card" style="display: none;">
+    <div class="chat-header">
+      <div class="chat-avatar">
+        <i class="fas fa-robot"></i>
+        <span class="online-indicator"></span>
+      </div>
+      <div class="chat-header-info">
+        <h4>Admission Turkey AI 🤖</h4>
+        <span class="chat-status">Online • Instant Answers</span>
+      </div>
+      <button id="closeAiChatBtn" class="chat-minimize-btn" aria-label="Minimize Chat"><i class="fas fa-minus"></i></button>
+    </div>
+
+    <div class="chat-messages-body" id="aiChatMessages">
+      <div class="chat-msg bot-msg">
+        <div class="msg-bubble">
+          👋 Hello! I am your <strong>Admission Turkey AI Assistant</strong>. How can I help you study in Türkiye today?
+        </div>
+      </div>
+      <div class="chat-quick-pills" id="chatQuickPills">
+        <button class="chat-pill" data-query="scholarship">🎓 How to get 50% Scholarship?</button>
+        <button class="chat-pill" data-query="medicine">🏥 Top Medical Universities</button>
+        <button class="chat-pill" data-query="visa">✈️ Student Visa Requirements</button>
+        <button class="chat-pill" data-query="living">💰 Cost of Living in Turkey</button>
+        <button class="chat-pill" data-query="apply">📄 How to Apply Step-by-Step?</button>
+      </div>
+    </div>
+
+    <form id="aiChatForm" class="chat-input-area">
+      <input type="text" id="aiChatInput" placeholder="Ask about universities, scholarships, fees..." autocomplete="off">
+      <button type="submit" class="chat-send-btn" aria-label="Send"><i class="fas fa-paper-plane"></i></button>
+    </form>
+    
+    <div class="chat-footer-cta">
+      <a href="https://wa.me/905514840804" target="_blank" class="chat-whatsapp-link"><i class="fab fa-whatsapp"></i> Speak with Human Advisor</a>
+    </div>
+  </div>
+</div>
+
 <script src="js/script.js?v=2"></script>
+<script src="js/interactive-features.js?v=1"></script>
 
 </body>
 </html>
