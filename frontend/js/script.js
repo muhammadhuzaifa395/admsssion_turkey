@@ -18658,6 +18658,17 @@ async function initStudentTracker() {
   const appListContainer = document.getElementById("applicationsListContainer");
   if (!appListContainer) return;
 
+  // Clean out any demo applications from localStorage so real student applications render cleanly
+  ["my_applications", "offline_student_applications"].forEach(storeKey => {
+    try {
+      const stored = JSON.parse(localStorage.getItem(storeKey) || "[]");
+      const cleaned = stored.filter(a => a && a._id !== "demo_app_2026_9812" && (!a.name || !a.name.toLowerCase().includes("demo candidate")));
+      if (cleaned.length !== stored.length) {
+        localStorage.setItem(storeKey, JSON.stringify(cleaned));
+      }
+    } catch (e) {}
+  });
+
   // Search button listener
   const searchBtn = document.getElementById("trackerSearchBtn");
   const searchInput = document.getElementById("trackerSearchInput");
@@ -18671,14 +18682,6 @@ async function initStudentTracker() {
         const q = searchInput.value.trim();
         if (q) loadStudentApplications(user.email, q);
       }
-    };
-  }
-
-  // Demo data button listener
-  const demoBtn = document.getElementById("demoDataBtn");
-  if (demoBtn) {
-    demoBtn.onclick = () => {
-      loadDemoStudentApplication(user);
     };
   }
 
@@ -18734,10 +18737,13 @@ async function loadStudentApplications(userEmail, searchQuery = "") {
   const allLocal = [...localApps, ...offlineApps];
 
   const appMap = new Map();
-  apps.forEach(a => appMap.set(a._id, a));
+  apps.forEach(a => {
+    if (a && a._id && a._id !== "demo_app_2026_9812") appMap.set(a._id, a);
+  });
   allLocal.forEach(a => {
-    if (a && (a.email || "").toLowerCase() === (userEmail || "").toLowerCase()) {
-      if (!appMap.has(a._id)) appMap.set(a._id || ("local_" + Math.random()), a);
+    if (a && a._id !== "demo_app_2026_9812" && (!a.name || !a.name.toLowerCase().includes("demo candidate")) && (a.email || "").toLowerCase() === (userEmail || "").toLowerCase()) {
+      const key = a._id || (`local_${a.university || ''}_${a.program || ''}`);
+      if (!appMap.has(key)) appMap.set(key, a);
     }
   });
 
@@ -18763,11 +18769,19 @@ async function loadStudentApplications(userEmail, searchQuery = "") {
         <i class="fas fa-folder-plus fa-2x" style="color: #cbd5e1; margin-bottom: 10px;"></i>
         <h4 style="font-size: 0.95rem; font-weight: 700; color: #334155; margin-bottom: 4px;">No Applications Submitted Yet</h4>
         <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 14px;">Select a program to apply and track your application status live.</p>
-        <button onclick="loadDemoStudentApplication()" class="primary-btn" style="font-size: 0.8rem; padding: 6px 14px; background: #1d5bbf;">
-          <i class="fas fa-vial"></i> Generate Sample Pipeline
-        </button>
+        <a href="universities.html" class="primary-btn" style="font-size: 0.8rem; padding: 6px 14px; background: #1d5bbf; text-decoration: none; display: inline-block;">
+          <i class="fas fa-graduation-cap"></i> Browse Universities & Apply
+        </a>
       </div>
     `;
+
+    // Clear detail panel header if no applications exist
+    const uniHeader = document.getElementById("activeAppUniversity");
+    const progHeader = document.getElementById("activeAppProgram");
+    const refHeader = document.getElementById("activeAppId");
+    if (uniHeader) uniHeader.textContent = "No Active Application";
+    if (progHeader) progHeader.innerHTML = `<i class="fas fa-graduation-cap"></i> Please submit an application to start tracking.`;
+    if (refHeader) refHeader.textContent = "Ref: APP-2026-NONE";
     return;
   }
 
@@ -18780,7 +18794,7 @@ async function loadStudentApplications(userEmail, searchQuery = "") {
     itemDiv.dataset.appId = app._id;
     itemDiv.onclick = () => selectStudentApplication(app._id);
 
-    const ref = app._id ? (app._id.startsWith("local_") ? "APP-2026-REF" : `REF-${app._id.substring(app._id.length - 6).toUpperCase()}`) : "APP-2026-REF";
+    const ref = app._id ? (app._id.startsWith("local_") ? `REF-${app._id.substring(app._id.length - 6).toUpperCase()}` : `REF-${app._id.substring(app._id.length - 6).toUpperCase()}`) : "APP-2026-REF";
     const statusText = app.status || "Submitted";
     const badgeClass = getStatusBadgeClass(statusText);
 
@@ -18827,17 +18841,31 @@ function renderStudentTrackerDetail(app) {
   const detailPanel = document.getElementById("trackerDetailPanel");
   if (!detailPanel) return;
 
-  const ref = app._id ? (app._id.startsWith("local_") ? "APP-2026-REF" : `REF-${app._id.substring(app._id.length - 8).toUpperCase()}`) : "APP-2026-REF";
+  const ref = app._id ? (app._id.startsWith("local_") ? `REF-${app._id.substring(app._id.length - 6).toUpperCase()}` : `REF-${app._id.substring(app._id.length - 8).toUpperCase()}`) : "APP-2026-REF";
   const statusText = app.status || "Submitted";
   const badgeClass = getStatusBadgeClass(statusText);
   const dateStr = app.createdAt ? new Date(app.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent";
 
-  // Check admin issued documents
+  // Check admin issued documents & local storage backups
   const adminDocsKey = `admin_app_docs_${app._id}`;
   const storedAdminDocs = JSON.parse(localStorage.getItem(adminDocsKey) || "{}");
-  const offerLetterUrl = app.offerLetter || storedAdminDocs.offerLetter || null;
-  const feeSlipUrl = app.feeSlip || storedAdminDocs.feeSlip || null;
-  const finalAcceptanceUrl = app.finalAcceptanceLetter || storedAdminDocs.finalAcceptanceLetter || null;
+  
+  let offerLetterUrl = app.offerLetter || storedAdminDocs.offerLetter || null;
+  let feeSlipUrl = app.feeSlip || storedAdminDocs.feeSlip || null;
+  let finalAcceptanceUrl = app.finalAcceptanceLetter || storedAdminDocs.finalAcceptanceLetter || null;
+
+  // Fallback search across local storage if not found on primary key
+  if (!offerLetterUrl || !feeSlipUrl || !finalAcceptanceUrl) {
+    try {
+      const allLocal = [...JSON.parse(localStorage.getItem("my_applications") || "[]"), ...JSON.parse(localStorage.getItem("offline_student_applications") || "[]")];
+      const match = allLocal.find(a => a._id === app._id || (a.email && app.email && a.email.toLowerCase() === app.email.toLowerCase() && a.university === app.university));
+      if (match) {
+        if (!offerLetterUrl && match.offerLetter) offerLetterUrl = match.offerLetter;
+        if (!feeSlipUrl && match.feeSlip) feeSlipUrl = match.feeSlip;
+        if (!finalAcceptanceUrl && match.finalAcceptanceLetter) finalAcceptanceUrl = match.finalAcceptanceLetter;
+      }
+    } catch (e) {}
+  }
 
   // Calculate Stepper Progress
   let stepLevel = 1; // 1: Submitted, 2: Inspection, 3: Conditional Acceptance, 4: Deposit Payment, 5: Official Acceptance
@@ -19252,30 +19280,6 @@ function openReuploadModal(fieldName, fieldLabel) {
   if (title) title.innerHTML = `<i class="fas fa-upload"></i> Upload ${fieldLabel || 'Document'}`;
   if (fieldInput) fieldInput.value = fieldName;
   modal.classList.add("active");
-}
-
-function loadDemoStudentApplication(user = null) {
-  const demoApp = {
-    _id: "demo_app_2026_9812",
-    name: (user && user.name) ? user.name : "Demo Candidate",
-    email: (user && user.email) ? user.email : "student@example.com",
-    university: "Bahçeşehir University",
-    program: "Bachelor of Computer Engineering (English)",
-    level: "Bachelor",
-    status: "Under Initial Review",
-    createdAt: new Date().toISOString(),
-    passportDocument: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
-    certificateDocument: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
-    counselorMessages: [
-      { sender: "Counselor", text: "Welcome to Admission Turkey! We have received your application documents and sent them for initial verification. Feel free to send us any questions here.", date: new Date().toISOString() }
-    ]
-  };
-
-  const existing = JSON.parse(localStorage.getItem("my_applications") || "[]");
-  existing.unshift(demoApp);
-  localStorage.setItem("my_applications", JSON.stringify(existing));
-
-  loadStudentApplications((user && user.email) ? user.email : "student@example.com");
 }
 
 if (document.readyState === "loading") {

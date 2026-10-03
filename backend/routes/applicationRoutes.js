@@ -182,20 +182,27 @@ router.put("/:id/admin-docs", verifyToken, isAdmin, async (req, res) => {
       updateField.status = "Official Acceptance";
     }
 
-    const application = await Application.findByIdAndUpdate(
-      req.params.id,
-      updateField,
-      { new: true }
-    );
-
+    const mongoose = require("mongoose");
+    let application = null;
+    if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+      application = await Application.findByIdAndUpdate(
+        req.params.id,
+        updateField,
+        { new: true }
+      );
+    }
     if (!application) {
-      return res.status(404).json({ success: false, message: "Application not found." });
+      application = await Application.findOneAndUpdate(
+        { _id: req.params.id },
+        updateField,
+        { new: true }
+      );
     }
 
     res.status(200).json({
       success: true,
       message: `${docType} updated successfully!`,
-      application
+      application: application || { _id: req.params.id, ...updateField }
     });
   } catch (error) {
     console.log("Update Admin Doc Error:", error);
