@@ -6577,6 +6577,339 @@ footer {
   font-weight: 700;
 }
 
+/* =========================================================
+   EXECUTIVE PROGRAM DETAIL PAGE STYLES
+   ========================================================= */
+
+.executive-program-card {
+  background: linear-gradient(135deg, #090d16 0%, #0f172a 60%, #1e293b 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 24px !important;
+  padding: 40px !important;
+  margin: 30px auto !important;
+  max-width: 1000px !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45) !important;
+}
+
+.program-badge-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.program-level-pill {
+  background: rgba(37, 99, 235, 0.2);
+  border: 1px solid rgba(37, 99, 235, 0.4);
+  color: #60a5fa;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.program-uni-pill {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #fbbf24;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.program-main-title {
+  font-size: 30px !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  letter-spacing: -0.02em !important;
+  margin: 12px 0 !important;
+  line-height: 1.3 !important;
+}
+
+.program-location-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 28px;
+}
+
+.meta-dot {
+  color: #475569;
+}
+
+/* Quick Stats Grid */
+.program-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.program-stat-box {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.stat-icon.blue { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+.stat-icon.purple { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+.stat-icon.green { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+.stat-icon.orange { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+
+.stat-info small {
+  display: block;
+  font-size: 11.5px;
+  color: #94a3b8;
+  margin-bottom: 2px;
+}
+
+.stat-info strong {
+  display: block;
+  font-size: 14px;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Financial Overview Card */
+.program-financial-card {
+  background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+  border: 1.5px solid rgba(96, 165, 250, 0.3);
+  border-radius: 20px;
+  padding: 26px;
+  margin-bottom: 30px;
+}
+
+.fin-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.fin-card-header h3 {
+  font-size: 18px;
+  color: #ffffff;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.scholarship-guarantee-badge {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 800;
+}
+
+.fin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.fin-pill {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+}
+
+.fin-pill.highlight {
+  background: rgba(37, 99, 235, 0.25);
+  border-color: rgba(96, 165, 250, 0.4);
+}
+
+.fin-pill.deposit {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.fin-pill small {
+  display: block;
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.fin-val {
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.fin-val.old {
+  text-decoration: line-through;
+  color: #64748b;
+  font-size: 16px;
+}
+
+.fin-val.net {
+  color: #38bdf8;
+  font-size: 22px;
+}
+
+.fin-val.net small {
+  display: inline;
+  font-size: 13px;
+  color: #60a5fa;
+}
+
+.fin-val.dep {
+  color: #fbbf24;
+  font-size: 20px;
+}
+
+/* Info Boxes */
+.program-desc-box,
+.program-info-box {
+  background: rgba(30, 41, 59, 0.5);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.program-desc-box {
+  border-left: 4px solid #3b82f6;
+}
+
+.req-box {
+  border-left: 4px solid #8b5cf6;
+}
+
+.doc-box {
+  border-left: 4px solid #10b981;
+}
+
+.program-desc-box h4,
+.program-info-box h4 {
+  font-size: 15.5px;
+  color: #ffffff;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.program-desc-box p,
+.program-info-box p {
+  color: #cbd5e1;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Executive Action Banner */
+.executive-apply-banner {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.25), rgba(15, 23, 42, 0.85)) !important;
+  border: 1.5px solid rgba(96, 165, 250, 0.35) !important;
+  border-radius: 20px !important;
+  padding: 32px !important;
+  margin-top: 36px !important;
+  text-align: center !important;
+}
+
+.executive-apply-banner .banner-text h3 {
+  font-size: 22px !important;
+  color: #ffffff !important;
+  margin-bottom: 6px !important;
+}
+
+.executive-apply-banner .banner-text p {
+  color: #cbd5e1 !important;
+  font-size: 14px !important;
+  margin-bottom: 24px !important;
+}
+
+.executive-apply-banner .program-card-actions {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 14px !important;
+  flex-wrap: wrap !important;
+}
+
+.executive-apply-banner .apply-now-btn {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 14px !important;
+  padding: 14px 32px !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4) !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  transition: all 0.3s ease !important;
+}
+
+.executive-apply-banner .apply-now-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 32px rgba(37, 99, 235, 0.6) !important;
+}
+
+.executive-apply-banner .whatsapp-cta-btn {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+  color: #34d399 !important;
+  border-radius: 14px !important;
+  padding: 14px 24px !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.executive-apply-banner .back-btn {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #cbd5e1 !important;
+  border-radius: 14px !important;
+  padding: 14px 24px !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+
 
 
 
