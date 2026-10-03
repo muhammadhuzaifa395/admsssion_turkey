@@ -199,7 +199,7 @@ async function handleLoginFormSubmit(e) {
           window.location.href = "admin/sub-portal.html";
         } else {
           alert("Login successful! Welcome " + (data.user.name || "User"));
-          window.location.href = "index.html";
+          window.location.href = "tracker.html";
         }
         return false;
       }
@@ -242,7 +242,7 @@ async function handleLoginFormSubmit(e) {
     };
     localStorage.setItem("user", JSON.stringify(regularUser));
     alert("Login successful! Welcome " + regularUser.name);
-    window.location.href = "index.html";
+    window.location.href = "tracker.html";
   }
   return false;
 }
@@ -15207,21 +15207,47 @@ function uploadAdminDoc(appId, docType, file) {
   const reader = new FileReader();
   reader.onload = async function(e) {
     const dataUrl = e.target.result;
+
+    // 1. Save in admin_app_docs localStorage
     const adminDocsKey = `admin_app_docs_${appId}`;
     const storedAdminDocs = JSON.parse(localStorage.getItem(adminDocsKey) || "{}");
     storedAdminDocs[docType] = dataUrl;
     localStorage.setItem(adminDocsKey, JSON.stringify(storedAdminDocs));
 
+    // 2. Update memory app object
     const app = allApplicationsList.find(a => a._id === appId);
-    if (app) app[docType] = dataUrl;
+    if (app) {
+      app[docType] = dataUrl;
+      if (docType === "offerLetter") app.status = "Conditional Acceptance";
+      else if (docType === "feeSlip") app.status = "Deposit Payment Submitted";
+      else if (docType === "finalAcceptanceLetter") app.status = "Official Acceptance";
+    }
+
+    // 3. Update my_applications and offline_student_applications in localStorage
+    ["my_applications", "offline_student_applications"].forEach(storeKey => {
+      try {
+        const storedList = JSON.parse(localStorage.getItem(storeKey) || "[]");
+        let updated = false;
+        storedList.forEach(item => {
+          if (item._id === appId || (app && item.email && app.email && item.email.toLowerCase() === app.email.toLowerCase())) {
+            item[docType] = dataUrl;
+            if (docType === "offerLetter") item.status = "Conditional Acceptance";
+            else if (docType === "feeSlip") item.status = "Deposit Payment Submitted";
+            else if (docType === "finalAcceptanceLetter") item.status = "Official Acceptance";
+            updated = true;
+          }
+        });
+        if (updated) localStorage.setItem(storeKey, JSON.stringify(storedList));
+      } catch (err) {}
+    });
 
     filterApplications();
 
-    // Sync admin issued document with backend database
+    // 4. Sync admin issued document with backend database
     try {
       const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
       const token = (user && user.token) ? user.token : "admin_token_auto_granted";
-      await fetch(`${API_BASE_URL}/api/applications/${appId}/admin-docs`, {
+      const res = await fetch(`${API_BASE_URL}/api/applications/${appId}/admin-docs`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -15229,6 +15255,15 @@ function uploadAdminDoc(appId, docType, file) {
         },
         body: JSON.stringify({ docType, dataUrl })
       });
+      if (res && res.ok) {
+        const resData = await res.json();
+        if (resData && resData.application && window.activeStudentApp && window.activeStudentApp._id === appId) {
+          window.activeStudentApp = resData.application;
+          if (typeof renderStudentTrackerDetail === "function") {
+            renderStudentTrackerDetail(resData.application);
+          }
+        }
+      }
     } catch (err) {
       console.warn("Backend update admin doc note:", err.message);
     }
@@ -15291,16 +15326,31 @@ function renderApplications(apps) {
     // Status Class
     let statusClass = "status-pending";
     const statusVal = (app.status || "Pending").trim();
-    if (statusVal === "Under Review") statusClass = "status-review";
-    else if (statusVal === "Approved") statusClass = "status-approved";
+    if (statusVal === "Under Review" || statusVal === "Deposit Payment Submitted") statusClass = "status-review";
+    else if (statusVal === "Approved" || statusVal === "Official Acceptance" || statusVal === "Conditional Acceptance") statusClass = "status-approved";
     else if (statusVal === "Rejected") statusClass = "status-rejected";
 
-    // Retrieve Admin Issued Documents (Offer Letter, Fee Slip, Final Acceptance)
+    // Retrieve Admin Issued Documents & Merge Counselor Messages
     const adminDocsKey = `admin_app_docs_${app._id}`;
     const storedAdminDocs = JSON.parse(localStorage.getItem(adminDocsKey) || "{}");
     const offerLetterUrl = app.offerLetter || storedAdminDocs.offerLetter || null;
     const feeSlipUrl = app.feeSlip || storedAdminDocs.feeSlip || null;
     const finalAcceptanceUrl = app.finalAcceptanceLetter || storedAdminDocs.finalAcceptanceLetter || null;
+
+    // Merge counselor messages from all sources (MongoDB, admin_app_docs, my_applications)
+    let combinedMsgs = Array.isArray(app.counselorMessages) ? [...app.counselorMessages] : [];
+    if (Array.isArray(storedAdminDocs.counselorMessages) && storedAdminDocs.counselorMessages.length > combinedMsgs.length) {
+      combinedMsgs = storedAdminDocs.counselorMessages;
+    }
+    try {
+      const myApps = JSON.parse(localStorage.getItem("my_applications") || "[]");
+      const localMatch = myApps.find(m => m._id === app._id || (m.email && app.email && m.email.toLowerCase() === app.email.toLowerCase()));
+      if (localMatch && Array.isArray(localMatch.counselorMessages) && localMatch.counselorMessages.length > combinedMsgs.length) {
+        combinedMsgs = localMatch.counselorMessages;
+      }
+    } catch (e) {}
+
+    app.counselorMessages = combinedMsgs;
 
     const safeAppName = (app.name || "Student").replace(/['"]/g, "");
 
@@ -15388,7 +15438,9 @@ function renderApplications(apps) {
             <select class="app-status-select" onchange="updateApplicationStatus('${app._id}', this.value)">
               <option value="Pending" ${statusVal === "Pending" ? "selected" : ""}>Pending</option>
               <option value="Under Review" ${statusVal === "Under Review" ? "selected" : ""}>Under Review</option>
-              <option value="Approved" ${statusVal === "Approved" ? "selected" : ""}>Approved</option>
+              <option value="Conditional Acceptance" ${statusVal === "Conditional Acceptance" ? "selected" : ""}>Conditional Acceptance</option>
+              <option value="Deposit Payment Submitted" ${statusVal === "Deposit Payment Submitted" ? "selected" : ""}>Deposit Payment Submitted</option>
+              <option value="Official Acceptance" ${statusVal === "Official Acceptance" ? "selected" : ""}>Official Acceptance</option>
               <option value="Rejected" ${statusVal === "Rejected" ? "selected" : ""}>Rejected</option>
             </select>
           </div>
@@ -15478,18 +15530,18 @@ function renderApplications(apps) {
             <!-- 2. FEE SLIP -->
             <div style="background: #ffffff; border-radius: 10px; padding: 12px 14px; border: 1px solid #cbd5e1;">
               <strong style="font-size: 13px; color: #0f172a; display: block; margin-bottom: 6px;">
-                <i class="fas fa-file-invoice-dollar" style="color: #10b981;"></i> 2. Fee Slip
+                <i class="fas fa-file-invoice-dollar" style="color: #10b981;"></i> 2. Fee Slip / Deposit Receipt
               </strong>
               ${feeSlipUrl ? `
                 <div style="display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;">
                   <button type="button" class="doc-btn doc-btn-preview" onclick="previewDocById('${feeSlipDocId}')">
-                    <i class="fas fa-eye"></i> Preview
+                    <i class="fas fa-eye"></i> Preview Slip
                   </button>
                   <button type="button" class="doc-btn doc-btn-download" onclick="downloadDocById('${feeSlipDocId}')">
-                    <i class="fas fa-download"></i> Download
+                    <i class="fas fa-download"></i> Download Slip
                   </button>
                 </div>
-              ` : `<span style="font-size: 12px; color: #94a3b8; display: block; margin-bottom: 6px;">No Fee Slip uploaded yet.</span>`}
+              ` : `<span style="font-size: 12px; color: #94a3b8; display: block; margin-bottom: 6px;">No Deposit Slip uploaded yet.</span>`}
               <label style="font-size: 11px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">Upload / Update Fee Slip:</label>
               <input type="file" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" style="font-size: 12px; width: 100%;" onchange="uploadAdminDoc('${app._id}', 'feeSlip', this.files[0])">
             </div>
@@ -15514,6 +15566,27 @@ function renderApplications(apps) {
             </div>
 
           </div>
+        </div>
+
+        <!-- COUNSELOR MESSAGING BOX FOR ADMIN -->
+        <div class="admin-counselor-chat-wrap" style="margin-top: 20px; padding: 18px; background: #f8fafc; border-radius: 12px; border: 1px solid #cbd5e1;">
+          <h4 style="color: #0f172a; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-weight: 700;">
+            <i class="fas fa-comments" style="color: #2563eb;"></i> Counselor Chat Log (${(combinedMsgs || []).length} Messages)
+          </h4>
+          <div id="adminChatLog-${app._id}" style="max-height: 180px; overflow-y: auto; background: #ffffff; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 12px;">
+            ${(combinedMsgs || []).length === 0 ? '<p style="font-size: 12px; color: #94a3b8; margin: 0;">No messages exchanged yet.</p>' : combinedMsgs.map(m => {
+              const isAdminSender = (m.sender || "").toLowerCase().includes("admin") || (m.sender || "").toLowerCase().includes("counselor");
+              return `<div style="margin-bottom: 8px; font-size: 12.5px; text-align: ${isAdminSender ? 'right' : 'left'};">
+                <span style="display: inline-block; padding: 6px 12px; border-radius: 10px; background: ${isAdminSender ? '#dbeafe' : '#f1f5f9'}; color: ${isAdminSender ? '#1e40af' : '#0f172a'}; font-weight: ${isAdminSender ? '500' : '600'};">
+                  <strong>${escapeHtml(m.sender || 'User')}:</strong> ${escapeHtml(m.text)}
+                </span>
+              </div>`;
+            }).join('')}
+          </div>
+          <form onsubmit="sendAdminCounselorMessage(event, '${app._id}')" style="display: flex; gap: 8px;">
+            <input type="text" id="adminChatInput-${app._id}" placeholder="Type reply to student..." required style="flex: 1; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px;">
+            <button type="submit" class="primary-btn" style="padding: 8px 16px; font-size: 13px; background: #2563eb;"><i class="fas fa-paper-plane"></i> Send Reply</button>
+          </form>
         </div>
 
         <div class="app-actions-footer">
@@ -18426,6 +18499,7 @@ function initPage() {
   try { enforceSubPortalNavigation(); } catch (e) {}
   try { initThemeEngine(); } catch (e) {}
   try { initI18nEngine(); } catch (e) {}
+  try { checkTrackerAuthProtection(); } catch (e) {}
   try { initLoginForm(); } catch (e) {}
   try { initSignupForm(); } catch (e) {}
   try { initAdminDashboard(); } catch (e) {}
@@ -18435,6 +18509,10 @@ function initPage() {
   try { initHomeUniversitySlider(); } catch (e) {}
   try { initMindmapSection(); } catch (e) {}
   try { initVideoModal(); } catch (e) {}
+
+  if (document.getElementById("applicationsListContainer")) {
+    initStudentTracker();
+  }
 
   if (document.getElementById("universityList")) {
     loadUniversities();
@@ -18534,6 +18612,670 @@ async function initHomeScholarshipsPreview() {
   } catch (err) {
     console.error("Error loading home scholarships preview:", err);
   }
+}
+
+/* =========================================================
+   STUDENT APPLICATION TRACKER & COUNSELOR CHAT SYSTEM
+   ========================================================= */
+
+window.activeStudentApp = null;
+window.studentAppsList = [];
+
+function checkTrackerAuthProtection() {
+  const savedUserRaw = localStorage.getItem("user");
+  let user = null;
+  if (savedUserRaw) {
+    try { user = JSON.parse(savedUserRaw); } catch (e) {}
+  }
+
+  // Update navbar visibility for Application Tracker across all pages
+  const trackerNavLis = document.querySelectorAll("#trackerNavLi, a[href='tracker.html'], a[href='frontend/tracker.html']");
+  trackerNavLis.forEach(el => {
+    const parentLi = el.closest("li");
+    if (parentLi) {
+      if (user && user.token) {
+        parentLi.style.display = "";
+      } else {
+        parentLi.style.display = "none";
+      }
+    }
+  });
+
+  // If on tracker.html and user is NOT logged in -> redirect to login.html
+  const isTrackerPage = window.location.pathname.toLowerCase().includes("tracker.html");
+  if (isTrackerPage && (!user || !user.token)) {
+    alert("Please log in to your Admission Turkey account to access the Application Tracker.");
+    window.location.href = "login.html?redirect=tracker.html";
+    return false;
+  }
+  return user;
+}
+
+async function initStudentTracker() {
+  const user = checkTrackerAuthProtection();
+  if (!user) return;
+
+  const appListContainer = document.getElementById("applicationsListContainer");
+  if (!appListContainer) return;
+
+  // Search button listener
+  const searchBtn = document.getElementById("trackerSearchBtn");
+  const searchInput = document.getElementById("trackerSearchInput");
+  if (searchBtn && searchInput) {
+    searchBtn.onclick = () => {
+      const q = searchInput.value.trim();
+      if (q) loadStudentApplications(user.email, q);
+    };
+    searchInput.onkeypress = (e) => {
+      if (e.key === "Enter") {
+        const q = searchInput.value.trim();
+        if (q) loadStudentApplications(user.email, q);
+      }
+    };
+  }
+
+  // Demo data button listener
+  const demoBtn = document.getElementById("demoDataBtn");
+  if (demoBtn) {
+    demoBtn.onclick = () => {
+      loadDemoStudentApplication(user);
+    };
+  }
+
+  // Message form listener
+  const msgForm = document.getElementById("counselorMessageForm");
+  if (msgForm) {
+    msgForm.onsubmit = handleSendCounselorMessage;
+  }
+
+  // Reupload modal listeners
+  initReuploadModal();
+
+  // Load student applications
+  await loadStudentApplications(user.email);
+
+  // Auto refresh every 4 seconds for real-time messages & doc status updates
+  setInterval(() => {
+    if (window.activeStudentApp && window.activeStudentApp._id) {
+      refreshActiveStudentApplication(window.activeStudentApp._id);
+    }
+  }, 4000);
+}
+
+async function loadStudentApplications(userEmail, searchQuery = "") {
+  const appListContainer = document.getElementById("applicationsListContainer");
+  if (!appListContainer) return;
+
+  appListContainer.innerHTML = `
+    <div style="text-align: center; color: #94a3b8; padding: 25px 10px;">
+      <i class="fas fa-spinner fa-spin fa-2x" style="margin-bottom: 10px;"></i>
+      <p style="font-size: 13px;">Fetching application pipeline...</p>
+    </div>
+  `;
+
+  let apps = [];
+
+  // Try fetching from backend API
+  try {
+    const res = await fetchWithTimeout(`${API_BASE_URL}/api/applications/my-applications?email=${encodeURIComponent(userEmail)}`, {}, 4000);
+    if (res && res.ok) {
+      const data = await res.json();
+      if (data && data.success && Array.isArray(data.applications)) {
+        apps = data.applications;
+      }
+    }
+  } catch (err) {
+    console.log("Backend offline for my-applications, checking local backups:", err);
+  }
+
+  // Merge with localStorage backups
+  const localApps = JSON.parse(localStorage.getItem("my_applications") || "[]");
+  const offlineApps = JSON.parse(localStorage.getItem("offline_student_applications") || "[]");
+  const allLocal = [...localApps, ...offlineApps];
+
+  const appMap = new Map();
+  apps.forEach(a => appMap.set(a._id, a));
+  allLocal.forEach(a => {
+    if (a && (a.email || "").toLowerCase() === (userEmail || "").toLowerCase()) {
+      if (!appMap.has(a._id)) appMap.set(a._id || ("local_" + Math.random()), a);
+    }
+  });
+
+  let finalApps = Array.from(appMap.values());
+
+  // Filter if searchQuery provided
+  if (searchQuery) {
+    const qLower = searchQuery.toLowerCase();
+    finalApps = finalApps.filter(a =>
+      (a.name || "").toLowerCase().includes(qLower) ||
+      (a.university || "").toLowerCase().includes(qLower) ||
+      (a.program || "").toLowerCase().includes(qLower) ||
+      (a.email || "").toLowerCase().includes(qLower) ||
+      (a._id || "").toLowerCase().includes(qLower)
+    );
+  }
+
+  window.studentAppsList = finalApps;
+
+  if (finalApps.length === 0) {
+    appListContainer.innerHTML = `
+      <div style="text-align: center; padding: 24px 10px; color: #64748b;">
+        <i class="fas fa-folder-plus fa-2x" style="color: #cbd5e1; margin-bottom: 10px;"></i>
+        <h4 style="font-size: 0.95rem; font-weight: 700; color: #334155; margin-bottom: 4px;">No Applications Submitted Yet</h4>
+        <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 14px;">Select a program to apply and track your application status live.</p>
+        <button onclick="loadDemoStudentApplication()" class="primary-btn" style="font-size: 0.8rem; padding: 6px 14px; background: #1d5bbf;">
+          <i class="fas fa-vial"></i> Generate Sample Pipeline
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  // Render list items
+  appListContainer.innerHTML = "";
+  finalApps.forEach((app, idx) => {
+    const itemDiv = document.createElement("div");
+    const isActive = idx === 0;
+    itemDiv.className = `app-select-item ${isActive ? 'active' : ''}`;
+    itemDiv.dataset.appId = app._id;
+    itemDiv.onclick = () => selectStudentApplication(app._id);
+
+    const ref = app._id ? (app._id.startsWith("local_") ? "APP-2026-REF" : `REF-${app._id.substring(app._id.length - 6).toUpperCase()}`) : "APP-2026-REF";
+    const statusText = app.status || "Submitted";
+    const badgeClass = getStatusBadgeClass(statusText);
+
+    itemDiv.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+        <span style="font-size: 0.75rem; font-weight: 800; color: #1d5bbf;">${ref}</span>
+        <span class="app-status-badge ${badgeClass}" style="font-size: 0.7rem; padding: 2px 8px;">${statusText}</span>
+      </div>
+      <h4 style="font-size: 0.92rem; font-weight: 800; margin-bottom: 2px; color: #0f172a;">${escapeHtml(app.university || 'Turkish University')}</h4>
+      <p style="font-size: 0.8rem; color: #64748b; margin: 0;">${escapeHtml(app.program || 'Selected Major')}</p>
+    `;
+    appListContainer.appendChild(itemDiv);
+  });
+
+  // Select first application by default
+  selectStudentApplication(finalApps[0]._id);
+}
+
+function getStatusBadgeClass(statusStr) {
+  const s = (statusStr || "").toLowerCase();
+  if (s.includes("official") || s.includes("approved") || s.includes("accepted")) return "badge-accepted";
+  if (s.includes("conditional") || s.includes("offer")) return "badge-conditional";
+  if (s.includes("deposit") || s.includes("payment")) return "badge-review";
+  if (s.includes("review") || s.includes("inspection")) return "badge-review";
+  return "badge-pending";
+}
+
+function selectStudentApplication(appId) {
+  const app = (window.studentAppsList || []).find(a => a._id === appId);
+  if (!app) return;
+
+  window.activeStudentApp = app;
+
+  // Highlight active sidebar item
+  document.querySelectorAll(".app-select-item").forEach(item => {
+    if (item.dataset.appId === appId) item.classList.add("active");
+    else item.classList.remove("active");
+  });
+
+  renderStudentTrackerDetail(app);
+}
+
+function renderStudentTrackerDetail(app) {
+  const detailPanel = document.getElementById("trackerDetailPanel");
+  if (!detailPanel) return;
+
+  const ref = app._id ? (app._id.startsWith("local_") ? "APP-2026-REF" : `REF-${app._id.substring(app._id.length - 8).toUpperCase()}`) : "APP-2026-REF";
+  const statusText = app.status || "Submitted";
+  const badgeClass = getStatusBadgeClass(statusText);
+  const dateStr = app.createdAt ? new Date(app.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent";
+
+  // Check admin issued documents
+  const adminDocsKey = `admin_app_docs_${app._id}`;
+  const storedAdminDocs = JSON.parse(localStorage.getItem(adminDocsKey) || "{}");
+  const offerLetterUrl = app.offerLetter || storedAdminDocs.offerLetter || null;
+  const feeSlipUrl = app.feeSlip || storedAdminDocs.feeSlip || null;
+  const finalAcceptanceUrl = app.finalAcceptanceLetter || storedAdminDocs.finalAcceptanceLetter || null;
+
+  // Calculate Stepper Progress
+  let stepLevel = 1; // 1: Submitted, 2: Inspection, 3: Conditional Acceptance, 4: Deposit Payment, 5: Official Acceptance
+  let progressWidth = "20%";
+
+  const sLower = statusText.toLowerCase();
+  if (sLower.includes("official") || sLower.includes("approved") || finalAcceptanceUrl) {
+    stepLevel = 5;
+    progressWidth = "100%";
+  } else if (sLower.includes("deposit") || sLower.includes("payment") || feeSlipUrl) {
+    stepLevel = 4;
+    progressWidth = "80%";
+  } else if (sLower.includes("conditional") || sLower.includes("offer") || offerLetterUrl) {
+    stepLevel = 3;
+    progressWidth = "60%";
+  } else if (sLower.includes("review") || sLower.includes("inspection")) {
+    stepLevel = 2;
+    progressWidth = "40%";
+  } else {
+    stepLevel = 1;
+    progressWidth = "20%";
+  }
+
+  // Update Header Elements
+  const activeAppId = document.getElementById("activeAppId");
+  const activeAppUni = document.getElementById("activeAppUniversity");
+  const activeAppProg = document.getElementById("activeAppProgram");
+  const activeAppBadge = document.getElementById("activeAppStatusBadge");
+  const activeAppDate = document.getElementById("activeAppDate");
+
+  if (activeAppId) activeAppId.textContent = `Ref: ${ref}`;
+  if (activeAppUni) activeAppUni.textContent = app.university || "Turkish University";
+  if (activeAppProg) activeAppProg.innerHTML = `<i class="fas fa-graduation-cap"></i> ${escapeHtml(app.program || 'Selected Major')} (${escapeHtml(app.level || 'Bachelor')})`;
+  if (activeAppBadge) {
+    activeAppBadge.className = `app-status-badge ${badgeClass}`;
+    activeAppBadge.innerHTML = `<i class="fas fa-sync"></i> ${statusText}`;
+  }
+  if (activeAppDate) activeAppDate.textContent = `Submitted on: ${dateStr}`;
+
+  // Update Stepper Line & Step Highlights
+  const fill = document.getElementById("stepperProgressFill");
+  if (fill) fill.style.width = progressWidth;
+
+  [1, 2, 3, 4, 5].forEach(stepNum => {
+    const stepEl = document.getElementById(`step${stepNum}`);
+    if (stepEl) {
+      if (stepNum < stepLevel) {
+        stepEl.className = "step-item completed";
+        stepEl.querySelector(".step-circle").innerHTML = `<i class="fas fa-check"></i>`;
+      } else if (stepNum === stepLevel) {
+        stepEl.className = "step-item active";
+        stepEl.querySelector(".step-circle").innerHTML = stepNum;
+      } else {
+        stepEl.className = "step-item";
+        stepEl.querySelector(".step-circle").innerHTML = stepNum;
+      }
+    }
+  });
+
+  // Render Document Verification Checklist Table
+  renderDocumentChecklist(app);
+
+  // Render Official Documents & Acceptance Letters Cards
+  renderOfficialDocumentsGrid(app, offerLetterUrl, feeSlipUrl, finalAcceptanceUrl, stepLevel);
+
+  // Render Counselor Chat Messages
+  renderCounselorChatMessages(app);
+}
+
+function renderDocumentChecklist(app) {
+  const tbody = document.getElementById("documentChecklistBody");
+  if (!tbody) return;
+
+  const docs = [
+    { key: "passport", label: "Passport Scan / Copy", url: app.passportDocument, field: "passportDocument" },
+    { key: "certificate", label: "High School / Bachelor Certificate", url: app.certificateDocument, field: "certificateDocument" },
+    { key: "diploma", label: "Graduation Diploma", url: app.diplomaDocument, field: "diplomaDocument" },
+    { key: "transcript", label: "Academic Grade Transcript", url: app.transcriptDocument, field: "transcriptDocument" }
+  ];
+
+  tbody.innerHTML = "";
+  docs.forEach(d => {
+    const status = (app.documentStatuses && app.documentStatuses[d.key]) ? app.documentStatuses[d.key] : (d.url ? "Verified & Uploaded" : "Action Required");
+    const note = (app.documentNotes && app.documentNotes[d.key]) ? app.documentNotes[d.key] : (d.url ? "Document verified by admissions officer." : "Please upload a clear scan of your document.");
+    const isUploaded = Boolean(d.url);
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><strong>${d.label}</strong></td>
+      <td>
+        <span class="app-status-badge ${isUploaded ? 'badge-accepted' : 'badge-action'}">
+          <i class="fas ${isUploaded ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${status}
+        </span>
+      </td>
+      <td style="font-size: 0.85rem; color: #64748b;">${escapeHtml(note)}</td>
+      <td>
+        <button type="button" onclick="openReuploadModal('${d.field}', '${d.label}')" class="secondary-btn" style="font-size: 0.78rem; padding: 4px 10px;">
+          <i class="fas fa-upload"></i> ${isUploaded ? 'Re-upload' : 'Upload File'}
+        </button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderOfficialDocumentsGrid(app, offerLetterUrl, feeSlipUrl, finalAcceptanceUrl, stepLevel) {
+  const safeAppName = (app.name || "Student").replace(/['"]/g, "");
+
+  // 1. Conditional Offer Letter
+  const offerBox = document.getElementById("offerLetterBox");
+  const offerStatus = document.getElementById("offerLetterStatus");
+  const offerBtn = document.getElementById("downloadOfferBtn");
+
+  if (offerLetterUrl) {
+    if (offerBox) offerBox.className = "doc-box available";
+    if (offerStatus) offerStatus.innerHTML = `<span style="color:#10b981; font-weight:700;"><i class="fas fa-check-circle"></i> Issued & Available</span>`;
+    if (offerBtn) {
+      offerBtn.disabled = false;
+      offerBtn.className = "primary-btn";
+      offerBtn.style.background = "#2563eb";
+      offerBtn.innerHTML = `<i class="fas fa-download"></i> Download Offer Letter`;
+      offerBtn.onclick = () => downloadDocFile(offerLetterUrl, `ConditionalOfferLetter-${safeAppName}`, app._id);
+    }
+  } else {
+    if (offerBox) offerBox.className = "doc-box";
+    if (offerStatus) offerStatus.innerHTML = `<span style="color:#64748b; font-weight:600;"><i class="fas fa-clock"></i> Pending Admissions Upload</span>`;
+    if (offerBtn) {
+      offerBtn.disabled = true;
+      offerBtn.className = "secondary-btn";
+      offerBtn.innerHTML = `<i class="fas fa-clock"></i> Awaiting Offer Letter`;
+      offerBtn.onclick = null;
+    }
+  }
+
+  // 2. Tuition Deposit Slip Box (UNLOCKED FOR STUDENT UPLOAD)
+  const feeBox = document.getElementById("feeSlipBox");
+  const feeStatus = document.getElementById("feeSlipStatus");
+  const feeBtn = document.getElementById("downloadFeeBtn");
+
+  if (feeSlipUrl) {
+    if (feeBox) feeBox.className = "doc-box available";
+    if (feeStatus) feeStatus.innerHTML = `<span style="color:#10b981; font-weight:700;"><i class="fas fa-check-circle"></i> Deposit Receipt Uploaded</span>`;
+    if (feeBtn) {
+      feeBtn.disabled = false;
+      feeBtn.className = "primary-btn";
+      feeBtn.style.background = "#10b981";
+      feeBtn.innerHTML = `<i class="fas fa-eye"></i> View / Download Receipt`;
+      feeBtn.onclick = () => downloadDocFile(feeSlipUrl, `TuitionFeeSlip-${safeAppName}`, app._id);
+    }
+  } else {
+    // ALWAYS UNLOCKED: Allow student to upload their deposit slip at any time
+    if (feeBox) feeBox.className = "doc-box available";
+    if (feeStatus) feeStatus.innerHTML = `<span style="color:#ea580c; font-weight:700;"><i class="fas fa-cloud-arrow-up"></i> Deposit Receipt Required</span>`;
+    if (feeBtn) {
+      feeBtn.disabled = false;
+      feeBtn.className = "primary-btn";
+      feeBtn.style.background = "#ea580c";
+      feeBtn.innerHTML = `<i class="fas fa-cloud-arrow-up"></i> Upload Fee Slip / Receipt`;
+      feeBtn.onclick = () => openReuploadModal("feeSlip", "Tuition Deposit Receipt / Fee Slip");
+    }
+  }
+
+  // 3. Final Acceptance Letter Box
+  const finalBox = document.getElementById("finalAcceptanceBox");
+  const finalStatus = document.getElementById("finalAcceptanceStatus");
+  const finalBtn = document.getElementById("downloadFinalBtn");
+
+  if (finalAcceptanceUrl) {
+    if (finalBox) finalBox.className = "doc-box available";
+    if (finalStatus) finalStatus.innerHTML = `<span style="color:#10b981; font-weight:800;"><i class="fas fa-award"></i> Official Acceptance Issued! 🎉</span>`;
+    if (finalBtn) {
+      finalBtn.disabled = false;
+      finalBtn.className = "primary-btn";
+      finalBtn.style.background = "#10b981";
+      finalBtn.innerHTML = `<i class="fas fa-download"></i> Download Acceptance Letter`;
+      finalBtn.onclick = () => downloadDocFile(finalAcceptanceUrl, `FinalAcceptanceLetter-${safeAppName}`, app._id);
+    }
+  } else {
+    if (finalBox) finalBox.className = "doc-box";
+    if (finalStatus) finalStatus.textContent = "Issued After Fee Verification";
+    if (finalBtn) {
+      finalBtn.disabled = true;
+      finalBtn.className = "secondary-btn";
+      finalBtn.innerHTML = `<i class="fas fa-lock"></i> Locked`;
+      finalBtn.onclick = null;
+    }
+  }
+}
+
+function renderCounselorChatMessages(app) {
+  const chatBox = document.getElementById("counselorChatBox");
+  if (!chatBox) return;
+
+  const msgs = Array.isArray(app.counselorMessages) ? app.counselorMessages : [];
+
+  if (msgs.length === 0) {
+    chatBox.innerHTML = `
+      <div class="chat-bubble counselor">
+        <strong>Admissions Team:</strong> Welcome to Admission Turkey! We have received your application documents and sent them for initial verification. Feel free to send us any questions here.
+      </div>
+    `;
+    return;
+  }
+
+  chatBox.innerHTML = "";
+  msgs.forEach(m => {
+    const isCounselor = (m.sender || "").toLowerCase().includes("counselor") || (m.sender || "").toLowerCase().includes("admin");
+    const bubbleDiv = document.createElement("div");
+    bubbleDiv.className = `chat-bubble ${isCounselor ? 'counselor' : 'student'}`;
+    const dateStr = m.date ? new Date(m.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+
+    bubbleDiv.innerHTML = `
+      <strong>${isCounselor ? 'Admissions Team' : 'You'}:</strong> ${escapeHtml(m.text)}
+      <div style="font-size: 10px; opacity: 0.75; text-align: right; margin-top: 4px;">${dateStr}</div>
+    `;
+    chatBox.appendChild(bubbleDiv);
+  });
+
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+async function handleSendCounselorMessage(e) {
+  if (e) e.preventDefault();
+  const input = document.getElementById("counselorMessageInput");
+  if (!input) return;
+
+  const text = input.value.trim();
+  if (!text || !window.activeStudentApp) return;
+
+  const appId = window.activeStudentApp._id;
+
+  // Add message locally
+  window.activeStudentApp.counselorMessages = window.activeStudentApp.counselorMessages || [];
+  const newMsg = { sender: "Student", text: text, date: new Date().toISOString() };
+  window.activeStudentApp.counselorMessages.push(newMsg);
+
+  renderCounselorChatMessages(window.activeStudentApp);
+  input.value = "";
+
+  // Backup in my_applications & admin_app_docs localStorage keys
+  saveLocalStudentAppUpdate(window.activeStudentApp);
+
+  try {
+    const adminDocsKey = `admin_app_docs_${appId}`;
+    const stored = JSON.parse(localStorage.getItem(adminDocsKey) || "{}");
+    stored.counselorMessages = window.activeStudentApp.counselorMessages;
+    localStorage.setItem(adminDocsKey, JSON.stringify(stored));
+  } catch (err) {}
+
+  // Send to backend API
+  try {
+    await fetch(`${API_BASE_URL}/api/applications/${appId}/message`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sender: "Student", text })
+    });
+  } catch (err) {
+    console.log("Send counselor message note:", err.message);
+  }
+}
+
+async function sendAdminCounselorMessage(e, appId) {
+  if (e) e.preventDefault();
+  const input = document.getElementById(`adminChatInput-${appId}`);
+  if (!input) return;
+
+  const text = input.value.trim();
+  if (!text) return;
+
+  const app = (allApplicationsList || []).find(a => a._id === appId);
+  if (app) {
+    app.counselorMessages = app.counselorMessages || [];
+    app.counselorMessages.push({ sender: "Admissions Team", text: text, date: new Date().toISOString() });
+    
+    // Save to local storage backups
+    const adminDocsKey = `admin_app_docs_${appId}`;
+    const stored = JSON.parse(localStorage.getItem(adminDocsKey) || "{}");
+    stored.counselorMessages = app.counselorMessages;
+    localStorage.setItem(adminDocsKey, JSON.stringify(stored));
+
+    try {
+      const myApps = JSON.parse(localStorage.getItem("my_applications") || "[]");
+      const idx = myApps.findIndex(a => a._id === appId);
+      if (idx !== -1) {
+        myApps[idx].counselorMessages = app.counselorMessages;
+        localStorage.setItem("my_applications", JSON.stringify(myApps));
+      }
+    } catch(err) {}
+  }
+
+  filterApplications();
+  input.value = "";
+
+  try {
+    const user = JSON.parse(localStorage.getItem("adminUser") || localStorage.getItem("user") || "{}");
+    const token = (user && user.token) ? user.token : "admin_token_auto_granted";
+    await fetch(`${API_BASE_URL}/api/applications/${appId}/message`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ sender: "Admissions Team", text: text })
+    });
+  } catch (err) {
+    console.warn("Send admin counselor message note:", err.message);
+  }
+}
+
+async function refreshActiveStudentApplication(appId) {
+  if (!appId || appId.startsWith("local_")) return;
+
+  try {
+    const res = await fetchWithTimeout(`${API_BASE_URL}/api/applications/track/${appId}`, {}, 3000);
+    if (res && res.ok) {
+      const data = await res.json();
+      if (data && data.success && data.application) {
+        window.activeStudentApp = data.application;
+        renderStudentTrackerDetail(data.application);
+      }
+    }
+  } catch (e) {}
+}
+
+function saveLocalStudentAppUpdate(updatedApp) {
+  try {
+    const myApps = JSON.parse(localStorage.getItem("my_applications") || "[]");
+    const idx = myApps.findIndex(a => a._id === updatedApp._id);
+    if (idx !== -1) {
+      myApps[idx] = updatedApp;
+      localStorage.setItem("my_applications", JSON.stringify(myApps));
+    }
+  } catch (e) {}
+}
+
+/* Modal for Document Reupload & Fee Slip Upload */
+function initReuploadModal() {
+  const modal = document.getElementById("reuploadModal");
+  const closeBtn = document.getElementById("closeReuploadModalBtn");
+  const cancelBtn = document.getElementById("cancelReuploadBtn");
+  const form = document.getElementById("reuploadForm");
+
+  if (closeBtn && modal) {
+    closeBtn.onclick = () => modal.classList.remove("active");
+  }
+  if (cancelBtn && modal) {
+    cancelBtn.onclick = () => modal.classList.remove("active");
+  }
+
+  if (form && modal) {
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const fieldName = document.getElementById("reuploadFieldName").value;
+      const fileInput = document.getElementById("reuploadFileInput");
+
+      if (!fileInput || !fileInput.files[0] || !window.activeStudentApp) return;
+
+      const file = fileInput.files[0];
+      const appId = window.activeStudentApp._id;
+      const submitBtn = document.getElementById("submitReuploadBtn");
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Uploading...`;
+      }
+
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const fileDataUrl = event.target.result;
+
+        // Apply locally
+        window.activeStudentApp[fieldName] = fileDataUrl;
+        if (fieldName === "feeSlip") {
+          window.activeStudentApp.status = "Deposit Payment Submitted";
+        }
+        saveLocalStudentAppUpdate(window.activeStudentApp);
+
+        // Send via multipart form data to API
+        try {
+          const formData = new FormData();
+          formData.append("fieldName", fieldName);
+          formData.append("documentFile", file);
+
+          await fetch(`${API_BASE_URL}/api/applications/${appId}/reupload-doc`, {
+            method: "PUT",
+            body: formData
+          });
+        } catch (err) {
+          console.warn("Reupload doc backend sync note:", err.message);
+        }
+
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i class="fas fa-cloud-arrow-up"></i> Upload Document`;
+        }
+
+        modal.classList.remove("active");
+        renderStudentTrackerDetail(window.activeStudentApp);
+        alert(`Document updated successfully!`);
+      };
+      reader.readAsDataURL(file);
+    };
+  }
+}
+
+function openReuploadModal(fieldName, fieldLabel) {
+  const modal = document.getElementById("reuploadModal");
+  const title = document.getElementById("reuploadModalTitle");
+  const fieldInput = document.getElementById("reuploadFieldName");
+  if (!modal) return;
+
+  if (title) title.innerHTML = `<i class="fas fa-upload"></i> Upload ${fieldLabel || 'Document'}`;
+  if (fieldInput) fieldInput.value = fieldName;
+  modal.classList.add("active");
+}
+
+function loadDemoStudentApplication(user = null) {
+  const demoApp = {
+    _id: "demo_app_2026_9812",
+    name: (user && user.name) ? user.name : "Demo Candidate",
+    email: (user && user.email) ? user.email : "student@example.com",
+    university: "Bahçeşehir University",
+    program: "Bachelor of Computer Engineering (English)",
+    level: "Bachelor",
+    status: "Under Initial Review",
+    createdAt: new Date().toISOString(),
+    passportDocument: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+    certificateDocument: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+    counselorMessages: [
+      { sender: "Counselor", text: "Welcome to Admission Turkey! We have received your application documents and sent them for initial verification. Feel free to send us any questions here.", date: new Date().toISOString() }
+    ]
+  };
+
+  const existing = JSON.parse(localStorage.getItem("my_applications") || "[]");
+  existing.unshift(demoApp);
+  localStorage.setItem("my_applications", JSON.stringify(existing));
+
+  loadStudentApplications((user && user.email) ? user.email : "student@example.com");
 }
 
 if (document.readyState === "loading") {

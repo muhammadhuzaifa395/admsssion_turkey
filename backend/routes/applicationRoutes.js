@@ -174,6 +174,14 @@ router.put("/:id/admin-docs", verifyToken, isAdmin, async (req, res) => {
     const updateField = {};
     updateField[docType] = dataUrl;
 
+    if (docType === "offerLetter") {
+      updateField.status = "Conditional Acceptance";
+    } else if (docType === "feeSlip") {
+      updateField.status = "Deposit Payment Submitted";
+    } else if (docType === "finalAcceptanceLetter") {
+      updateField.status = "Official Acceptance";
+    }
+
     const application = await Application.findByIdAndUpdate(
       req.params.id,
       updateField,
@@ -270,11 +278,14 @@ router.put("/:id/reupload-doc", upload.single("documentFile"), async (req, res) 
     const updatePayload = {};
     updatePayload[fieldName] = fileDataUrl;
     
-    // Reset status of reuploaded document to 'Under Review'
-    const docKey = fieldName.replace("Document", "");
-    if (docKey) {
-      updatePayload[`documentStatuses.${docKey}`] = "Under Review";
-      updatePayload[`documentNotes.${docKey}`] = "Updated file uploaded by student. Verification pending.";
+    if (fieldName === "feeSlip") {
+      updatePayload.status = "Deposit Payment Submitted";
+    } else {
+      const docKey = fieldName.replace("Document", "");
+      if (docKey) {
+        updatePayload[`documentStatuses.${docKey}`] = "Under Review";
+        updatePayload[`documentNotes.${docKey}`] = "Updated file uploaded by student. Verification pending.";
+      }
     }
 
     const updatedApp = await Application.findByIdAndUpdate(req.params.id, updatePayload, { new: true });
