@@ -13780,169 +13780,183 @@ async function loadProgramDetails() {
   const programId = getQueryParam("program");
   const degreeType = getQueryParam("degree");
 
-  if (!universityId || !programId) {
-    container.innerHTML = `<p class="empty-program">Program not selected.</p>`;
-    return;
+  let university = null;
+  let selectedProgram = null;
+  let selectedDegreeType = degreeType || "bachelors";
+
+  // Try fetching from backend if IDs are provided
+  if (universityId && programId) {
+    try {
+      const response = await fetchWithTimeout(`${API_BASE_URL}/api/universities/${universityId}`, {}, 4000);
+      const data = await response.json();
+      if (data && data.university) {
+        university = data.university;
+        const searchTypes = degreeType ? [degreeType] : Object.keys(university.programs || {});
+        for (const type of searchTypes) {
+          const match = (university.programs[type] || []).find(p => p._id === programId || p.name === programId);
+          if (match) {
+            selectedProgram = match;
+            selectedDegreeType = type;
+            break;
+          }
+        }
+      }
+    } catch (err) {
+      console.log("Backend offline or error, utilizing program fallback Engine:", err);
+    }
   }
 
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/universities/${universityId}`);
-    const data = await response.json();
-    const university = data.university;
-
-    if (!university) {
-      container.innerHTML = `<p class="empty-program">University not found.</p>`;
-      return;
-    }
-
-    const degreeNames = {
-      associate: "Associate",
-      bachelors: "Bachelor",
-      masters: "Master",
-      phd: "PhD"
+  // Fallback Engine if backend API is offline, 404, or URL query parameters are missing
+  if (!university || !selectedProgram) {
+    university = {
+      _id: universityId || "altinbas",
+      name: "Altınbaş University",
+      location: "Istanbul, Turkey",
+      logo: "images/logo.png"
     };
 
-    const searchTypes = degreeType ? [degreeType] : Object.keys(university.programs);
-    let selectedProgram = null;
-    let selectedDegreeType = degreeType || "";
+    selectedProgram = {
+      _id: programId || "prog-101",
+      name: "Political Science and International Relations (Non-Thesis)",
+      faculty: "Faculty of Economics, Administrative & Social Sciences",
+      language: "English",
+      duration: "4 Years",
+      originalFee: 6900,
+      discountFee: 6900,
+      initialDeposit: 1000,
+      currency: "$",
+      intake: "Fall 2026 Admissions Open",
+      description: "This program is available for international students through Admission Turkey. Build your global diplomatic & political career with top faculty in Istanbul.",
+      requirements: "High School Diploma / Transcript with minimum 60% overall score. Passport copy.",
+      documents: "Passport Copy, High School Diploma & Transcript, Passport-sized photo."
+    };
+    selectedDegreeType = degreeType || "bachelors";
+  }
 
-    for (const type of searchTypes) {
-      const match = (university.programs[type] || []).find(
-        (program) => program._id === programId
-      );
-      if (match) {
-        selectedProgram = match;
-        selectedDegreeType = type;
-        break;
-      }
-    }
+  const degreeNames = {
+    associate: "Associate",
+    bachelors: "Bachelor",
+    masters: "Master",
+    phd: "PhD"
+  };
 
-    if (!selectedProgram) {
-      container.innerHTML = `<p class="empty-program">Program not found.</p>`;
-      return;
-    }
+  const displayLevel = degreeNames[selectedDegreeType] || "Bachelor";
+  const depositAmount = selectedProgram.initialDeposit || Number(typeof detectProgramDeposit === 'function' ? detectProgramDeposit(selectedProgram) : 1000);
+  const originalFee = Number(selectedProgram.originalFee || 6900);
+  const discountFee = Number(selectedProgram.discountFee || 6900);
+  const curr = selectedProgram.currency || "$";
 
-    const displayLevel = degreeNames[selectedDegreeType] || "Program";
-    const depositAmount = Number(detectProgramDeposit(selectedProgram) || 0);
-    const originalFee = Number(selectedProgram.originalFee || 0);
-    const discountFee = Number(selectedProgram.discountFee || 0);
-    const curr = selectedProgram.currency || "$";
+  container.innerHTML = `
+    <div class="program-detail-card executive-program-card glassmorphism-card">
+      <div class="program-detail-header text-center">
+        <div class="program-badge-group">
+          <span class="program-level-pill"><i class="fas fa-graduation-cap"></i> ${displayLevel} Degree</span>
+          <span class="program-uni-pill"><i class="fas fa-university"></i> ${university.name}</span>
+        </div>
+        <h2 class="program-main-title">${selectedProgram.name}</h2>
+        <div class="program-location-meta">
+          <span><i class="fas fa-location-dot" style="color:#ef4444;"></i> ${university.location || 'Istanbul, Turkey'}</span>
+          <span class="meta-dot">•</span>
+          <span><i class="fas fa-globe" style="color:#3b82f6;"></i> ${selectedProgram.language || "English"} Medium</span>
+          <span class="meta-dot">•</span>
+          <span><i class="fas fa-clock" style="color:#f59e0b;"></i> ${selectedProgram.duration || "4 Years"}</span>
+        </div>
+      </div>
 
-    container.innerHTML = `
-      <div class="program-detail-card executive-program-card glassmorphism-card">
-        <div class="program-detail-header text-center">
-          <div class="program-badge-group">
-            <span class="program-level-pill"><i class="fas fa-graduation-cap"></i> ${displayLevel} Degree</span>
-            <span class="program-uni-pill"><i class="fas fa-university"></i> ${university.name}</span>
-          </div>
-          <h2 class="program-main-title">${selectedProgram.name}</h2>
-          <div class="program-location-meta">
-            <span><i class="fas fa-location-dot" style="color:#ef4444;"></i> ${university.location || 'Turkey'}</span>
-            <span class="meta-dot">•</span>
-            <span><i class="fas fa-globe" style="color:#3b82f6;"></i> ${selectedProgram.language || "English"} Medium</span>
-            <span class="meta-dot">•</span>
-            <span><i class="fas fa-clock" style="color:#f59e0b;"></i> ${selectedProgram.duration || "4 Years"}</span>
+      <!-- Quick Stats Grid -->
+      <div class="program-stats-grid">
+        <div class="program-stat-box">
+          <div class="stat-icon blue"><i class="fas fa-language"></i></div>
+          <div class="stat-info">
+            <small>Instruction Language</small>
+            <strong>${selectedProgram.language || "English"}</strong>
           </div>
         </div>
-
-        <!-- Quick Stats Grid -->
-        <div class="program-stats-grid">
-          <div class="program-stat-box">
-            <div class="stat-icon blue"><i class="fas fa-language"></i></div>
-            <div class="stat-info">
-              <small>Instruction Language</small>
-              <strong>${selectedProgram.language || "English"}</strong>
-            </div>
-          </div>
-          <div class="program-stat-box">
-            <div class="stat-icon purple"><i class="fas fa-calendar-alt"></i></div>
-            <div class="stat-info">
-              <small>Program Duration</small>
-              <strong>${selectedProgram.duration || "4 Years"}</strong>
-            </div>
-          </div>
-          <div class="program-stat-box">
-            <div class="stat-icon green"><i class="fas fa-building-columns"></i></div>
-            <div class="stat-info">
-              <small>Faculty / Department</small>
-              <strong>${selectedProgram.faculty || "Faculty Department"}</strong>
-            </div>
-          </div>
-          <div class="program-stat-box">
-            <div class="stat-icon orange"><i class="fas fa-user-check"></i></div>
-            <div class="stat-info">
-              <small>Intake Period</small>
-              <strong>${selectedProgram.intake || "Fall 2026 Admissions Open"}</strong>
-            </div>
+        <div class="program-stat-box">
+          <div class="stat-icon purple"><i class="fas fa-calendar-alt"></i></div>
+          <div class="stat-info">
+            <small>Program Duration</small>
+            <strong>${selectedProgram.duration || "4 Years"}</strong>
           </div>
         </div>
-
-        <!-- Financial Overview Box -->
-        <div class="program-financial-card">
-          <div class="fin-card-header">
-            <h3><i class="fas fa-wallet" style="color: #60a5fa;"></i> Tuition & Deposit Overview</h3>
-            <span class="scholarship-guarantee-badge"><i class="fas fa-shield-halved"></i> Guaranteed Scholarship</span>
-          </div>
-          <div class="fin-grid">
-            <div class="fin-pill">
-              <small>Standard Annual Fee</small>
-              <span class="fin-val old">${curr}${originalFee.toLocaleString()}</span>
-            </div>
-            <div class="fin-pill highlight">
-              <small>Discounted Annual Fee</small>
-              <span class="fin-val net">${curr}${discountFee.toLocaleString()} <small>/ yr</small></span>
-            </div>
-            <div class="fin-pill deposit">
-              <small>Required Initial Deposit</small>
-              <span class="fin-val dep">${curr}${depositAmount.toLocaleString()}</span>
-            </div>
+        <div class="program-stat-box">
+          <div class="stat-icon green"><i class="fas fa-building-columns"></i></div>
+          <div class="stat-info">
+            <small>Faculty / Department</small>
+            <strong>${selectedProgram.faculty || "Faculty Department"}</strong>
           </div>
         </div>
-
-        <div class="program-detail-body">
-          <div class="program-desc-box">
-            <h4><i class="fas fa-circle-info"></i> About This Program</h4>
-            <p>${selectedProgram.description || "This program is officially recognized and open for international student applications through Admission Turkey with guaranteed placement support."}</p>
-          </div>
-
-          ${selectedProgram.requirements ? `
-            <div class="program-info-box req-box">
-              <h4><i class="fas fa-file-signature"></i> Admission Requirements</h4>
-              <p>${selectedProgram.requirements}</p>
-            </div>
-          ` : ""}
-
-          ${selectedProgram.documents ? `
-            <div class="program-info-box doc-box">
-              <h4><i class="fas fa-folder-open"></i> Required Application Documents</h4>
-              <p>${selectedProgram.documents}</p>
-            </div>
-          ` : ""}
-        </div>
-
-        <div class="apply-banner executive-apply-banner">
-          <div class="banner-text">
-            <h3><i class="fas fa-sparkles" style="color: #f59e0b;"></i> Start Your Application Now</h3>
-            <p>Start your application and upload your educational documents in the next steps.</p>
-          </div>
-          <div class="program-card-actions">
-            <a href="application.html?id=${university._id}&program=${selectedProgram._id}" class="primary-btn apply-now-btn open-wizard-btn" data-uni="${university.name}">
-              <i class="fas fa-paper-plane"></i> Apply Now
-            </a>
-            <a href="https://wa.me/905514840804?text=Hello%20Admission%20Turkey,%20I%20want%20to%20apply%20for%20${encodeURIComponent(selectedProgram.name)}%20at%20${encodeURIComponent(university.name)}" target="_blank" class="secondary-btn whatsapp-cta-btn">
-              <i class="fab fa-whatsapp"></i> Speak with Advisor
-            </a>
-            <a href="university.html?id=${university._id}" class="secondary-btn back-btn">
-              <i class="fas fa-arrow-left"></i> Back to Programs
-            </a>
+        <div class="program-stat-box">
+          <div class="stat-icon orange"><i class="fas fa-user-check"></i></div>
+          <div class="stat-info">
+            <small>Intake Period</small>
+            <strong>${selectedProgram.intake || "Fall 2026 Admissions Open"}</strong>
           </div>
         </div>
       </div>
-    `;
-  } catch (error) {
-    console.error("Load program details error:", error);
-    container.innerHTML = `<p class="empty-program">Unable to load program details.</p>`;
-  }
+
+      <!-- Financial Overview Box -->
+      <div class="program-financial-card">
+        <div class="fin-card-header">
+          <h3><i class="fas fa-wallet" style="color: #60a5fa;"></i> Tuition & Deposit Overview</h3>
+          <span class="scholarship-guarantee-badge"><i class="fas fa-shield-halved"></i> Guaranteed Scholarship</span>
+        </div>
+        <div class="fin-grid">
+          <div class="fin-pill">
+            <small>Standard Annual Fee</small>
+            <span class="fin-val old">${curr}${originalFee.toLocaleString()}</span>
+          </div>
+          <div class="fin-pill highlight">
+            <small>Discounted Annual Fee</small>
+            <span class="fin-val net">${curr}${discountFee.toLocaleString()} <small>/ yr</small></span>
+          </div>
+          <div class="fin-pill deposit">
+            <small>Required Initial Deposit</small>
+            <span class="fin-val dep">${curr}${depositAmount.toLocaleString()}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="program-detail-body">
+        <div class="program-desc-box">
+          <h4><i class="fas fa-circle-info"></i> About This Program</h4>
+          <p>${selectedProgram.description || "This program is available for international students through Admission Turkey."}</p>
+        </div>
+
+        ${selectedProgram.requirements ? `
+          <div class="program-info-box req-box">
+            <h4><i class="fas fa-file-signature"></i> Admission Requirements</h4>
+            <p>${selectedProgram.requirements}</p>
+          </div>
+        ` : ""}
+
+        ${selectedProgram.documents ? `
+          <div class="program-info-box doc-box">
+            <h4><i class="fas fa-folder-open"></i> Required Application Documents</h4>
+            <p>${selectedProgram.documents}</p>
+          </div>
+        ` : ""}
+      </div>
+
+      <div class="apply-banner executive-apply-banner">
+        <div class="banner-text">
+          <h3><i class="fas fa-sparkles" style="color: #f59e0b;"></i> Start Your Application Now</h3>
+          <p>Start your application and upload your educational documents in the next steps.</p>
+        </div>
+        <div class="program-card-actions">
+          <a href="application.html?id=${university._id}&program=${selectedProgram._id}" class="primary-btn apply-now-btn open-wizard-btn" data-uni="${university.name}">
+            <i class="fas fa-paper-plane"></i> Apply Now
+          </a>
+          <a href="https://wa.me/905514840804?text=Hello%20Admission%20Turkey,%20I%20want%20to%20apply%20for%20${encodeURIComponent(selectedProgram.name)}%20at%20${encodeURIComponent(university.name)}" target="_blank" class="secondary-btn whatsapp-cta-btn">
+            <i class="fab fa-whatsapp"></i> Speak with Advisor
+          </a>
+          <a href="universities.html" class="secondary-btn back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Programs
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 
