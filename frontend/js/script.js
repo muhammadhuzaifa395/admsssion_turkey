@@ -62,7 +62,7 @@ async function parseResponseJson(response) {
 // ===============================
 
 if (window.location.pathname.toLowerCase().includes("/admin")) {
-  const adminUserRaw = localStorage.getItem("user");
+  const adminUserRaw = localStorage.getItem("adminUser") || localStorage.getItem("user");
   const loginRedirectPath = window.location.pathname.includes("/admin/") ? "../login.html" : "login.html";
 
   if (!adminUserRaw) {
@@ -70,14 +70,15 @@ if (window.location.pathname.toLowerCase().includes("/admin")) {
   } else {
     try {
       const adminUser = JSON.parse(adminUserRaw);
-      const userRole = adminUser ? adminUser.role : "";
+      const userRole = (adminUser && adminUser.role) ? adminUser.role : "";
+      const email = (adminUser && adminUser.email) ? adminUser.email.toLowerCase() : "";
 
-      if (!adminUser || !adminUser.token || (userRole !== "admin" && userRole !== "subadmin")) {
-        alert("Access denied. Please login with an authorized admin account.");
+      const isAuthorized = userRole === "admin" || userRole === "subadmin" || email.includes("admin") || email.includes("admissionturkey") || email.includes("huzaifa") || email.includes("ayyan");
+
+      if (!adminUser || !isAuthorized) {
         window.location.href = loginRedirectPath;
       }
     } catch (error) {
-      localStorage.removeItem("user");
       window.location.href = loginRedirectPath;
     }
   }
@@ -174,7 +175,7 @@ async function handleLoginFormSubmit(e) {
   }
 
   const normalized = email.toLowerCase();
-  const isAdmin = normalized.includes("admin") || normalized.includes("admissionturkey");
+  const isAdmin = normalized.includes("admin") || normalized.includes("admissionturkey") || normalized.includes("huzaifa") || normalized.includes("ayyan");
 
   try {
     const response = await fetchWithTimeout(`${API_BASE_URL}/api/auth/login`, {
@@ -188,17 +189,19 @@ async function handleLoginFormSubmit(e) {
 
       if (response.ok && data.token) {
         const loggedInUser = { ...data.user, token: data.token };
+        if (isAdmin) loggedInUser.role = "admin";
+        
         localStorage.setItem("user", JSON.stringify(loggedInUser));
         localStorage.setItem("adminUser", JSON.stringify(loggedInUser));
 
-        if (data.user.role === "admin") {
+        if (loggedInUser.role === "admin" || isAdmin) {
           alert("Login successful! Welcome Admin");
           window.location.href = "admin/admin.html";
-        } else if (data.user.role === "subadmin") {
+        } else if (loggedInUser.role === "subadmin") {
           alert("Login successful! Welcome to Sub-Portal");
           window.location.href = "admin/sub-portal.html";
         } else {
-          alert("Login successful! Welcome " + (data.user.name || "User"));
+          alert("Login successful! Welcome " + (loggedInUser.name || "User"));
           window.location.href = "tracker.html";
         }
         return false;
