@@ -110,35 +110,10 @@
     }
   ];
 
-  // Knowledge base for AI Support Chatbot
-  const AI_KNOWLEDGE_BASE = [
-    {
-      keywords: ['scholarship', '50%', 'discount', 'free', 'cost', 'fee', 'price'],
-      answer: "🎓 <strong>Guaranteed Scholarships in Turkey:</strong><br>Admission Turkey provides <strong>25% to 75% guaranteed merit scholarships</strong> for international students across premier universities. Tuition fees start as low as <strong>$2,500/year</strong> post-scholarship! Use our Scholarship Calculator on this page to check your exact savings."
-    },
-    {
-      keywords: ['medicine', 'doctor', 'medical', 'dentistry', 'pharmacy'],
-      answer: "🏥 <strong>Medical Studies in Türkiye:</strong><br>Top recommended Medical universities include <strong>Istanbul Medipol University</strong>, <strong>Istinye University</strong>, and <strong>Üsküdar University</strong>. English-medium Medicine programs average $12,000 - $20,000/yr before scholarship discounts. No entrance exam required for direct admission via Admission Turkey!"
-    },
-    {
-      keywords: ['visa', 'passport', 'embassy', 'requirement', 'permit'],
-      answer: "✈️ <strong>Student Visa & TRC:</strong><br>Once you receive your official Acceptance Letter, we assist you in booking your Turkish consulate appointment. You'll need: Passport, Official Acceptance Letter, High School Diploma, and Proof of Funds. Upon arrival in Turkey, our team handles your Student Residence Permit (Ikamet) free of charge."
-    },
-    {
-      keywords: ['living', 'expense', 'dorm', 'housing', 'apartment', 'rent'],
-      answer: "💰 <strong>Living Costs in Turkey:</strong><br>Turkey is exceptionally affordable for international students!<br>• Dormitory / Shared Apt: <strong>$150 - $250 / month</strong><br>• Food & Utilities: <strong>$150 - $200 / month</strong><br>• Total living budget: <strong>~$300 - $450 / month</strong>"
-    },
-    {
-      keywords: ['apply', 'process', 'document', 'step', 'how to'],
-      answer: "📄 <strong>Simple 4-Step Application:</strong><br>1️⃣ Click 'Apply Now' to open our Fast Track Wizard.<br>2️⃣ Select your degree & major.<br>3️⃣ Enter your GPA and passport details.<br>4️⃣ Receive your unconditional offer letter within <strong>48 hours</strong>!"
-    }
-  ];
-
   document.addEventListener('DOMContentLoaded', () => {
     initAiMatchmaker();
     initScholarshipCalculator();
     initApplicationWizard();
-    initAiChatbot();
     initWizardTriggerButtons();
   });
 
@@ -541,111 +516,7 @@
     });
   }
 
-  /* =========================================================
-     4. FLOATING AI ASSISTANT CHATBOT LOGIC
-     ========================================================= */
-  function initAiChatbot() {
-    const chatToggleBtn = document.getElementById('aiChatToggleBtn');
-    const chatWindow = document.getElementById('aiChatWindow');
-    const closeAiChatBtn = document.getElementById('closeAiChatBtn');
-    const chatForm = document.getElementById('aiChatForm');
-    const chatInput = document.getElementById('aiChatInput');
-    const chatMessages = document.getElementById('aiChatMessages');
-    const quickPills = document.getElementById('chatQuickPills');
 
-    if (!chatToggleBtn || !chatWindow) return;
-
-    chatToggleBtn.addEventListener('click', () => {
-      const isVisible = chatWindow.style.display === 'flex';
-      chatWindow.style.display = isVisible ? 'none' : 'flex';
-      const openIcon = chatToggleBtn.querySelector('.open-icon');
-      const closeIcon = chatToggleBtn.querySelector('.close-icon');
-
-      if (openIcon && closeIcon) {
-        openIcon.style.display = isVisible ? 'inline-block' : 'none';
-        closeIcon.style.display = isVisible ? 'none' : 'inline-block';
-      }
-    });
-
-    if (closeAiChatBtn) {
-      closeAiChatBtn.addEventListener('click', () => {
-        chatWindow.style.display = 'none';
-        const openIcon = chatToggleBtn.querySelector('.open-icon');
-        const closeIcon = chatToggleBtn.querySelector('.close-icon');
-        if (openIcon && closeIcon) {
-          openIcon.style.display = 'inline-block';
-          closeIcon.style.display = 'none';
-        }
-      });
-    }
-
-    if (quickPills) {
-      quickPills.addEventListener('click', (e) => {
-        const pill = e.target.closest('.chat-pill');
-        if (pill) {
-          const text = pill.textContent.trim();
-          sendUserMessage(text);
-        }
-      });
-    }
-
-    if (chatForm) {
-      chatForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const text = chatInput.value.trim();
-        if (text) {
-          sendUserMessage(text);
-          chatInput.value = '';
-        }
-      });
-    }
-
-    function sendUserMessage(text) {
-      // Append user bubble
-      appendMessage(text, 'user');
-
-      // Typing indicator
-      const typingElem = appendTypingIndicator();
-
-      // Find answer
-      setTimeout(() => {
-        typingElem.remove();
-        const responseText = findAiAnswer(text);
-        appendMessage(responseText, 'bot');
-      }, 700);
-    }
-
-    function findAiAnswer(query) {
-      const qLower = query.toLowerCase();
-      for (const item of AI_KNOWLEDGE_BASE) {
-        if (item.keywords.some(k => qLower.includes(k))) {
-          return item.answer;
-        }
-      }
-      return "✨ I would love to help with that! Admission Turkey works directly with 50+ accredited universities offering up to 75% guaranteed scholarships. Would you like me to open the <strong>Fast Track Application Wizard</strong> or connect you directly with a <strong>Human Admission Counselor</strong> on WhatsApp?";
-    }
-
-    function appendMessage(content, sender) {
-      const msgDiv = document.createElement('div');
-      msgDiv.className = `chat-msg ${sender}-msg`;
-      msgDiv.innerHTML = `<div class="msg-bubble">${content}</div>`;
-      chatMessages.appendChild(msgDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function appendTypingIndicator() {
-      const typingDiv = document.createElement('div');
-      typingDiv.className = 'chat-msg bot-msg typing-dots';
-      typingDiv.innerHTML = `
-        <div class="msg-bubble">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-        </div>
-      `;
-      chatMessages.appendChild(typingDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-      return typingDiv;
-    }
-  }
 
   function capitalize(str) {
     if (!str) return '';
