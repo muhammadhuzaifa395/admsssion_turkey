@@ -440,53 +440,194 @@ h1, h2, h3, h4, h5, h6 {
 .hero-buttons {
   margin-top: 30px;
   display: flex;
+  align-items: center;
   gap: 15px;
+  flex-wrap: wrap;
   opacity: 0;
   animation: heroTextReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.75s forwards;
 }
 
+.hero-main-btn {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  color: #ffffff !important;
+  padding: 16px 32px !important;
+  font-weight: 800 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 30px rgba(239, 68, 68, 0.45) !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.hero-main-btn:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 16px 40px rgba(239, 68, 68, 0.65) !important;
+}
+
+.hero-sub-btn {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  padding: 16px 28px !important;
+  font-weight: 700 !important;
+  border-radius: 16px !important;
+  backdrop-filter: blur(12px) !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.hero-sub-btn:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+  border-color: #ffffff !important;
+  transform: translateY(-3px) !important;
+}
+
+.hero-action-pill-btn {
+  background: rgba(245, 158, 11, 0.18) !important;
+  border: 1.5px solid rgba(245, 158, 11, 0.45) !important;
+  color: #fbbf24 !important;
+  padding: 15px 24px !important;
+  font-weight: 800 !important;
+  font-size: 14.5px !important;
+  border-radius: 16px !important;
+  backdrop-filter: blur(12px) !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.25) !important;
+}
+
+.hero-action-pill-btn:hover {
+  background: rgba(245, 158, 11, 0.3) !important;
+  transform: translateY(-3px) scale(1.03) !important;
+  box-shadow: 0 12px 32px rgba(245, 158, 11, 0.4) !important;
+}
+
+/* HERO METRICS BAR */
+.hero-metrics-bar {
+  margin-top: 36px;
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.metric-pill-card {
+  background: rgba(15, 23, 42, 0.65) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
+  backdrop-filter: blur(16px) !important;
+  border-radius: 18px !important;
+  padding: 14px 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.metric-pill-card:hover {
+  transform: translateY(-3px) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45) !important;
+}
+
+.metric-pill-card .m-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.metric-pill-card .m-icon.cyan {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+}
+
+.metric-pill-card .m-icon.gold {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+}
+
+.metric-pill-card .m-tag {
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  display: block;
+}
+
+.metric-pill-card .m-val {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 900;
+  display: block;
+  line-height: 1.2;
+}
+
+/* HERO VIDEO SHOWCASE CARD ENHANCEMENTS */
 .hero-card {
-  background: rgba(255, 255, 255, 0.97);
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(15, 23, 42, 0.88) !important;
+  padding: 16px !important;
+  border-radius: 26px !important;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
   opacity: 0;
   animation: heroCardReveal 1.05s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards,
     floatSoft 5s ease-in-out 1.6s infinite;
 }
 
-.hero-icon {
-  width: 70px;
-  height: 70px;
-  background: linear-gradient(135deg, var(--red), #b5151c);
-  color: white;
-  border-radius: 50%;
+.hero-card-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.hero-card-live-pill {
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+  font-size: 11.5px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-card-cta-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  padding: 12px;
+  font-weight: 800;
+  font-size: 14.5px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
-  animation: pulseGlow 2.8s ease-in-out infinite;
+  gap: 8px;
 }
 
-.hero-card h3 {
-  color: var(--navy);
-  margin-top: 20px;
-}
-
-.hero-stat {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-  padding-top: 15px;
-  border-top: 1px solid #eee;
-}
-
-.hero-stat strong {
-  color: var(--red);
-  font-size: 25px;
+.hero-card-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(239, 68, 68, 0.6);
 }
 
 /* ========================================
@@ -4317,24 +4458,47 @@ body {
    INTERACTIVE ROUTE MINDMAP ANIMATION SECTION
    ========================================================= */
 
+/* =========================================================
+   INTERACTIVE ROUTE MINDMAP ANIMATION SECTION
+   ========================================================= */
+
 .mindmap-section {
-  background: radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.06) 0%, rgba(29, 91, 191, 0.03) 50%, transparent 80%);
+  background: radial-gradient(circle at 50% 50%, #0f172a 0%, #090d16 100%) !important;
   position: relative;
-  padding: 80px 20px;
+  padding: 90px 20px !important;
   overflow: hidden;
+  color: #ffffff !important;
+}
+
+.mindmap-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(245, 158, 11, 0.16) !important;
+  border: 1.5px solid rgba(245, 158, 11, 0.4) !important;
+  color: #fbbf24 !important;
+  padding: 8px 22px !important;
+  border-radius: 30px !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.25);
+  backdrop-filter: blur(8px);
 }
 
 .mindmap-title {
-  font-size: 2.4rem;
-  font-weight: 800;
-  color: var(--text-main);
-  margin-top: 8px;
+  font-size: 38px !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  margin-top: 12px !important;
+  letter-spacing: -0.6px;
 }
 
 .accent-orange {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background: linear-gradient(135deg, #f59e0b 0%, #fb923c 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
   display: inline-block;
 }
 
@@ -4360,10 +4524,10 @@ body {
 
 .mindmap-lines-svg path {
   fill: none;
-  stroke: var(--blue);
+  stroke: #38bdf8;
   stroke-width: 2px;
   stroke-dasharray: 6 4;
-  opacity: 0.3;
+  opacity: 0.35;
   transition: all 0.4s ease;
 }
 
@@ -4372,7 +4536,7 @@ body {
   stroke-width: 3.5px;
   stroke-dasharray: none;
   opacity: 1;
-  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.5));
+  filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.6));
 }
 
 /* Center Badge */
@@ -4394,14 +4558,30 @@ body {
   width: auto;
 }
 
+.mindmap-logo-ring {
+  position: absolute;
+  width: 155px;
+  height: 155px;
+  border-radius: 50%;
+  border: 2px dashed rgba(56, 189, 248, 0.4);
+  animation: rotateRing 15s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotateRing {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .mindmap-logo-img {
-  width: 130px;
-  height: 130px;
+  width: 135px;
+  height: 135px;
   max-height: none;
   object-fit: cover;
   border-radius: 50% !important;
-  background: transparent !important;
-  box-shadow: 0 10px 30px rgba(29, 91, 191, 0.25), 0 0 45px rgba(29, 91, 191, 0.2);
+  background: #0f172a !important;
+  box-shadow: 0 10px 35px rgba(56, 189, 248, 0.35), 0 0 50px rgba(245, 158, 11, 0.25);
+  border: 3px solid rgba(255, 255, 255, 0.2);
   transition: transform 0.3s ease;
 }
 
@@ -4418,57 +4598,83 @@ body {
 .mindmap-node {
   position: absolute;
   z-index: 4;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 20px;
-  padding: 14px 20px;
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  width: 280px;
-  transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
-  cursor: pointer;
+  background: rgba(30, 41, 59, 0.88) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-radius: 22px !important;
+  padding: 16px 22px !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  width: 300px !important;
+  transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+  cursor: pointer !important;
 }
 
 .mindmap-node:hover, .mindmap-node.active {
-  transform: scale(1.06) translateY(-4px);
-  border-color: #f59e0b;
-  box-shadow: 0 12px 30px rgba(245, 158, 11, 0.25);
+  transform: scale(1.06) translateY(-4px) !important;
+  border-color: #f59e0b !important;
+  box-shadow: 0 18px 40px rgba(245, 158, 11, 0.35) !important;
 }
 
 .node-icon-wrap {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 20px;
   flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.node-icon-wrap.cyan { background: rgba(6, 182, 212, 0.12); color: #06b6d4; }
-.node-icon-wrap.green { background: rgba(16, 185, 129, 0.12); color: #10b981; }
-.node-icon-wrap.pink { background: rgba(236, 72, 153, 0.12); color: #ec4899; }
-.node-icon-wrap.orange { background: rgba(245, 158, 11, 0.12); color: #f59e0b; }
-.node-icon-wrap.blue { background: rgba(29, 91, 191, 0.12); color: var(--blue); }
-.node-icon-wrap.purple { background: rgba(139, 92, 246, 0.12); color: #8b5cf6; }
+.node-icon-wrap.cyan { background: rgba(6, 182, 212, 0.2); color: #38bdf8; }
+.node-icon-wrap.green { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+.node-icon-wrap.pink { background: rgba(236, 72, 153, 0.2); color: #f472b6; }
+.node-icon-wrap.orange { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+.node-icon-wrap.blue { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+.node-icon-wrap.purple { background: rgba(139, 92, 246, 0.2); color: #c084fc; }
+
+.node-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
 
 .node-text h4 {
   font-size: 14.5px;
-  font-weight: 700;
-  color: var(--text-main);
+  font-weight: 800;
+  color: #ffffff !important;
   margin-bottom: 2px;
   line-height: 1.3;
 }
 
 .node-text p {
   font-size: 12px;
-  color: var(--text-muted);
+  color: #cbd5e1 !important;
   margin: 0;
   line-height: 1.3;
 }
+
+.node-chip {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.node-chip.cyan { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+.node-chip.green { background: rgba(52, 211, 153, 0.2); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.3); }
+.node-chip.pink { background: rgba(244, 114, 182, 0.2); color: #f472b6; border: 1px solid rgba(244, 114, 182, 0.3); }
+.node-chip.orange { background: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
+.node-chip.blue { background: rgba(96, 165, 250, 0.2); color: #60a5fa; border: 1px solid rgba(96, 165, 250, 0.3); }
+.node-chip.purple { background: rgba(192, 132, 252, 0.2); color: #c084fc; border: 1px solid rgba(192, 132, 252, 0.3); }
 
 /* Positioning Nodes */
 .node-top-left { top: 30px; left: 20px; }
@@ -4478,6 +4684,50 @@ body {
 .node-top-right { top: 30px; right: 20px; }
 .node-mid-right { top: 50%; right: 0; transform: translateY(-50%); }
 .node-bot-right { bottom: 30px; right: 20px; }
+
+/* MINDMAP CTA ACTION BAR */
+.mindmap-cta-bar {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.mindmap-cta-btn {
+  padding: 16px 32px !important;
+  font-size: 15.5px !important;
+  font-weight: 800 !important;
+  border-radius: 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  transition: all 0.3s ease !important;
+}
+
+.mindmap-cta-btn.primary-btn {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+  box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4) !important;
+  color: #ffffff !important;
+}
+
+.mindmap-cta-btn.primary-btn:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 16px 38px rgba(245, 158, 11, 0.6) !important;
+}
+
+.mindmap-cta-btn.secondary-btn {
+  background: rgba(30, 41, 59, 0.8) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+.mindmap-cta-btn.secondary-btn:hover {
+  background: rgba(30, 41, 59, 1) !important;
+  border-color: #38bdf8 !important;
+  transform: translateY(-3px) !important;
+}
 
 @media (max-width: 992px) {
   .mindmap-container {
