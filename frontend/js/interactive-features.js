@@ -179,6 +179,36 @@
     });
   }
 
+  // Global helper for match card apply clicks
+  window.handleMatchCardApply = function(e, uniName) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    const wizardModal = document.getElementById('applicationWizardModal');
+    if (wizardModal) {
+      const wizUniSelect = document.getElementById('wizUni');
+      if (wizUniSelect && uniName) {
+        let matchedOption = Array.from(wizUniSelect.options).find(opt => 
+          opt.value.toLowerCase().includes(uniName.toLowerCase()) || 
+          opt.text.toLowerCase().includes(uniName.toLowerCase())
+        );
+        if (matchedOption) {
+          wizUniSelect.value = matchedOption.value;
+        } else {
+          wizUniSelect.value = uniName;
+        }
+      }
+      wizardModal.style.display = 'flex';
+      wizardModal.style.opacity = '1';
+      wizardModal.style.visibility = 'visible';
+      const modalBody = wizardModal.querySelector('.wizard-modal-card');
+      if (modalBody) modalBody.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      window.location.href = 'application.html?uni=' + encodeURIComponent(uniName || '');
+    }
+  };
+
   function renderMatchResults(unis, resultsContainer, grid, countBadge) {
     resultsContainer.style.display = 'block';
     grid.innerHTML = '';
@@ -186,6 +216,7 @@
 
     unis.forEach((uni, idx) => {
       const matchScore = 95 - (idx * 3);
+      const safeUniName = (uni.name || '').replace(/'/g, "\\'");
       const card = document.createElement('div');
       card.className = 'match-uni-card card-tilt reveal-scale';
       card.innerHTML = `
@@ -209,7 +240,7 @@
           <small class="acceptance-rate"><i class="fas fa-user-check"></i> ${uni.acceptanceRate} Placement Rate</small>
         </div>
         <div class="match-card-actions">
-          <button type="button" class="primary-btn match-apply-btn open-wizard-btn" data-uni="${uni.name}">
+          <button type="button" class="primary-btn match-apply-btn open-wizard-btn" onclick="handleMatchCardApply(event, '${safeUniName}')" data-uni="${uni.name}">
             <i class="fas fa-paper-plane"></i> Apply with ${matchScore}% Match
           </button>
           <a href="universities.html?search=${encodeURIComponent(uni.name)}" class="secondary-btn match-details-link-btn" target="_blank" title="View ${uni.name} details">
