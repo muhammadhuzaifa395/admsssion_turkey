@@ -208,9 +208,14 @@
           </div>
           <small class="acceptance-rate"><i class="fas fa-user-check"></i> ${uni.acceptanceRate} Placement Rate</small>
         </div>
-        <button type="button" class="primary-btn match-apply-btn open-wizard-btn" data-uni="${uni.name}">
-          <i class="fas fa-paper-plane"></i> Apply with ${matchScore}% Match
-        </button>
+        <div class="match-card-actions">
+          <button type="button" class="primary-btn match-apply-btn open-wizard-btn" data-uni="${uni.name}">
+            <i class="fas fa-paper-plane"></i> Apply with ${matchScore}% Match
+          </button>
+          <a href="universities.html?search=${encodeURIComponent(uni.name)}" class="secondary-btn match-details-link-btn" target="_blank" title="View ${uni.name} details">
+            <i class="fas fa-university"></i> View Page
+          </a>
+        </div>
       `;
       grid.appendChild(card);
     });
@@ -483,11 +488,23 @@
           const prefUni = trigger.dataset.uni;
           if (prefUni) {
             const wizUniSelect = document.getElementById('wizUni');
-            if (wizUniSelect) wizUniSelect.value = prefUni;
+            if (wizUniSelect) {
+              let matchedOption = Array.from(wizUniSelect.options).find(opt => opt.value.toLowerCase().includes(prefUni.toLowerCase()) || opt.text.toLowerCase().includes(prefUni.toLowerCase()));
+              if (matchedOption) {
+                wizUniSelect.value = matchedOption.value;
+              } else {
+                wizUniSelect.value = prefUni;
+              }
+            }
           }
           wizardModal.style.display = 'flex';
+          wizardModal.style.opacity = '1';
+          wizardModal.style.visibility = 'visible';
+          const modalBody = wizardModal.querySelector('.wizard-modal-card');
+          if (modalBody) modalBody.scrollIntoView({ behavior: 'smooth', block: 'center' });
         } else {
-          window.location.href = 'application.html';
+          const uniParam = trigger.dataset.uni ? '?uni=' + encodeURIComponent(trigger.dataset.uni) : '';
+          window.location.href = 'application.html' + uniParam;
         }
       }
     });
