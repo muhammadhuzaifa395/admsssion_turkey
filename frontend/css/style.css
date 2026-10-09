@@ -6742,11 +6742,12 @@ footer {
   transform: translateY(-2px) !important;
 }
 
-/* AI FLOATING CHATBOT WIDGET - POSITIONED DIRECTLY ABOVE WHATSAPP */
+/* AI FLOATING CHATBOT WIDGET - POSITIONED ON THE LEFT SIDE OPPOSITE WHATSAPP */
 .ai-chatbot-widget-wrap {
   position: fixed !important;
-  bottom: 95px !important;
-  right: 25px !important;
+  bottom: 25px !important;
+  left: 25px !important;
+  right: auto !important;
   z-index: 999990 !important;
 }
 
@@ -6775,7 +6776,8 @@ footer {
 .ai-chat-badge {
   position: absolute !important;
   top: -10px !important;
-  right: -8px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
   background: #10b981 !important;
   color: #ffffff !important;
   font-size: 10.5px !important;
@@ -6806,10 +6808,11 @@ footer {
 
 .ai-chat-window {
   position: fixed !important;
-  bottom: 165px !important;
-  right: 25px !important;
+  bottom: 95px !important;
+  left: 25px !important;
+  right: auto !important;
   width: 380px !important;
-  max-width: calc(100vw - 35px) !important;
+  max-width: calc(100vw - 40px) !important;
   height: 520px !important;
   background: rgba(15, 23, 42, 0.96) !important;
   backdrop-filter: blur(28px) !important;
